@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Distillation columns, with and without reflux or reboiler · Alireza Moghaddam</title>
+<meta name="description" content="Distillation columns with and without reflux or reboiler: VLE and azeotropes, McCabe–Thiele and shortcut methods, trays and packing, flooding and sizing, vendor data, a P&amp;ID with its control system, ASME, API and CSA standards, safety, worked examples and practice problems.">
+
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/assets/icons/site.webmanifest">
+<meta name="theme-color" content="#4c5157">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alireza Moghaddam, EIT">
+<meta property="og:title" content="Distillation columns, with and without reflux or reboiler">
+<meta property="og:description" content="VLE and azeotropes, McCabe–Thiele and shortcut methods, trays and packing, flooding and sizing, vendor data, a column P&amp;ID with its control system, standards, safety, worked examples and practice problems.">
+<meta property="og:url" content="https://chemprocesseng.com/lessons/distillation/">
+<meta property="og:image" content="https://chemprocesseng.com/assets/brand/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://chemprocesseng.com/lessons/distillation/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Newsreader:opsz,wght@6..72,300;6..72,400&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/page.css">
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="wordmark" href="/"><img src="/assets/brand/logo-icon.svg" width="36" height="36" alt=""><span class="wm-text">Alireza Moghaddam</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="/calculators/">Calculators</a></li>
+        <li><a href="/lessons/" aria-current="page">Lessons</a></li>
+        <li class="hide-sm"><a href="/data/">Data</a></li>
+        <li class="hide-sm"><a href="/analysis/">Analysis</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="page" id="content">
+  <header class="header">
+    <p class="crumb"><a href="/lessons/">Lessons</a> / Separation</p>
+    <h1>Distillation columns, with and without reflux or reboiler</h1>
+    <p class="standfirst">How a column separates by stages, when you can leave out the condenser or the reboiler, and how to design, control and protect one, with an interactive P&amp;ID, ten worked examples and twenty problems to solve.</p>
+    <div class="byline">
+      <span><strong>Alireza Moghaddam</strong>, EIT</span>
+      <span>Updated 15 November 2026</span>
+      <span>About 2 hours read, longer with the problems</span>
+      <span>SI units; model curves and vendor-style sheets are illustrative</span>
+    </div>
+  </header>
+
+  <!-- Figure 1: McCabe–Thiele with and without reflux or reboiler -->
+  <figure id="fig1" aria-labelledby="fig1-t">
+    <p class="fig-title" id="fig1-t"><span class="fn">Figure 1.</span> Reflux and boil-up set the slopes of the operating lines; the gap between those lines and the equilibrium curve sets the number of stages</p>
+    <div class="toolbar">
+      <span class="tlab" id="f1-cfg-l">Configuration</span>
+      <div class="seg" role="group" aria-labelledby="f1-cfg-l">
+        <button type="button" data-cfg="full" aria-pressed="true">Reflux and reboiler</button>
+        <button type="button" data-cfg="strip" aria-pressed="false">No reflux (stripper)</button>
+        <button type="button" data-cfg="rect" aria-pressed="false">No reboiler (rectifier)</button>
+        <button type="button" data-cfg="steam" aria-pressed="false">Live steam, no reboiler</button>
+      </div>
+    </div>
+    <div class="toolbar">
+      <label class="sel-inline"><span class="tlab">Mixture</span>
+        <select id="f1-sys">
+          <option value="alpha">Constant relative volatility</option>
+          <option value="bt">Benzene–toluene, 101.3 kPa</option>
+          <option value="mw">Methanol–water, 101.3 kPa</option>
+          <option value="ew">Ethanol–water, 101.3 kPa</option>
+        </select>
+      </label>
+      <span class="tlab">Presets</span>
+      <div class="presets" role="group" aria-label="Presets">
+        <button type="button" class="btn btn-secondary btn-sm" data-preset="ex2">Example 2</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-preset="ex4">Example 4, stripper</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-preset="ex5">Example 5, rectifier</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-preset="ex6">Example 6, live steam</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-preset="az">Ethanol near the azeotrope</button>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="ctl" id="c-alpha"><label for="f1-alpha">Relative volatility, α <span class="val" id="f1-alpha-v"></span></label><input type="range" id="f1-alpha" min="1.2" max="6" step="0.05" value="2.5"></div>
+      <div class="ctl" id="c-zf"><label for="f1-zf">Feed, z<sub>F</sub> <span class="val" id="f1-zf-v"></span></label><input type="range" id="f1-zf" min="0.05" max="0.9" step="0.01" value="0.4"></div>
+      <div class="ctl" id="c-q"><label for="f1-q">Feed condition, q <span class="val" id="f1-q-v"></span></label><input type="range" id="f1-q" min="-0.5" max="1.5" step="0.05" value="1"></div>
+      <div class="ctl" id="c-xd"><label for="f1-xd">Distillate, x<sub>D</sub> <span class="val" id="f1-xd-v"></span></label><input type="range" id="f1-xd" min="0.5" max="0.995" step="0.005" value="0.95"></div>
+      <div class="ctl" id="c-xb"><label for="f1-xb">Bottoms, x<sub>B</sub> <span class="val" id="f1-xb-v"></span></label><input type="range" id="f1-xb" min="0.002" max="0.3" step="0.001" value="0.05"></div>
+      <div class="ctl" id="c-m"><label for="f1-m" id="f1-m-l">Reflux, multiple of minimum <span class="val" id="f1-m-v"></span></label><input type="range" id="f1-m" min="1.05" max="3" step="0.01" value="1.3"></div>
+    </div>
+    <div class="tiles" id="f1-tiles">
+      <div class="tile" id="t1a"><div><span class="v">–</span><span class="u"></span></div><div class="k">Minimum reflux ratio</div></div>
+      <div class="tile" id="t1b"><div><span class="v">–</span><span class="u"></span></div><div class="k">Reflux ratio, L/D</div></div>
+      <div class="tile" id="t1c"><div><span class="v">–</span><span class="u"></span></div><div class="k">Theoretical stages</div></div>
+      <div class="tile" id="t1d"><div><span class="v">–</span><span class="u"></span></div><div class="k">Feed stage from the top</div></div>
+    </div>
+    <div class="status" id="f1-status" aria-live="polite"></div>
+    <div class="fig-body">
+      <div class="chart" id="f1-chart" role="img" aria-label="McCabe–Thiele diagram: the equilibrium curve, the 45 degree line, the operating lines for the chosen configuration and the stages stepped off between them. The tiles above give the same numbers."></div>
+      <div class="side">
+        <div class="chart" id="f1-col" role="img" aria-label="Sketch of the column for the chosen configuration, with the condenser, reboiler or live steam shown where present and the feed tray marked."></div>
+        <table aria-describedby="fig1-t">
+          <thead><tr><th>Stream, per 100 kmol/h of feed</th><th class="num">kmol/h</th></tr></thead>
+          <tbody id="f1-flows"></tbody>
+        </table>
+      </div>
+    </div>
+    <figcaption>Binary McCabe–Thiele construction with constant molal overflow at 101.3 kPa. Total condenser with saturated reflux; the partial reboiler counts as one stage; the feed goes on its optimum stage. Minimum reflux is found as the smallest ratio at which neither operating line touches the equilibrium curve, so tangent pinches are caught as well as feed pinches. Stripper: saturated liquid fed to the top tray, reboiler at the bottom, no condenser. Rectifier: saturated vapour fed under the bottom tray, condenser and reflux at the top, no reboiler. Live steam: saturated steam injected under the bottom tray in place of a reboiler. Equilibrium: constant α, or modified Raoult’s law with Antoine constants from Smith, Van Ness and Abbott <a class="ref" href="#src-5">5</a>, Wilson parameters for methanol–water <a class="ref" href="#src-5">5</a> and van Laar parameters for ethanol–water <a class="ref" href="#src-4">4</a>. Illustrative teaching model; use a rigorous simulator for design.</figcaption>
+    <div class="fig-actions">
+      <button type="button" class="btn btn-secondary btn-sm" id="f1-copy">Copy stage-by-stage compositions as CSV</button>
+      <span class="copy-note" id="f1-copy-note" aria-live="polite"></span>
+    </div>
+    <div style="margin-top:14px">
+      <button type="button" class="toggle" aria-expanded="false" aria-controls="f1-work"><span class="chev" aria-hidden="true">›</span> Show the working</button>
+      <ol class="working" id="f1-work" hidden></ol>
+    </div>
+  </figure>
+
+  <div class="row">
+    <div class="main">
+      <p class="lede">Distillation is the workhorse separation of the process industries, and also one of its largest users of energy. A good column is a quiet one; a poor one shows up as off-spec product, a flooded tower, a lifting relief valve or, at worst, a release.</p>
+      <p>I wrote this page for chemical and process engineers who size columns, check vendor proposals and sit in HAZOPs, and for students who want to see how the textbook methods connect to real equipment. Figure 1 is the whole idea in one place: change the configuration and watch which operating line disappears. A stripper has no reflux, so it has no rectifying section and can only clean up the bottoms. A rectifier has no reboiler, so it can only purify the distillate. Live steam replaces the reboiler but dilutes the bottoms.</p>
+      <p>The sections below build up every step behind that figure, then go on to multicomponent shortcuts, trays and packings, hydraulics and sizing, vendor data, standards and safety. If you can solve the problems at the end without opening the solutions, you can carry a binary or simple multicomponent column from a process specification to a vendor enquiry, and you will know which questions to ask in the HAZOP.</p>
+    </div>
+    <aside class="sn" aria-label="What you will be able to do">
+      <p><b>After this page you can</b></p>
+      <p>Choose a column configuration, read and draw VLE diagrams, spot an azeotrope and pick a way round it, close mass and energy balances, step off stages, estimate minimum reflux and minimum stages, convert to real trays or packed height, size the diameter, read a tray rating sheet and a packing curve, read and check a column P&amp;ID and its control loops, name the governing standards, and list the overpressure and overfill scenarios a column must be protected against.</p>
+    </aside>
+  </div>
+
+  <nav class="sec" aria-labelledby="toc-h">
+    <div class="sec-head"><p class="marker">On this page</p><h2 id="toc-h">Contents</h2></div>
+    <ol class="toc wide">
+      <li><span>1</span><a href="#basics">What a distillation column does</a></li>
+      <li><span>2</span><a href="#configs">With and without reflux or reboiler</a></li>
+      <li><span>3</span><a href="#types">Types of columns and where they are used</a></li>
+      <li><span>4</span><a href="#vle">Vapour–liquid equilibrium curves</a></li>
+      <li><span>5</span><a href="#azeo">Azeotropes and how to get past them</a></li>
+      <li><span>6</span><a href="#balances">Mass and energy balances</a></li>
+      <li><span>7</span><a href="#mccabe">The McCabe–Thiele method</a></li>
+      <li><span>8</span><a href="#shortcut">Shortcut methods for multicomponent columns</a></li>
+      <li><span>9</span><a href="#efficiency">From theoretical stages to real trays and packing</a></li>
+      <li><span>10</span><a href="#internals">Trays, packings and other internals</a></li>
+      <li><span>11</span><a href="#sizing">Hydraulics: flooding, diameter and height</a></li>
+      <li><span>12</span><a href="#vendor">Vendor data and how to read it</a></li>
+      <li><span>13</span><a href="#energy">Reflux, energy and pressure</a></li>
+      <li><span>14</span><a href="#operation">Control system, P&amp;ID and troubleshooting</a></li>
+      <li><span>15</span><a href="#standards">Mechanical design and standards</a></li>
+      <li><span>16</span><a href="#safety">Safety: hazards and safeguards</a></li>
+      <li><span>17</span><a href="#examples">Worked examples</a></li>
+      <li><span>18</span><a href="#problems">Practice problems</a></li>
+      <li><span>19</span><a href="#datasheet">What goes on the column data sheet</a></li>
+      <li><span>20</span><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 Basics -->
+  <section class="sec" id="basics" aria-labelledby="h-basics">
+    <div class="sec-head"><p class="marker">01</p><h2 id="h-basics">What a distillation column does</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Distillation separates a liquid mixture by exploiting a difference in volatility. When a liquid boils, the vapour it makes is richer in the more volatile (light) component than the liquid it came from. One boil and condense is a flash, and it rarely gives a pure product. A column repeats that step many times in one shell: vapour rises, liquid falls, and on every tray or every short height of packing the two phases meet, exchange material and leave roughly in equilibrium.</p>
+        <p>Heat goes in at the bottom and comes out at the top. The <b>reboiler</b> vaporises part of the bottom liquid and sends it up as <b>boil-up</b>. The <b>condenser</b> liquefies the top vapour; part is returned as <b>reflux</b> and the rest is drawn off as distillate. Reflux provides the falling liquid above the feed, and boil-up provides the rising vapour below it. The section above the feed enriches the vapour in the light component (the <b>rectifying</b> or enriching section); the section below strips the light component out of the liquid (the <b>stripping</b> section).</p>
+        <p>Every column design is a trade between two things you pay for. More reflux (more energy) means fewer stages (a shorter column); fewer stages need more reflux. At the two limits, <b>minimum reflux</b> needs an infinite number of stages and <b>total reflux</b> needs the minimum number of stages but makes no product. Real designs sit between, usually at 1.1 to 1.5 times the minimum reflux <a class="ref" href="#src-2">2</a>.</p>
+        <p>The single most useful number is the <b>relative volatility</b>, α. It tells you at a glance how hard a split is. Above about 2 the column is short and cheap; below about 1.2 it becomes a superfractionator with well over a hundred trays, like the propylene–propane splitter <a class="ref" href="#src-23">23</a>.</p>
+        <div class="eq"><span>α = (y₁ / x₁) / (y₂ / x₂) = K₁ / K₂</span><span class="n">(1)</span></div>
+        <div class="eq"><span>y* = α x / (1 + (α − 1) x)</span><span class="n">(2)</span></div>
+        <p class="where">x and y are mole fractions of the light component in the liquid and the vapour; K = y/x is the equilibrium ratio; equation (2) is the equilibrium curve for constant α.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Theoretical stage.</b> A contact that sends vapour and liquid out in equilibrium with each other. Real trays get part of the way; the ratio is the tray efficiency.</p>
+        <p><b>Light and heavy keys.</b> In a multicomponent feed, the two components whose split you specify: the light key mostly goes up, the heavy key mostly goes down.</p>
+        <p><b>Reflux ratio.</b> R = L/D, the reflux returned to the column per unit of distillate.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 2 Configurations -->
+  <section class="sec" id="configs" aria-labelledby="h-configs">
+    <div class="sec-head"><p class="marker">02</p><h2 id="h-configs">With and without reflux or reboiler</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>A full column has both a condenser with reflux and a reboiler, so it can make two pure products. Take one of them away and you lose one section’s ability to purify. That is often exactly what you want: a cheaper column for a job that only needs one clean product.</p>
+      </div>
+    </div>
+    <figure id="fig2" aria-labelledby="fig2-t">
+      <p class="fig-title" id="fig2-t"><span class="fn">Figure 2.</span> Six ways to arrange the heat input and output; only the full column makes two pure products</p>
+      <div class="cfgs" id="f2-grid"></div>
+      <figcaption>Schematic only. Teal arrows are vapour, brown arrows are liquid. The shaded tray is the feed tray. In the rectifier and the reboiled absorber the feed enters as vapour or as a second (absorbing) liquid; in the live-steam column steam enters under the bottom tray.</figcaption>
+    </figure>
+    <div class="tbl wide">
+      <table>
+        <thead><tr><th>Configuration</th><th>What it can purify</th><th>What limits it</th><th>Typical services</th></tr></thead>
+        <tbody>
+          <tr><td><b>Full column</b>: condenser, reflux, reboiler</td><td>Both distillate and bottoms</td><td>Minimum reflux and minimum stages; energy</td><td>Most splitters and fractionators: depropanisers, debutanisers, benzene–toluene, alcohol columns</td></tr>
+          <tr><td><b>Stripping column</b>: reboiler (or stripping gas), no condenser or reflux, liquid feed on the top tray</td><td>Bottoms only</td><td>The overhead vapour can be no richer than the vapour in equilibrium with the feed, y<sub>D</sub> ≤ y*(z<sub>F</sub>)</td><td>Condensate stabilisers, sour-water and wastewater strippers, solvent strippers, crude side strippers</td></tr>
+          <tr><td><b>Rectifying column</b>: condenser and reflux, no reboiler, vapour feed under the bottom tray</td><td>Distillate only</td><td>The bottom liquid can be no leaner than the liquid in equilibrium with the feed vapour, x<sub>B</sub> ≥ x*(z<sub>F</sub>)</td><td>Rectifiers fed by the vapour from a stripper (ethanol plants), top sections of crude columns fed from a fired heater, batch distillation</td></tr>
+          <tr><td><b>Live (open) steam</b>: condenser and reflux, steam injected under the bottom tray</td><td>Both, when water is the heavy component</td><td>Steam condenses into the bottoms, so the bottoms flow grows and the recovery of the light component at a given x<sub>B</sub> drops</td><td>Aqueous strippers where a reboiler would foul or corrode; crude and vacuum column bottoms, side strippers</td></tr>
+          <tr><td><b>Reboiled absorber</b>: lean oil or solvent on top, reboiler, no condenser</td><td>Bottoms (and a lean overhead gas)</td><td>Solvent rate and boil-up</td><td>Gas-plant deethanisers, refinery gas recovery</td></tr>
+          <tr><td><b>Flash drum</b>: neither</td><td>Neither; one stage</td><td>One equilibrium stage</td><td>Feed pre-flash, flash drums; a separate lesson on two-phase separators is in preparation</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="main">
+        <h3>The stripper: what you give up without reflux</h3>
+        <p>In a stripping column the liquid feed itself is the only liquid in the column. The operating line runs from the bottoms composition, (x<sub>B</sub>, x<sub>B</sub>), with slope L̄/V̄ greater than 1, and ends at the feed composition. The vapour leaving the top tray is the overhead product, so it can never be richer than the vapour that would be in equilibrium with the feed. More boil-up gives cleaner bottoms but a leaner, larger overhead. The minimum boil-up is set by a pinch at the top of the column (Example 4).</p>
+        <h3>The rectifier: what you give up without a reboiler</h3>
+        <p>In a rectifying column the vapour feed is the only vapour. The operating line runs from (x<sub>D</sub>, x<sub>D</sub>) with slope L/V below 1, and the bottom liquid composition falls out of the balance. Pinch is at the bottom: the bottom liquid can approach, but not pass, equilibrium with the feed vapour. More reflux gives a richer distillate but sends more of the light component down with the bottoms (Example 5).</p>
+        <h3>Live steam instead of a reboiler</h3>
+        <p>When the heavy component is water, steam can be blown straight into the bottom of the column. You save the reboiler, its fouling and its corrosion, and you can strip at a lower bottom temperature. The cost is dilution: every kilogram of steam condensed ends up in the bottoms, so for the same bottoms mole fraction more of the light component is lost. On the McCabe–Thiele diagram the stripping line now ends at (x<sub>B</sub>, 0) instead of on the diagonal, because the vapour entering the bottom tray contains no light component. The overall balance gains a stream: F + S = D + B (Example 6).</p>
+      </div>
+      <aside class="sn">
+        <p><b>Rule of thumb.</b> If only one product needs to be pure, ask whether a stripper or a rectifier will do before buying a second exchanger and its controls.</p>
+        <p><b>Batch distillation</b> is a rectifier on top of a still pot that acts as the reboiler. The pot composition falls with time, so reflux is raised or the cut is changed as the run goes on.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 3 Types -->
+  <section class="sec" id="types" aria-labelledby="h-types">
+    <div class="sec-head"><p class="marker">03</p><h2 id="h-types">Types of columns and where they are used</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Columns are classified in several overlapping ways: by operation (continuous or batch), by internals (trays or packing), by pressure (vacuum, atmospheric or pressure), and by how the separation is achieved when plain distillation is not enough.</p>
+      </div>
+    </div>
+    <div class="types">
+      <div><h4>Continuous columns</h4><p>Steady feed and products; by far the most common. Design methods on this page assume steady state.</p><p class="where-used">Refineries, gas plants, petrochemicals, bulk chemicals.</p></div>
+      <div><h4>Batch columns</h4><p>A still pot, a rectifying column and a condenser. Flexible for many products and small volumes; compositions change with time.</p><p class="where-used">Pharmaceuticals, fine chemicals, solvent recovery, spirits.</p></div>
+      <div><h4>Trayed columns</h4><p>Discrete stages; easy to inspect and clean, tolerant of high liquid rates and fouling, suited to large diameters and side draws.</p><p class="where-used">Most pressure columns, fouling services, amine and sour-water units.</p></div>
+      <div><h4>Packed columns</h4><p>Random or structured packing; low pressure drop per stage, small hold-up. Usually the first choice under vacuum and in small diameters <a class="ref" href="#src-33">33</a>.</p><p class="where-used">Vacuum and heat-sensitive service, revamps for capacity, corrosive service in plastics or ceramics.</p></div>
+      <div><h4>Vacuum columns</h4><p>Lower pressure lowers boiling points, which protects heat-sensitive products. Structured packing keeps the pressure drop, and hence the bottom temperature, low; it is used in columns making about 70 % of the world’s styrene monomer <a class="ref" href="#src-36">36</a>.</p><p class="where-used">Crude vacuum units, styrene, fatty acids, fragrances.</p></div>
+      <div><h4>Superfractionators</h4><p>Close-boiling splits with α near 1. The propylene–propane splitter typically has 150 to 250 trays and a reflux-to-feed ratio of 5 to 10, and is often heat-pumped <a class="ref" href="#src-23">23</a>.</p><p class="where-used">C₃ and C₂ splitters, xylene isomers.</p></div>
+      <div><h4>Crude and multi-draw fractionators</h4><p>One feed, many products drawn from the side, with pumparounds to remove heat and steam-stripped side strippers. The main column has no reboiler: heat comes from the fired heater and stripping steam.</p><p class="where-used">Atmospheric and vacuum crude units, FCC main fractionators.</p></div>
+      <div><h4>Extractive distillation</h4><p>A heavy solvent added near the top changes the relative volatility of the keys; the solvent leaves with the bottoms and is recovered in a second column.</p><p class="where-used">Aromatics recovery, ethanol dehydration with glycols, concentrating hydrochloric acid with sulfuric acid <a class="ref" href="#src-22">22</a>.</p></div>
+      <div><h4>Azeotropic and pressure-swing distillation</h4><p>An entrainer forms a new, lower-boiling azeotrope that is decanted; or two columns at different pressures exploit an azeotrope that moves with pressure (section 05).</p><p class="where-used">Ethanol and isopropanol dehydration, acetic acid, HCl–water.</p></div>
+      <div><h4>Reactive distillation</h4><p>Reaction and separation in one shell; removing a product drives an equilibrium reaction forward.</p><p class="where-used">Ethers such as MTBE, esters such as methyl acetate.</p></div>
+      <div><h4>Dividing-wall columns</h4><p>A vertical wall turns one shell into a thermally coupled (Petlyuk) arrangement that makes three products with one reboiler and one condenser. Koch-Glitsch puts the potential savings at 20–30 % of capital and 20–50 % of energy against two conventional columns <a class="ref" href="#src-24">24</a>.</p><p class="where-used">Chemicals (BASF built the first in 1985; hundreds now run), reformate splitting, NGL fractionation <a class="ref" href="#src-24">24</a>.</p></div>
+      <div><h4>Heat-pumped columns</h4><p>The overhead vapour is compressed and condensed in the reboiler, so the condenser duty becomes the reboiler duty. Works best when the top-to-bottom temperature difference is small <a class="ref" href="#src-23">23</a>.</p><p class="where-used">C₃ splitters, close-boiling alcohols.</p></div>
+    </div>
+  </section>
+
+  <!-- 4 VLE -->
+  <section class="sec" id="vle" aria-labelledby="h-vle">
+    <div class="sec-head"><p class="marker">04</p><h2 id="h-vle">Vapour–liquid equilibrium curves</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Everything in a column design rests on the vapour–liquid equilibrium (VLE). If the equilibrium data are wrong near the product purity, no amount of careful hydraulics will rescue the design. At low to moderate pressure the modified Raoult’s law is the working relation:</p>
+        <div class="eq"><span>y<sub>i</sub> P = x<sub>i</sub> γ<sub>i</sub> P<sub>i</sub><sup>sat</sup>(T)</span><span class="n">(3)</span></div>
+        <div class="eq"><span>ln P<sup>sat</sup> [kPa] = A − B / (T [°C] + C)</span><span class="n">(4)</span></div>
+        <p class="where">γ<sub>i</sub> is the liquid activity coefficient (1 for an ideal solution); equation (4) is the Antoine equation. Constants for common solvents are tabulated in thermodynamics texts <a class="ref" href="#src-5">5</a>.</p>
+        <p>Two calculations come up again and again. A <b>bubble point</b> finds the temperature at which a liquid of known composition starts to boil, and the composition of that first bubble: solve Σ x<sub>i</sub> γ<sub>i</sub> P<sub>i</sub><sup>sat</sup>(T) = P for T. A <b>dew point</b> does the same for a vapour starting to condense: solve Σ y<sub>i</sub> P / (γ<sub>i</sub> P<sub>i</sub><sup>sat</sup>) = 1. The top tray of a column with a total condenser sits at the distillate’s bubble point; the reboiler sits at the bottoms’ bubble point.</p>
+        <h3>Reading the two diagrams</h3>
+        <p>The <b>T–x–y diagram</b> (Figure 3, left) has two curves at a fixed pressure. The lower one is the bubble-point curve, the upper one the dew-point curve. Below the bubble curve the mixture is all liquid, above the dew curve all vapour, and in between it splits into two phases. A horizontal tie line at any temperature joins a liquid composition x to the vapour composition y in equilibrium with it; the lever rule along that line gives the vapour fraction.</p>
+        <p>The <b>x–y diagram</b> (Figure 3, right) plots y against x along with the 45° line. The further the curve bows away from the diagonal, the easier the split. This is the diagram McCabe–Thiele uses. Where it crosses the diagonal there is an azeotrope.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Where to get VLE.</b> Measured data (the DECHEMA collection, the NIST ThermoData Engine) first; then a fitted activity model (Wilson, NRTL, UNIQUAC) for polar liquids, or an equation of state (Peng–Robinson, SRK) for hydrocarbons and gases. Check any model against data at the product purities.</p>
+        <p><b>Pressure and α.</b> For most mixtures α rises as pressure falls, which is one reason C₃ splitters are run at the lowest pressure the heat sink allows <a class="ref" href="#src-23">23</a>.</p>
+      </aside>
+    </div>
+
+    <figure id="fig3" aria-labelledby="fig3-t">
+      <p class="fig-title" id="fig3-t"><span class="fn">Figure 3.</span> The same equilibrium seen two ways: where the x–y curve crosses the diagonal, the T–x–y curves touch</p>
+      <div class="toolbar">
+        <span class="tlab" id="f3-sys-l">Mixture</span>
+        <div class="seg" role="group" aria-labelledby="f3-sys-l">
+          <button type="button" data-f3="bt" aria-pressed="true">Benzene–toluene</button>
+          <button type="button" data-f3="mw" aria-pressed="false">Methanol–water</button>
+          <button type="button" data-f3="ew" aria-pressed="false">Ethanol–water</button>
+          <button type="button" data-f3="ac" aria-pressed="false">Acetone–chloroform</button>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="ctl"><label for="f3-p">Pressure <span class="val" id="f3-p-v"></span></label><input type="range" id="f3-p" min="20" max="300" step="1" value="101"></div>
+        <div class="ctl"><label for="f3-x">Liquid composition, x<sub>1</sub> <span class="val" id="f3-x-v"></span></label><input type="range" id="f3-x" min="0" max="1" step="0.005" value="0.4"></div>
+      </div>
+      <div class="tiles" id="f3-tiles">
+        <div class="tile" id="t3a"><div><span class="v">–</span><span class="u">°C</span></div><div class="k">Bubble point of the liquid</div></div>
+        <div class="tile" id="t3b"><div><span class="v">–</span><span class="u"></span></div><div class="k">Vapour in equilibrium, y<sub>1</sub>*</div></div>
+        <div class="tile" id="t3c"><div><span class="v">–</span><span class="u"></span></div><div class="k">Relative volatility at x<sub>1</sub>, α</div></div>
+        <div class="tile" id="t3d"><div><span class="v">–</span><span class="u"></span></div><div class="k">Azeotrope, mole fraction and temperature</div></div>
+      </div>
+      <div class="pair">
+        <div><p class="ptitle">Temperature against composition, T–x–y</p><div class="chart" id="f3-txy" role="img" aria-label="T–x–y diagram with bubble and dew curves and the tie line at the chosen composition."></div></div>
+        <div><p class="ptitle">Vapour against liquid composition, x–y</p><div class="chart" id="f3-xy" role="img" aria-label="x–y diagram with the 45 degree line and the equilibrium curve; the chosen composition is marked."></div></div>
+      </div>
+      <figcaption>Component 1 is the first-named. Modified Raoult’s law with Antoine constants <a class="ref" href="#src-5">5</a>; benzene–toluene ideal; methanol–water Wilson <a class="ref" href="#src-5">5</a>; ethanol–water and acetone–chloroform van Laar <a class="ref" href="#src-4">4</a>. The activity-model parameters were fitted near 1 atm and are held constant here, so the shift of an azeotrope with pressure is indicative only. The van Laar model puts the ethanol–water azeotrope at 91.6 mol % against the measured 89.5 mol % (95.6 wt %) <a class="ref" href="#src-19">19</a>; models fitted over the whole range often miss the corner that matters most.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 5 Azeotropes -->
+  <section class="sec" id="azeo" aria-labelledby="h-azeo">
+    <div class="sec-head"><p class="marker">05</p><h2 id="h-azeo">Azeotropes and how to get past them</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>An azeotrope is a mixture whose vapour has the same composition as its liquid. At that point y = x, α = 1, and boiling changes nothing, so ordinary distillation cannot cross it. On the McCabe–Thiele diagram the equilibrium curve meets the diagonal, and no reflux ratio can step past the meeting point. Try the “Ethanol near the azeotrope” preset in Figure 1 and push x<sub>D</sub> towards 0.92.</p>
+        <ul class="plain">
+          <li><b>Minimum-boiling (positive deviation, γ &gt; 1).</b> Unlike molecules repel each other, the mixture is more volatile than either component, and the azeotrope boils below both pure components. Ethanol–water at 101.3 kPa boils at 78.15 °C at about 95.6 wt % ethanol (4.4 wt % water), just below ethanol’s 78.3 °C <a class="ref" href="#src-19">19</a>. Most azeotropes are of this kind.</li>
+          <li><b>Maximum-boiling (negative deviation, γ &lt; 1).</b> Unlike molecules attract; the azeotrope boils above both components. Acetone–chloroform boils at 64.5 °C at an acetone mole fraction of about 0.34 <a class="ref" href="#src-21">21</a>; hydrochloric acid has a constant-boiling mixture at 20.2 wt % HCl and 108.6 °C <a class="ref" href="#src-22">22</a>.</li>
+          <li><b>Heterogeneous azeotropes.</b> The liquid splits into two phases at the azeotrope. Benzene–water boils at 69.3 °C, well below either component, and the condensate separates into a benzene-rich and a water-rich layer <a class="ref" href="#src-20">20</a>. The two layers are the basis of decanter-assisted azeotropic distillation.</li>
+        </ul>
+        <h3>How pressure moves an azeotrope</h3>
+        <p>Azeotropic composition changes with pressure. For ethanol–water the water content rises from 4.4 wt % at 760 mmHg to 4.75 wt % at 1,451 mmHg, and the azeotrope disappears below roughly 75 mmHg <a class="ref" href="#src-19">19</a>. That movement is small, which is why ethanol is not dried by pressure swing. Where an azeotrope moves a lot, two columns at different pressures can walk around it: one column makes pure A and an azeotrope at pressure p₁, the other takes that azeotrope at p₂, where it has a different composition, and makes pure B. HCl–water can be concentrated this way <a class="ref" href="#src-22">22</a>.</p>
+        <h3>The usual ways round an azeotrope</h3>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Method</th><th>How it works</th><th>Watch out for</th></tr></thead>
+            <tbody>
+              <tr><td>Pressure swing</td><td>Two columns at two pressures, recycling the azeotrope between them</td><td>Needs a large shift in azeotropic composition; large recycle; high-pressure column temperature</td></tr>
+              <tr><td>Extractive distillation</td><td>A high-boiling solvent fed near the top raises α of the keys and leaves with the bottoms</td><td>Solvent selection, solvent recovery column, solvent losses and degradation</td></tr>
+              <tr><td>Heterogeneous azeotropic distillation</td><td>An entrainer forms a low-boiling heteroazeotrope; a decanter on the overhead splits it into two liquids</td><td>Liquid–liquid split on the trays, multiple steady states, entrainer toxicity (benzene was used historically)</td></tr>
+              <tr><td>Adsorption</td><td>A molecular sieve takes up the minor component (water) past the azeotrope</td><td>Regeneration energy and cycles; the adsorber is a separate unit</td></tr>
+              <tr><td>Membranes and pervaporation</td><td>A selective membrane removes one component across the azeotrope</td><td>Flux, membrane life, fouling</td></tr>
+              <tr><td>Salt or reaction</td><td>A dissolved salt or a reacting agent shifts the equilibrium</td><td>Solids handling, corrosion</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>For three or more components with azeotropes, the tool is the <b>residue curve map</b>: the paths a liquid composition follows during simple boiling. Distillation boundaries on that map cannot be crossed by a single column, so the map tells you quickly which product sequences are possible before any simulation is run.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Converting units.</b> 95.6 wt % ethanol is (95.6/46.07) / (95.6/46.07 + 4.4/18.02) = 0.895 mole fraction. Keep mass and mole bases straight: VLE diagrams are almost always in mole fraction.</p>
+        <p><b>Fuel ethanol.</b> Plants typically take the beer-column vapour to a rectifier close to the azeotrope and finish the drying on molecular sieves, where pressure-swing adsorption takes over from distillation.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 6 Balances -->
+  <section class="sec" id="balances" aria-labelledby="h-bal">
+    <div class="sec-head"><p class="marker">06</p><h2 id="h-bal">Mass and energy balances</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Before any stage is stepped off, close the balances. They fix the product flows, the internal liquid and vapour traffic (which sizes the diameter) and the condenser and reboiler duties (which size the exchangers and the utilities).</p>
+        <h3>Material balance</h3>
+        <div class="eq"><span>F = D + B</span><span class="n">(5)</span></div>
+        <div class="eq"><span>F z<sub>F</sub> = D x<sub>D</sub> + B x<sub>B</sub>   →   D = F (z<sub>F</sub> − x<sub>B</sub>) / (x<sub>D</sub> − x<sub>B</sub>)</span><span class="n">(6)</span></div>
+        <p>The recovery of the light component in the distillate is D x<sub>D</sub> / (F z<sub>F</sub>). For a multicomponent feed write equation (6) for every component and specify the split with two numbers, usually the recovery of the light key in the distillate and of the heavy key in the bottoms.</p>
+        <h3>Feed condition, q</h3>
+        <p>The feed’s thermal state decides how it splits between the two sections. q is the fraction of the feed that adds to the liquid flowing down below the feed tray:</p>
+        <div class="eq"><span>q = (H<sub>V</sub> − H<sub>F</sub>) / (H<sub>V</sub> − H<sub>L</sub>)  ≈  1 + c<sub>p,L</sub> (T<sub>bubble</sub> − T<sub>F</sub>) / λ   (subcooled)</span><span class="n">(7)</span></div>
+        <div class="eq"><span>q-line:  y = [q / (q − 1)] x − z<sub>F</sub> / (q − 1)</span><span class="n">(8)</span></div>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Feed condition</th><th class="num">q</th><th>Slope of the q-line</th></tr></thead>
+            <tbody>
+              <tr><td>Subcooled liquid</td><td class="num">&gt; 1</td><td>Positive, steeper than the diagonal</td></tr>
+              <tr><td>Saturated liquid (at its bubble point)</td><td class="num">1</td><td>Vertical, x = z<sub>F</sub></td></tr>
+              <tr><td>Partly vaporised</td><td class="num">0–1, the liquid fraction</td><td>Negative</td></tr>
+              <tr><td>Saturated vapour (at its dew point)</td><td class="num">0</td><td>Horizontal, y = z<sub>F</sub></td></tr>
+              <tr><td>Superheated vapour</td><td class="num">&lt; 0</td><td>Positive, shallower than the diagonal</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Section flows</h3>
+        <p>With constant molal overflow (equal molar latent heats, negligible heat of mixing and heat loss), liquid and vapour flows are constant within each section:</p>
+        <div class="eq"><span>L = R D     V = (R + 1) D     L̄ = L + q F     V̄ = V − (1 − q) F</span><span class="n">(9)</span></div>
+        <h3>Energy balance</h3>
+        <div class="eq"><span>F h<sub>F</sub> + Q<sub>R</sub> = D h<sub>D</sub> + B h<sub>B</sub> + Q<sub>C</sub></span><span class="n">(10)</span></div>
+        <div class="eq"><span>Q<sub>C</sub> ≈ V λ<sub>top</sub>     Q<sub>R</sub> ≈ V̄ λ<sub>bottom</sub></span><span class="n">(11)</span></div>
+        <p class="where">Equation (11) holds for a total condenser with saturated reflux and saturated products. Subcooled reflux adds to Q<sub>C</sub> and to the internal reflux.</p>
+        <p>Equation (11) is why distillation is energy-hungry: every mole of distillate is boiled R + 1 times. Cutting R from 2.0 to 1.5 cuts the reboiler duty by about a sixth. It is also why the column, the condenser and the reboiler must be designed together: the diameter follows V and V̄, and so do the exchangers.</p>
+        <h3>Live steam</h3>
+        <p>With open steam S (saturated, constant molal overflow) the stripping section has V̄ = S and L̄ = B, and the overall balances become:</p>
+        <div class="eq"><span>F + S = D + B     F z<sub>F</sub> = D x<sub>D</sub> + B x<sub>B</sub></span><span class="n">(12)</span></div>
+      </div>
+      <aside class="sn">
+        <p><b>Latent heats at the normal boiling point.</b> Benzene 30.7 kJ/mol, toluene 33.2 kJ/mol, water 40.7 kJ/mol, methanol 35.2 kJ/mol. Equal molar latent heats are what make constant molal overflow a fair assumption for many organic pairs.</p>
+        <p><b>When CMO fails.</b> Large differences in molar latent heat or strong heats of mixing (ammonia–water, for example) need an enthalpy–composition (Ponchon–Savarit) method or a rigorous simulation.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 7 McCabe–Thiele -->
+  <section class="sec" id="mccabe" aria-labelledby="h-mt">
+    <div class="sec-head"><p class="marker">07</p><h2 id="h-mt">The McCabe–Thiele method</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>McCabe–Thiele is a graphical solution of the stage-by-stage equilibrium and balance equations for a binary mixture with constant molal overflow. Simulators replaced it for design long ago, but it remains the best way to see what a column is doing, why it pinches and what reflux buys you. Figure 1 draws it for you; here is how to draw it by hand.</p>
+        <ol class="plain">
+          <li>Draw the equilibrium curve and the 45° line on an x–y diagram.</li>
+          <li>Mark x<sub>B</sub>, z<sub>F</sub> and x<sub>D</sub> on the diagonal.</li>
+          <li>Draw the q-line from (z<sub>F</sub>, z<sub>F</sub>) with slope q/(q − 1).</li>
+          <li>Draw the rectifying line from (x<sub>D</sub>, x<sub>D</sub>) with slope L/V = R/(R + 1).</li>
+          <li>Draw the stripping line from (x<sub>B</sub>, x<sub>B</sub>) to the point where the rectifying line meets the q-line.</li>
+          <li>Starting at (x<sub>D</sub>, x<sub>D</sub>), step horizontally to the equilibrium curve (one equilibrium stage), then vertically to the operating line (the balance between stages). Switch to the stripping line on the first step that passes the intersection: that stage is the optimum feed stage.</li>
+          <li>Stop when x ≤ x<sub>B</sub>. With a partial reboiler the last step is the reboiler; with a partial condenser the first step is the condenser.</li>
+        </ol>
+        <div class="eq"><span>Rectifying line:  y = [R / (R + 1)] x + x<sub>D</sub> / (R + 1)</span><span class="n">(13)</span></div>
+        <div class="eq"><span>Stripping line:  y = (L̄ / V̄) x − (B / V̄) x<sub>B</sub></span><span class="n">(14)</span></div>
+        <h3>The two limits</h3>
+        <p><b>Minimum reflux.</b> Lower R and the rectifying line swings down towards the equilibrium curve. When the operating lines first touch the curve, a pinch forms: the steps get infinitely small and the number of stages goes to infinity. For a well-behaved curve the pinch is at the feed; for curves with an inflection, such as ethanol–water, it can be a tangent pinch above the feed. For constant α and a saturated-liquid feed, Underwood’s equation gives R<sub>min</sub> directly:</p>
+        <div class="eq"><span>R<sub>min</sub> = [x<sub>D</sub> / z<sub>F</sub> − α (1 − x<sub>D</sub>) / (1 − z<sub>F</sub>)] / (α − 1)</span><span class="n">(15)</span></div>
+        <p><b>Total reflux.</b> With no product withdrawn, both operating lines fall on the diagonal and the number of stages is the minimum. For constant α the Fenske equation gives it (stages include the reboiler):</p>
+        <div class="eq"><span>N<sub>min</sub> = ln{ [x<sub>D</sub> / (1 − x<sub>D</sub>)] · [(1 − x<sub>B</sub>) / x<sub>B</sub>] } / ln α</span><span class="n">(16)</span></div>
+        <h3>Operating lines when a section is missing</h3>
+        <div class="eq"><span>Stripper (no reflux):  y = s x − (s − 1) x<sub>B</sub>,  s = L̄/V̄ = F/V̄,  top point (z<sub>F</sub>, y<sub>D</sub>)</span><span class="n">(17)</span></div>
+        <div class="eq"><span>Rectifier (no reboiler):  y = s x + (1 − s) x<sub>D</sub>,  s = R/(R+1),  x<sub>B</sub> = [z<sub>F</sub> − (1 − s) x<sub>D</sub>] / s</span><span class="n">(18)</span></div>
+        <div class="eq"><span>Live steam:  y = (B / S) (x − x<sub>B</sub>),  which passes through (x<sub>B</sub>, 0)</span><span class="n">(19)</span></div>
+        <h3>Practical points</h3>
+        <ul class="plain">
+          <li>At high purity the steps near the ends become tiny. Redraw the ends on log scales, or use the Fenske or Kremser equations for that part of the column.</li>
+          <li>A partial condenser is an equilibrium stage; a total condenser is not.</li>
+          <li>Each side draw or second feed adds a new operating-line segment with its own slope.</li>
+          <li>The method assumes constant pressure. A column with a large pressure drop (vacuum columns in particular) has a different equilibrium curve at the top and the bottom.</li>
+        </ul>
+      </div>
+      <aside class="sn">
+        <p><b>Try it.</b> In Figure 1, set the multiple of minimum reflux to 1.05 and watch the steps crowd around the feed: that is the pinch. Then set it to 3 and see how few stages are left.</p>
+        <p><b>Feed on the wrong tray</b> costs stages: the steps get smaller on one side. A real column usually has two or three alternative feed nozzles for that reason.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 8 Shortcut -->
+  <section class="sec" id="shortcut" aria-labelledby="h-fug">
+    <div class="sec-head"><p class="marker">08</p><h2 id="h-fug">Shortcut methods for multicomponent columns</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>For multicomponent feeds the McCabe–Thiele picture no longer applies, but four classic equations give a quick design that is good enough to start a rigorous simulation and to check its answers <a class="ref" href="#src-2">2</a>. Pick the light key (LK) and the heavy key (HK), specify their recoveries, and use α relative to the heavy key at an average column temperature.</p>
+        <h3>Fenske: minimum stages and the non-key split</h3>
+        <div class="eq"><span>N<sub>min</sub> = ln[ (d<sub>LK</sub> / b<sub>LK</sub>) (b<sub>HK</sub> / d<sub>HK</sub>) ] / ln α<sub>LK,HK</sub></span><span class="n">(20)</span></div>
+        <div class="eq"><span>d<sub>i</sub> / b<sub>i</sub> = (d<sub>HK</sub> / b<sub>HK</sub>) · α<sub>i,HK</sub><sup>N<sub>min</sub></sup></span><span class="n">(21)</span></div>
+        <h3>Underwood: minimum reflux</h3>
+        <div class="eq"><span>Σ α<sub>i</sub> z<sub>i</sub> / (α<sub>i</sub> − θ) = 1 − q,   with α<sub>HK</sub> &lt; θ &lt; α<sub>LK</sub></span><span class="n">(22)</span></div>
+        <div class="eq"><span>R<sub>min</sub> + 1 = Σ α<sub>i</sub> x<sub>D,i</sub> / (α<sub>i</sub> − θ)</span><span class="n">(23)</span></div>
+        <h3>Gilliland: stages at a real reflux ratio</h3>
+        <p>Gilliland’s correlation links the two limits. Molokanov’s fit of it is convenient for calculation:</p>
+        <div class="eq"><span>Y = 1 − exp{ [(1 + 54.4 X) / (11 + 117.2 X)] · [(X − 1) / √X] }</span><span class="n">(24)</span></div>
+        <p class="where">X = (R − R<sub>min</sub>)/(R + 1) and Y = (N − N<sub>min</sub>)/(N + 1); N includes the reboiler.</p>
+        <h3>Kirkbride: where to put the feed</h3>
+        <div class="eq"><span>N<sub>R</sub> / N<sub>S</sub> = [ (B/D) (z<sub>HK</sub> / z<sub>LK</sub>) (x<sub>LK,B</sub> / x<sub>HK,D</sub>)² ]<sup>0.206</sup></span><span class="n">(25)</span></div>
+        <p>Example 3 runs all four on a four-component feed. Figure 4 shows how well Gilliland’s correlation reproduces the stage counts from Figure 1 for a constant-α binary: the points stay close to the curve across the whole range of reflux.</p>
+      </div>
+      <aside class="sn">
+        <p><b>When the shortcuts mislead.</b> Strongly non-ideal mixtures, azeotropes, large changes in α along the column, and wide-boiling feeds with large flow changes between sections. Use them to initialise a rigorous model (Aspen Plus RadFrac, HYSYS), never to replace it.</p>
+        <p><b>Distributed non-keys.</b> If a non-key has α between the keys or close to them, it splits between the products; equation (21) tells you how much.</p>
+      </aside>
+    </div>
+    <figure id="fig4" aria-labelledby="fig4-t">
+      <p class="fig-title" id="fig4-t"><span class="fn">Figure 4.</span> Gilliland’s correlation tracks the stage-by-stage answer closely, from near-minimum reflux to three times the minimum</p>
+      <div class="chart" id="f4-chart" role="img" aria-label="Gilliland correlation: Y against X on a logarithmic X axis, with the Molokanov curve, points from McCabe–Thiele stepping for the Example 2 column, and the Example 3 point."></div>
+      <figcaption>Curve: Molokanov’s form of the Gilliland correlation, equation (24). Points: Figure 1’s constant-α column (α = 2.5, z<sub>F</sub> = 0.40, x<sub>D</sub> = 0.95, x<sub>B</sub> = 0.05, saturated liquid) stepped at reflux ratios from 1.05 to 3 times the minimum, with N<sub>min</sub> from equation (16); fractional stages are counted. The black point is Example 3.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 9 Efficiency -->
+  <section class="sec" id="efficiency" aria-labelledby="h-eff">
+    <div class="sec-head"><p class="marker">09</p><h2 id="h-eff">From theoretical stages to real trays and packing</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Real trays do not reach equilibrium, and packing does not come in stages. Two numbers convert the theoretical answer into hardware: the overall tray efficiency for trays and the height equivalent to a theoretical plate (HETP) for packing.</p>
+        <div class="eq"><span>E<sub>o</sub> = N<sub>theoretical</sub> / N<sub>actual</sub>      E<sub>MV</sub> = (y<sub>n</sub> − y<sub>n+1</sub>) / (y*<sub>n</sub> − y<sub>n+1</sub>)</span><span class="n">(26)</span></div>
+        <p class="where">E<sub>o</sub> is the overall (section) efficiency; E<sub>MV</sub> is the Murphree vapour efficiency of a single tray.</p>
+        <p>For a first estimate, O’Connell’s 1946 correlation is still widely used. It needs only the relative volatility of the keys and the liquid viscosity in mPa·s, both at the average column temperature <a class="ref" href="#src-9">9</a>:</p>
+        <div class="eq"><span>E<sub>o</sub> = 0.492 (α μ<sub>L</sub>)<sup>−0.245</sup></span><span class="n">(27)</span></div>
+        <p>Kister puts its accuracy at about ±25 % <a class="ref" href="#src-6">6</a>, and its predictions tend to be conservative. Viscous liquids and high α both lower the efficiency. Field experience is the better guide when you have it:</p>
+        <div class="tbl">
+          <table><caption>Field efficiencies as compiled by KLM Technology Group <a class="ref" href="#src-35">35</a>. Absorbers and systems where one component is nearly insoluble run far below distillation values.</caption>
+            <thead><tr><th>Service, cross-flow trays</th><th class="num">Typical overall efficiency, %</th></tr></thead>
+            <tbody>
+              <tr><td>Propylene–propane splitter</td><td class="num">85</td></tr>
+              <tr><td>Ethylbenzene–styrene</td><td class="num">90</td></tr>
+              <tr><td>Debutaniser, depentaniser</td><td class="num">80</td></tr>
+              <tr><td>Low-α aromatics</td><td class="num">80</td></tr>
+              <tr><td>Alcohol–water</td><td class="num">75</td></tr>
+              <tr><td>High-α aromatics</td><td class="num">70</td></tr>
+              <tr><td>Amine contactor (absorber)</td><td class="num">33</td></tr>
+              <tr><td>Hydrocarbon–water</td><td class="num">15</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Packed height</h3>
+        <div class="eq"><span>Z = N<sub>theoretical</sub> × HETP</span><span class="n">(28)</span></div>
+        <p>Kister’s rules of thumb for HETP in metres, for organic and hydrocarbon systems with surface tension below 25 mN/m and good industrial distribution, accurate to about ±25 % <a class="ref" href="#src-6">6</a>:</p>
+        <div class="eq"><span>Metal random packings, 25 mm and larger:  HETP = 93 / a<sub>p</sub></span><span class="n">(29)</span></div>
+        <div class="eq"><span>Y-type structured packings:  HETP = 100 / a<sub>p</sub> + 0.1      X-type (a<sub>p</sub> &lt; 300):  HETP = 145 / a<sub>p</sub> + 0.1</span><span class="n">(30)</span></div>
+        <p class="where">a<sub>p</sub> is the packing’s specific surface area in m²/m³. For water-rich systems (surface tension near 70 mN/m) double the HETP; interpolate between.</p>
+        <p>Vendors publish their own HETP curves and correlations, usually against the F-factor at several pressures; section 12 shows how to read them. Whatever the source, most designers add a margin to the stage count or the packed height, and the size of that margin should reflect how good the VLE data are.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Why absorbers are less efficient.</b> In an absorber the liquid-side resistance dominates and the stripping factor is far from 1, so each tray achieves a smaller fraction of equilibrium.</p>
+        <p><b>Bed height.</b> Liquid maldistribution grows with depth, so tall packed sections are split into beds with redistributors between them.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 10 Internals -->
+  <section class="sec" id="internals" aria-labelledby="h-int">
+    <div class="sec-head"><p class="marker">10</p><h2 id="h-int">Trays, packings and other internals</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>A cross-flow tray is a perforated deck with a weir at one end and a downcomer at each end. Liquid comes down the inlet downcomer, flows across the deck as a froth while vapour bubbles up through the openings, spills over the outlet weir and goes down the next downcomer. Figure 5 names the parts that appear on every tray data sheet.</p>
+      </div>
+    </div>
+    <figure id="fig5" aria-labelledby="fig5-t">
+      <p class="fig-title" id="fig5-t"><span class="fn">Figure 5.</span> Anatomy of a single-pass cross-flow tray: vapour rises through the active area, liquid crosses it and falls through the downcomers</p>
+      <div class="chart scroll-x" id="f5-chart" role="img" aria-label="Side view of two single-pass trays showing tray spacing, outlet weir height, downcomer clearance, the froth on the active area and the clear liquid backed up in the downcomer, and a plan view showing the active area between the inlet and outlet downcomers."></div>
+      <figcaption>Not to scale. Tray spacing 450–600 mm is typical; 600 mm lets a person crawl between trays through the manways in columns larger than about 1.5 m <a class="ref" href="#src-33">33</a>. The downcomer clearance is set slightly below the outlet weir height so the downcomer stays sealed.</figcaption>
+    </figure>
+    <div class="row">
+      <div class="main">
+        <h3>Tray types</h3>
+        <ul class="plain">
+          <li><b>Sieve trays.</b> A deck punched with holes; a common standard is a 2 mm deck with 12.7 mm holes and 10 % open area <a class="ref" href="#src-10">10</a>. Cheapest and easy to clean, with low pressure drop, but they weep first as the vapour rate falls and have the narrowest operating range <a class="ref" href="#src-11">11</a>.</li>
+          <li><b>Moving (floating) valve trays.</b> Developed in the 1950s: each hole has a cap held in a cage or by legs that lifts with the vapour rate and closes when it falls. Higher capacity than bubble caps and better turndown than sieve trays <a class="ref" href="#src-11">11</a>. Valves can wear, stick or pop out in fouling or cyclic service.</li>
+          <li><b>Fixed valve trays.</b> Valves punched directly from the deck, introduced in the early 1990s; more capacity than moving valves, no moving parts, good in mildly fouling service <a class="ref" href="#src-11">11</a>.</li>
+          <li><b>Bubble-cap trays.</b> A riser with a cap over it. Because there is no open hole in the deck, they cannot weep, which keeps them in use for very low liquid rates and wide-turndown services such as glycol contactors <a class="ref" href="#src-11">11</a>. Lower capacity and higher pressure drop and cost.</li>
+          <li><b>Dual-flow trays.</b> No downcomers; liquid and vapour pass counter-currently through the same holes. Good in fouling and slurry service, narrow operating range.</li>
+          <li><b>Baffle (shed, disc-and-donut) trays.</b> Liquid curtains rather than froth; very fouling-resistant, low efficiency. Used in heavy-oil and slurry sections.</li>
+          <li><b>High-capacity and high-performance trays.</b> Multiple-downcomer trays, sloped or truncated downcomers, pushing valves that move liquid across the deck, and enhanced inlet areas. Vendor tests on one modern floating valve showed about 35 % more capacity than a traditional valve and twice the operating range before weeping <a class="ref" href="#src-11">11</a>.</li>
+          <li><b>Chimney trays.</b> Collect all the liquid for a draw-off or a redistributor while vapour passes up through chimneys.</li>
+        </ul>
+        <div class="tbl">
+          <table><caption>Qualitative comparison after Kister <a class="ref" href="#src-1">1</a> and the vendor review in <a class="ref" href="#src-11">11</a>. Turndown is the ratio of maximum to minimum vapour rate with acceptable efficiency; real figures depend on the specific design and the liquid rate.</caption>
+            <thead><tr><th>Tray</th><th>Capacity</th><th>Turndown</th><th>Pressure drop</th><th>Fouling tolerance</th><th>Cost</th></tr></thead>
+            <tbody>
+              <tr><td>Sieve</td><td>Good</td><td>About 2:1</td><td>Low</td><td>Fair, large holes better</td><td>Lowest</td></tr>
+              <tr><td>Fixed valve</td><td>Good to high</td><td>Between sieve and moving valve</td><td>Low to moderate</td><td>Good</td><td>Low</td></tr>
+              <tr><td>Moving valve</td><td>Good</td><td>About 4–5:1</td><td>Moderate</td><td>Fair; valves can stick</td><td>Moderate</td></tr>
+              <tr><td>Bubble cap</td><td>Lower</td><td>Highest; no weeping</td><td>High</td><td>Poor; collects deposits</td><td>High</td></tr>
+              <tr><td>Dual-flow</td><td>High</td><td>Low</td><td>Low</td><td>Very good</td><td>Low</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Packings</h3>
+        <ul class="plain">
+          <li><b>Random packings</b> are dumped into the column. First generation: Raschig rings and Berl saddles. Second: Pall rings and Intalox saddles, with windows that open up the surface. Third and later: shaped metal packings such as IMTP, Nutter rings and Raschig Super-Rings, with void fractions of 96–98 % <a class="ref" href="#src-15">15</a>. Sizes run from about 15 to 90 mm: smaller means more efficient but lower capacity.</li>
+          <li><b>Structured packings</b> are stacked layers of corrugated sheet or gauze. Gauze packing (Sulzer BX, 1964) opened up fine vacuum distillation; corrugated sheet (Mellapak, 1976) became the general-purpose type <a class="ref" href="#src-14">14</a>. Y-types have a 45° corrugation angle; X-types use about 60°, trading some efficiency for capacity. High-capacity versions smooth the flow at the joints between layers and add roughly 25–30 % capacity <a class="ref" href="#src-14">14</a>.</li>
+          <li><b>Grids</b> are open, heavy-gauge structures with low surface area for fouling, wash and heat-transfer zones.</li>
+        </ul>
+        <p>Packing only performs if liquid and vapour reach it evenly, so the internals around it matter as much as the packing: liquid distributors and redistributors, feed devices for flashing feeds, collectors, support plates and hold-down grids. Maldistribution is the most frequent reason a packed column misses its HETP.</p>
+        <h3>Trays or packing?</h3>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Favour packing when</th><th>Favour trays when</th></tr></thead>
+            <tbody>
+              <tr><td>The column runs under vacuum or pressure drop must be low</td><td>Liquid rates are high, or pressures are high and surface tension low</td></tr>
+              <tr><td>The diameter is small, below about 0.6 m <a class="ref" href="#src-33">33</a><span class="ref-sep">,</span><a class="ref" href="#src-37">37</a></td><td>The diameter is large and loads vary widely</td></tr>
+              <tr><td>The service foams, or is corrosive and plastic or ceramic packing can be used</td><td>The service fouls, cokes or polymerises and needs cleaning</td></tr>
+              <tr><td>Liquid hold-up must be small (heat-sensitive products)</td><td>Side draws, interreboilers or many feeds are needed</td></tr>
+              <tr><td>A revamp needs more capacity or more stages in the same shell</td><td>Pyrophoric scale is likely: trays are easier to clean and less prone to metal fires <a class="ref" href="#src-26">26</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="sn">
+        <p><b>Passes.</b> When the liquid rate is high, the tray is split into two or four passes so each weir carries less liquid. More passes shorten the flow path and lower the efficiency slightly.</p>
+        <p><b>Weeping and dumping.</b> At low vapour rate liquid leaks through the deck openings (weeping); at very low rates all of it does (dumping) and the tray stops working.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 11 Sizing -->
+  <section class="sec" id="sizing" aria-labelledby="h-siz">
+    <div class="sec-head"><p class="marker">11</p><h2 id="h-siz">Hydraulics: flooding, diameter and height</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>The stage count fixes the height; the vapour and liquid traffic fixes the diameter. A tray works only inside a window. Push too much vapour and it floods; too much liquid and the downcomers back up or choke; too little vapour and it weeps or dumps. Sizing means placing the design point and the turndown point inside that window with margin.</p>
+        <h3>The limits of a tray</h3>
+        <ul class="plain">
+          <li><b>Jet (entrainment) flood.</b> Vapour carries so much liquid to the tray above that liquid accumulates and the column fills. The usual upper limit in low- to moderate-pressure columns.</li>
+          <li><b>Downcomer backup flood.</b> The liquid head needed to push liquid down the downcomer, against the tray pressure drop, rises until the froth in the downcomer reaches the tray above.</li>
+          <li><b>Downcomer choke.</b> The froth entering the downcomer is too fast to release its vapour. With high-pressure distillation and foaming systems this is the most common capacity limit <a class="ref" href="#src-6">6</a>.</li>
+          <li><b>Weeping and dumping.</b> The lower limit: not enough vapour pressure drop to hold liquid on the deck.</li>
+          <li><b>Spray regime.</b> At low liquid loads the deck liquid is blown into spray. Weir loads below about 2–3 US gpm per inch of weir (18–27 m³/h per metre) can produce it <a class="ref" href="#src-6">6</a>.</li>
+        </ul>
+        <h3>Flooding velocity: Souders–Brown and Fair</h3>
+        <p>The flooding vapour velocity comes from a balance between the drag on a droplet and its weight, with the capacity factor C<sub>SB</sub> taken from Fair’s correlation as a function of the flow parameter and the tray spacing <a class="ref" href="#src-3">3</a>:</p>
+        <div class="eq"><span>F<sub>LV</sub> = (L / V) √(ρ<sub>V</sub> / ρ<sub>L</sub>)       (mass flows)</span><span class="n">(31)</span></div>
+        <div class="eq"><span>u<sub>n,f</sub> = C<sub>SB</sub> (σ / 20)<sup>0.2</sup> F<sub>HA</sub> F<sub>SF</sub> √[(ρ<sub>L</sub> − ρ<sub>V</sub>) / ρ<sub>V</sub>]       (on the net area)</span><span class="n">(32)</span></div>
+        <div class="eq"><span>C<sub>SB</sub> [m/s] = 0.0105 + 8.127 × 10⁻⁴ TS<sup>0.755</sup> exp(−1.463 F<sub>LV</sub><sup>0.842</sup>)       (TS in mm)</span><span class="n">(33)</span></div>
+        <p class="where">Equation (33) is Lygeros and Magoulas’s fit of Fair’s chart, as given in Perry’s Handbook; it departs from the chart by up to about 20 % in places, so treat it as a screening value <a class="ref" href="#src-8">8</a>. σ is the surface tension in mN/m. F<sub>HA</sub> = 1 when the hole area is 10 % of the active area or more, and 5(A<sub>h</sub>/A<sub>a</sub>) + 0.5 between 6 and 10 % <a class="ref" href="#src-34">34</a>. F<sub>SF</sub> is the system (foaming) factor, 1 for non-foaming systems.</p>
+        <p>Design at 80–85 % of flood for non-foaming systems <a class="ref" href="#src-3">3</a><span class="ref-sep">,</span><a class="ref" href="#src-33">33</a>. Kister’s rule-of-thumb flood C-factors are a useful cross-check: about 0.35–0.42 ft/s (0.11–0.13 m/s) for trays at 600–900 mm spacing and 0.25–0.35 ft/s (0.08–0.11 m/s) at 450–600 mm, for pressures below 7 bar <a class="ref" href="#src-6">6</a>.</p>
+        <h3>Diameter</h3>
+        <div class="eq"><span>A<sub>n</sub> = Q<sub>V</sub> / (f u<sub>n,f</sub>)     A<sub>c</sub> = A<sub>n</sub> / (1 − A<sub>d</sub>/A<sub>c</sub>)     D = √(4 A<sub>c</sub> / π)</span><span class="n">(34)</span></div>
+        <p class="where">Q<sub>V</sub> is the vapour volumetric flow, f the design fraction of flood, A<sub>d</sub> the downcomer area (typically 10–15 % of the column area for a single pass). The active (bubbling) area is A<sub>a</sub> = A<sub>c</sub> − 2A<sub>d</sub>. For a segmental downcomer of 12 % of the area, the weir length is about 0.76 D.</p>
+        <p>Size the top and the bottom of each section, because densities and flows change down the column; the larger diameter usually governs the whole column, or the shell is swaged where the two differ a lot. Below about 0.76 m, trays need special cartridge construction and packing is often the better choice <a class="ref" href="#src-12">12</a>.</p>
+        <h3>Tray pressure drop and downcomer backup</h3>
+        <div class="eq"><span>h<sub>ow</sub> = 750 [L<sub>w</sub> / (ρ<sub>L</sub> l<sub>w</sub>)]<sup>2/3</sup>       (mm liquid; L<sub>w</sub> in kg/s, l<sub>w</sub> in m)</span><span class="n">(35)</span></div>
+        <div class="eq"><span>h<sub>d</sub> = 51 (u<sub>h</sub> / C<sub>0</sub>)² ρ<sub>V</sub> / ρ<sub>L</sub>     h<sub>r</sub> = 12.5 × 10³ / ρ<sub>L</sub>     h<sub>t</sub> = h<sub>d</sub> + (h<sub>w</sub> + h<sub>ow</sub>) + h<sub>r</sub></span><span class="n">(36)</span></div>
+        <div class="eq"><span>h<sub>dc</sub> = 166 [L<sub>w</sub> / (ρ<sub>L</sub> A<sub>m</sub>)]²     h<sub>b</sub> = (h<sub>w</sub> + h<sub>ow</sub>) + h<sub>t</sub> + h<sub>dc</sub>  ≤  ½ (TS + h<sub>w</sub>)</span><span class="n">(37)</span></div>
+        <p class="where">After Sinnott <a class="ref" href="#src-3">3</a>. h<sub>ow</sub> is the crest over the weir, h<sub>d</sub> the dry-deck drop (u<sub>h</sub> the hole velocity, C<sub>0</sub> ≈ 0.7–0.85 the orifice coefficient), h<sub>r</sub> the residual head, h<sub>t</sub> the total tray drop, h<sub>dc</sub> the head lost under the downcomer apron (A<sub>m</sub> the clearance area) and h<sub>b</sub> the clear-liquid backup. The ½ allows for a froth density of about 0.5 in the downcomer. Keep at least 3 s of liquid residence in the downcomer.</p>
+        <p>The backup is the sum of every resistance the liquid must overcome: the dry-deck drop, the weir and crest, the liquid gradient and the loss under the downcomer <a class="ref" href="#src-17">17</a>. That is why a high-pressure column with low-density vapour and a lot of liquid often runs out of downcomer before it runs out of deck. Try the debutaniser preset in Figure 7.</p>
+        <h3>Weeping, choke and weir loading</h3>
+        <div class="eq"><span>F<sub>h</sub> = u<sub>h</sub> √ρ<sub>V</sub>  ≥  10 Pa<sup>0.5</sup> (Prince, optimistic)  …  14.6 Pa<sup>0.5</sup> (Branan, conservative)</span><span class="n">(38)</span></div>
+        <p class="where">Hole F-factor limits for a standard sieve tray, converted from 8.2 and 12 ft/s (lb/ft³)<sup>0.5</sup> <a class="ref" href="#src-10">10</a>. Another practical rule keeps the dry-deck drop above about 13 mm (0.5 in) of liquid at the lowest rate <a class="ref" href="#src-10">10</a>. Sinnott’s weep-point chart gives a liquid-height-dependent alternative <a class="ref" href="#src-3">3</a>.</p>
+        <div class="tbl">
+          <table><caption>Kister’s rule-of-thumb choke limits <a class="ref" href="#src-6">6</a>.</caption>
+            <thead><tr><th>Downcomer entrance velocity at choke, below 7 bar</th><th class="num">ft/s</th><th class="num">m/s</th></tr></thead>
+            <tbody>
+              <tr><td>Non-foaming organic and hydrocarbon systems</td><td class="num">0.45</td><td class="num">0.137</td></tr>
+              <tr><td>Foaming circulating systems with antifoam</td><td class="num">0.20–0.25</td><td class="num">0.06–0.08</td></tr>
+              <tr><td>Once-through foaming systems, or no antifoam</td><td class="num">0.15</td><td class="num">0.046</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tbl">
+          <table><caption>Weir-loading guideline from the Nutter manual, as quoted by Summers <a class="ref" href="#src-16">16</a>. A flood correlation that already includes the weir load makes such limits redundant, but they are a quick screen.</caption>
+            <thead><tr><th>Tray spacing</th><th class="num">mm</th><th class="num">Add passes above, gpm/in of weir</th><th class="num">m³/h per m of weir</th></tr></thead>
+            <tbody>
+              <tr><td>12 in</td><td class="num">305</td><td class="num">3</td><td class="num">27</td></tr>
+              <tr><td>15 in</td><td class="num">381</td><td class="num">5</td><td class="num">45</td></tr>
+              <tr><td>18 in</td><td class="num">457</td><td class="num">8</td><td class="num">72</td></tr>
+              <tr><td>21 in</td><td class="num">533</td><td class="num">10</td><td class="num">89</td></tr>
+              <tr><td>24 in</td><td class="num">610</td><td class="num">13</td><td class="num">116</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Column height</h3>
+        <div class="eq"><span>H = (N<sub>actual</sub> − 1) × TS + H<sub>top</sub> + H<sub>bottom</sub> + extra space at feeds, draws and manways</span><span class="n">(39)</span></div>
+        <p>Allow about 1–1.5 m above the top tray for vapour disengagement and the reflux inlet, and 2–3 m below the bottom tray for the sump hold-up and the reboiler return <a class="ref" href="#src-33">33</a>. Feed trays and manway trays usually get extra spacing. The skirt adds the height needed for pump NPSH and for a thermosiphon reboiler’s static head.</p>
+        <h3>Packed columns</h3>
+        <p>Packed-column capacity comes from the generalised pressure-drop correlation (GPDC): Strigle’s chart for random packings and Kister and Gill’s for structured packings. Its ordinate is the capacity parameter CP = C<sub>s</sub> F<sub>p</sub><sup>0.5</sup> ν<sup>0.05</sup> (US units) and its abscissa the flow parameter. Kister and Gill’s equation locates flood by its pressure drop <a class="ref" href="#src-18">18</a>:</p>
+        <div class="eq"><span>ΔP<sub>flood</sub> = 0.12 F<sub>p</sub><sup>0.7</sup>       (in. H₂O per ft of packing, F<sub>p</sub> in ft⁻¹)</span><span class="n">(40)</span></div>
+        <p>Design at 70–80 % of flood, and remember that efficiency falls off before hydraulic flood: vendors quote a “maximum efficient capacity” below the flood point. Koch-Glitsch, for example, routinely designs to 90 % of maximum efficient capacity <a class="ref" href="#src-15">15</a>.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Net, active and hole area.</b> Net area A<sub>n</sub> = A<sub>c</sub> − A<sub>d</sub> is what the vapour sees between trays; active area A<sub>a</sub> = A<sub>c</sub> − 2A<sub>d</sub> is the bubbling deck; hole area A<sub>h</sub> is the open area of the deck.</p>
+        <p><b>F-factor and C-factor.</b> F = u√ρ<sub>V</sub> in Pa<sup>0.5</sup>; C = u√[ρ<sub>V</sub>/(ρ<sub>L</sub> − ρ<sub>V</sub>)] in m/s. 1 ft/s (lb/ft³)<sup>0.5</sup> = 1.22 Pa<sup>0.5</sup>.</p>
+        <p><b>Pressure drop units.</b> 1 in. H₂O/ft = 83.3 mm H₂O/m ≈ 8.2 mbar/m.</p>
+      </aside>
+    </div>
+
+    <figure id="fig6" aria-labelledby="fig6-t">
+      <p class="fig-title" id="fig6-t"><span class="fn">Figure 6.</span> Column sizer: the diameter follows the vapour volume, and the flow parameter decides how much of the Souders–Brown capacity you get to use</p>
+      <div class="toolbar">
+        <span class="tlab">Presets</span>
+        <div class="presets" role="group" aria-label="Sizer presets">
+          <button type="button" class="btn btn-secondary btn-sm" data-f6="top">Example 7, top</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-f6="bot">Example 7, bottom</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-f6="deb">Debutaniser, 10 bar</button>
+        </div>
+      </div>
+      <div class="calc" style="max-width:none">
+        <div class="card">
+          <h3 class="card-title" style="margin-top:0">Inputs</h3>
+          <div class="field-row"><label for="f6-v">Vapour flow</label><div class="field"><input id="f6-v" inputmode="decimal" value="10233"><span class="unit">kg/h</span></div></div>
+          <div class="field-row"><label for="f6-l">Liquid flow</label><div class="field"><input id="f6-l" inputmode="decimal" value="15821"><span class="unit">kg/h</span></div></div>
+          <div class="field-row"><label for="f6-rv">Vapour density</label><div class="field"><input id="f6-rv" inputmode="decimal" value="3.53"><span class="unit">kg/m³</span></div></div>
+          <div class="field-row"><label for="f6-rl">Liquid density</label><div class="field"><input id="f6-rl" inputmode="decimal" value="775"><span class="unit">kg/m³</span></div></div>
+          <div class="field-row"><label for="f6-sig">Surface tension</label><div class="field"><input id="f6-sig" inputmode="decimal" value="17.5"><span class="unit">mN/m</span></div></div>
+          <div class="field-row"><label for="f6-ts">Tray spacing</label><select id="f6-ts"><option value="300">300 mm</option><option value="450">450 mm</option><option value="600" selected>600 mm</option><option value="750">750 mm</option><option value="900">900 mm</option></select></div>
+          <div class="field-row"><label for="f6-ff">Design flood</label><div class="field"><input id="f6-ff" inputmode="decimal" value="80"><span class="unit">%</span></div></div>
+          <div class="field-row"><label for="f6-ad">Downcomer area</label><div class="field"><input id="f6-ad" inputmode="decimal" value="12"><span class="unit">% of A<sub>c</sub></span></div></div>
+          <div class="field-row"><label for="f6-sf">System (foaming) factor</label><select id="f6-sf"><option value="1" selected>1.00 (none)</option><option value="0.9">0.90</option><option value="0.85">0.85 (moderate)</option><option value="0.75">0.75 (heavy)</option></select></div>
+          <div class="field-row"><label for="f6-n">Theoretical stages, excluding reboiler</label><div class="field"><input id="f6-n" inputmode="decimal" value="12.3"><span class="unit">–</span></div></div>
+          <div class="field-row"><label for="f6-eo">Overall tray efficiency</label><div class="field"><input id="f6-eo" inputmode="decimal" value="54"><span class="unit">%</span></div></div>
+          <div class="field-row"><label for="f6-ht">Top + bottom allowance</label><div class="field"><input id="f6-ht" inputmode="decimal" value="4.0"><span class="unit">m</span></div></div>
+          <ul class="assume">
+            <li>Sieve or valve trays, single pass, hole area at least 10 % of the active area.</li>
+            <li>Diameter rounded up to the next 50 mm; height uses the rounded tray count.</li>
+            <li>System factors are illustrative; use the vendor’s value for your service.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tiles" id="f6-tiles">
+            <div class="tile" id="t6a"><div><span class="v">–</span><span class="u">m/s</span></div><div class="k">Flooding velocity on the net area</div></div>
+            <div class="tile" id="t6b"><div><span class="v">–</span><span class="u">m</span></div><div class="k">Column inside diameter</div></div>
+            <div class="tile" id="t6c"><div><span class="v">–</span><span class="u">trays</span></div><div class="k">Actual trays</div></div>
+            <div class="tile" id="t6d"><div><span class="v">–</span><span class="u">m</span></div><div class="k">Height, tangent to tangent</div></div>
+          </div>
+          <div class="status" id="f6-status" aria-live="polite"></div>
+          <div class="card" style="margin-top:12px;padding:16px 20px">
+            <button type="button" class="toggle" aria-expanded="false" aria-controls="f6-work"><span class="chev" aria-hidden="true">›</span> Show the working</button>
+            <ol class="working" id="f6-work" hidden></ol>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="f6-copy">Copy results</button>
+            <button type="button" class="btn btn-secondary" id="f6-send">Rate these loads in Figure 7</button>
+            <span class="copy-note" id="f6-copy-note" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+      <div class="chart" id="f6-chart" role="img" aria-label="Fair's flooding chart: capacity factor against flow parameter on a logarithmic axis for tray spacings from 300 to 900 mm, with the current design point marked."></div>
+      <figcaption>Fair’s flooding correlation drawn from the Lygeros–Magoulas fit, equation (33), for 300–900 mm tray spacing; the selected spacing is highlighted and the black point is the current design. Diameter from equations (31)–(34), height from equation (39). Screening only: a vendor rating (section 12) checks the downcomers, weeping and pressure drop, which this sizer does not.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 12 Vendor -->
+  <section class="sec" id="vendor" aria-labelledby="h-ven">
+    <div class="sec-head"><p class="marker">12</p><h2 id="h-ven">Vendor data and how to read it</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>The process engineer specifies loads and separation; the internals vendor designs the trays or packing and rates them. Most vendors give free rating software to customers, such as Koch-Glitsch’s KG-TOWER and Sulzer’s SULCOL <a class="ref" href="#src-12">12</a><span class="ref-sep">,</span><a class="ref" href="#src-13">13</a>, and their outputs share a common layout. Knowing how to read them lets you check a proposal instead of taking it on trust.</p>
+        <h3>The tray rating sheet</h3>
+        <p>A KG-TOWER-style tray report lists, for each section and each load case, three blocks <a class="ref" href="#src-12">12</a>:</p>
+        <ul class="plain">
+          <li><b>Loadings</b>: vapour mass rate, density, volumetric rate and viscosity; liquid mass rate, density, volumetric rate, surface tension and viscosity; the system factor.</li>
+          <li><b>Geometry</b>: tower diameter and area, number of passes, tray spacing, valve type and count (or hole diameter and percent hole area), downcomer widths and areas, weir height, downcomer clearance, active area, flow-path length.</li>
+          <li><b>Results</b>: jet flood %, downcomer flood %, downcomer backup, downcomer exit velocity, dry and total tray pressure drop, weir load and weir crest.</li>
+        </ul>
+        <p>The table below is such a sheet for the bottom tray of Example 7, produced with the correlations on this page. Read it from the bottom up: first the percentages of the three flood limits, then the weeping margin, then the pressure drop, and only then the geometry that gives those numbers.</p>
+        <div class="tbl">
+          <table><caption>Illustrative rating sheet laid out like a vendor’s; not a vendor’s output. Sieve tray, C<sub>0</sub> = 0.75.</caption>
+            <thead><tr><th>Item</th><th class="num">Value</th><th>How to read it</th></tr></thead>
+            <tbody>
+              <tr><td class="grp" colspan="3">Loadings, bottom tray, design case</td></tr>
+              <tr><td>Vapour rate · density · volume</td><td class="num">10,233 kg/h · 3.53 kg/m³ · 0.805 m³/s</td><td>Volume sets the diameter</td></tr>
+              <tr><td>Liquid rate · density · volume</td><td class="num">15,821 kg/h · 775 kg/m³ · 20.4 m³/h</td><td>Volume sets the downcomers and weirs</td></tr>
+              <tr><td>Surface tension · system factor</td><td class="num">17.5 mN/m · 1.00</td><td>Low σ or foaming lowers capacity</td></tr>
+              <tr><td class="grp" colspan="3">Geometry</td></tr>
+              <tr><td>Diameter · passes · tray spacing</td><td class="num">1,100 mm · 1 · 600 mm</td><td></td></tr>
+              <tr><td>Downcomer area · weir length</td><td class="num">12 % (0.114 m²) · 0.84 m</td><td>Segmental, straight</td></tr>
+              <tr><td>Active area · hole area</td><td class="num">0.722 m² · 10 % of active</td><td>12.7 mm holes</td></tr>
+              <tr><td>Weir height · downcomer clearance</td><td class="num">50 mm · 40 mm</td><td>Clearance below weir keeps the seal</td></tr>
+              <tr><td class="grp" colspan="3">Results</td></tr>
+              <tr><td>Jet flood</td><td class="num">72 %</td><td>Below the 80–85 % design ceiling</td></tr>
+              <tr><td>Downcomer backup, clear liquid</td><td class="num">226 mm (69 % of 325 mm)</td><td>Limit is ½ (TS + h<sub>w</sub>)</td></tr>
+              <tr><td>Downcomer residence time</td><td class="num">4.5 s</td><td>At least 3 s</td></tr>
+              <tr><td>Downcomer entrance velocity</td><td class="num">0.050 m/s</td><td>Choke limit 0.137 m/s, non-foaming</td></tr>
+              <tr><td>Weir load · crest</td><td class="num">24.3 m³/(h·m) (2.7 gpm/in) · 27 mm</td><td>Just above the 2 gpm/in spray line of Figure 7; borderline against the 2–3 gpm/in rule</td></tr>
+              <tr><td>Hole F-factor</td><td class="num">21.0 Pa<sup>0.5</sup></td><td>2.1 times the optimistic weeping limit of 10 Pa<sup>0.5</sup>, 1.4 times the conservative 14.6</td></tr>
+              <tr><td>Dry · total tray pressure drop</td><td class="num">51 mm · 144 mm liquid (11.0 mbar)</td><td>Times the number of trays gives the column ΔP</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>The performance diagram</h3>
+        <p>Vendors also give an operating window: vapour load against liquid load, bounded above by jet flood and downcomer backup, on the right by downcomer choke, and below by weeping. The design point and the minimum (turndown) point must both sit inside it. Figure 7 builds that diagram from the same correlations, so you can see how each geometry change moves each boundary.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Percent flood is not one number.</b> Vendors define maximum useful capacity differently; some take 85 % of jet flood, others 80 or 90 %. Compare proposals on one basis.</p>
+        <p><b>System factor.</b> KG-TOWER applies the system factor to both the jet flood and the downcomer flood ratings <a class="ref" href="#src-12">12</a>.</p>
+      </aside>
+    </div>
+
+    <figure id="fig7" aria-labelledby="fig7-t">
+      <p class="fig-title" id="fig7-t"><span class="fn">Figure 7.</span> A tray works only inside its window: flood and downcomer backup above, downcomer choke to the right, weeping below</p>
+      <div class="toolbar">
+        <span class="tlab">Presets</span>
+        <div class="presets" role="group" aria-label="Tray presets">
+          <button type="button" class="btn btn-secondary btn-sm" data-f7="bot">Example 7, bottom tray</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-f7="top">Example 7, top tray</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-f7="deb">Debutaniser, 10 bar</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-f7="amine">Amine regenerator</button>
+        </div>
+      </div>
+      <p class="cap" id="f7-props" style="margin:4px 0 0"></p>
+      <div class="controls">
+        <div class="ctl"><label for="f7-v">Vapour load <span class="val" id="f7-v-v"></span></label><input type="range" id="f7-v" min="1000" max="30000" step="100" value="10233"></div>
+        <div class="ctl"><label for="f7-l">Liquid load <span class="val" id="f7-l-v"></span></label><input type="range" id="f7-l" min="1" max="80" step="0.5" value="20.4"></div>
+        <div class="ctl"><label for="f7-d">Diameter <span class="val" id="f7-d-v"></span></label><input type="range" id="f7-d" min="600" max="4000" step="50" value="1100"></div>
+        <div class="ctl"><label for="f7-ts">Tray spacing <span class="val" id="f7-ts-v"></span></label><input type="range" id="f7-ts" min="300" max="900" step="10" value="600"></div>
+        <div class="ctl"><label for="f7-fh">Hole area, % of active <span class="val" id="f7-fh-v"></span></label><input type="range" id="f7-fh" min="6" max="15" step="0.5" value="10"></div>
+        <div class="ctl"><label for="f7-hw">Weir height <span class="val" id="f7-hw-v"></span></label><input type="range" id="f7-hw" min="25" max="80" step="5" value="50"></div>
+        <div class="ctl"><label for="f7-ad">Downcomer area, % of column <span class="val" id="f7-ad-v"></span></label><input type="range" id="f7-ad" min="8" max="20" step="0.5" value="12"></div>
+      </div>
+      <div class="tiles" id="f7-tiles">
+        <div class="tile" id="t7a"><div><span class="v">–</span><span class="u">%</span></div><div class="k">Jet flood</div></div>
+        <div class="tile" id="t7b"><div><span class="v">–</span><span class="u">%</span></div><div class="k">Downcomer backup, of ½ (TS + h<sub>w</sub>)</div></div>
+        <div class="tile" id="t7c"><div><span class="v">–</span><span class="u">×</span></div><div class="k">Vapour load over the weep limit (F<sub>h</sub> = 10)</div></div>
+        <div class="tile" id="t7d"><div><span class="v">–</span><span class="u">mbar</span></div><div class="k">Tray pressure drop</div></div>
+      </div>
+      <div class="status" id="f7-status" aria-live="polite"></div>
+      <div class="chart" id="f7-chart" role="img" aria-label="Tray performance diagram: vapour load against liquid load with the jet flood, 80 percent flood, downcomer backup, downcomer choke and weeping limits, the operating window shaded, and the operating point and a constant L over V line to the origin."></div>
+      <figcaption>Single-pass sieve tray, 12.7 mm holes, C<sub>0</sub> = 0.75. Jet flood from Fair, equations (31)–(33); downcomer backup and pressure drop from Sinnott, equations (35)–(37); choke from Kister’s velocity limits; weeping from the hole F-factor limits of equation (38); weir-load lines at 2 gpm/in (spray regime possible to the left) and at the Nutter limit for the tray spacing (more passes to the right). The dashed line through the operating point is constant L/V, the path the column follows when it is turned down. Debutaniser and amine presets are illustrative.</figcaption>
+      <div class="fig-actions">
+        <button type="button" class="btn btn-secondary btn-sm" id="f7-copy">Copy rating as CSV</button>
+        <span class="copy-note" id="f7-copy-note" aria-live="polite"></span>
+      </div>
+    </figure>
+
+    <div class="row">
+      <div class="main">
+        <h3>Reading packing data</h3>
+        <p>Packing vendors publish three kinds of curve, and each has a basis you must check before using it:</p>
+        <ul class="plain">
+          <li><b>Pressure drop against F-factor</b>, one curve per liquid load. Koch-Glitsch’s IMTP curves, for example, are for air and water at ambient conditions in a 0.76 m (30 in) column, at liquid loads up to about 150 m³/(m²·h) <a class="ref" href="#src-15">15</a>. Air–water data overstate pressure drop for organics, which wet better and foam less.</li>
+          <li><b>HETP (or stages per metre) against F-factor</b>, often one curve per pressure. Sulzer’s structured-packing curves are drawn for head pressures from 960 down to 50 mbar <a class="ref" href="#src-14">14</a>. HETP is flat over the middle of the range and rises at both ends: at low F because of poor wetting, at high F because of entrainment and approach to flood.</li>
+          <li><b>Capacity</b>, as a maximum F-factor or a maximum efficient capacity. Sulzer quotes about 0.3–1.0 mbar per theoretical stage for Mellapak 250.Y, and 0.1–0.5 mbar per stage for BX gauze, which is why gauze is used for deep vacuum <a class="ref" href="#src-14">14</a>.</li>
+        </ul>
+        <p>To use a curve, compute your superficial F-factor (F = u<sub>s</sub>√ρ<sub>V</sub>), read the HETP at your pressure, correct it for your surface tension and viscosity if the vendor gives a correlation (Koch-Glitsch’s IMTP HETP correlation includes both <a class="ref" href="#src-15">15</a>), check the pressure drop per metre, and confirm the design F-factor is well below the maximum efficient capacity at both maximum and minimum rates.</p>
+        <h3>Questions to ask every vendor</h3>
+        <ul class="plain">
+          <li>What test system, pressure and column diameter is the curve or correlation based on? FRI data or the vendor’s own rig?</li>
+          <li>Which flood definition and which system factor did you use?</li>
+          <li>What is guaranteed: capacity, pressure drop, efficiency, or only the hydraulic rating?</li>
+          <li>What is the turndown at the minimum case, and what limits it?</li>
+          <li>For packing: distributor type, drip-point density, levelling tolerance and the expected HETP with that distributor.</li>
+          <li>What installation and inspection tolerances apply, and who checks them?</li>
+        </ul>
+      </div>
+      <aside class="sn">
+        <p><b>Different bases.</b> Vendor capacity charts are often not on the same basis, which makes side-by-side comparison hard <a class="ref" href="#src-11">11</a>. Put every option on your own loads before choosing.</p>
+        <p><b>Low surface tension.</b> At very high pressure, where σ falls towards a few mN/m, droplets are small and tray capacity drops faster than older correlations predict <a class="ref" href="#src-16">16</a>.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 13 Energy -->
+  <section class="sec" id="energy" aria-labelledby="h-en">
+    <div class="sec-head"><p class="marker">13</p><h2 id="h-en">Reflux, energy and pressure</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>The reboiler duty grows roughly in proportion to R + 1, while the number of stages falls steeply as R rises from the minimum and then flattens (Figures 1 and 4). The total annual cost therefore has a shallow minimum, usually somewhere between 1.1 and 1.5 times the minimum reflux <a class="ref" href="#src-2">2</a>. When energy is expensive, the optimum moves towards the low end and the column gets taller.</p>
+        <h3>Choosing the pressure</h3>
+        <ul class="plain">
+          <li>Start from the condenser. Choose the lowest pressure at which the overhead can be condensed against the cheapest heat sink (cooling water or air) with a reasonable approach; refrigeration is expensive.</li>
+          <li>Check the bottom. A higher pressure raises the bottom temperature; heat-sensitive or polymerising products set an upper limit, which may force vacuum.</li>
+          <li>Check α. Most mixtures separate more easily at lower pressure, so the pressure choice trades condenser cost against column size and reboiler duty.</li>
+          <li>Check the other side of every exchanger: the available steam or hot-oil temperature for the reboiler, and whether the condenser can heat another stream.</li>
+        </ul>
+        <h3>Saving energy</h3>
+        <ul class="plain">
+          <li><b>Feed preheat</b> with the hot bottoms; a partly vaporised feed shifts duty from the reboiler to the feed preheater.</li>
+          <li><b>Side reboilers and side condensers (pumparounds)</b> move heat at less extreme temperatures, as crude columns do.</li>
+          <li><b>Heat pumping</b> for close boilers: compress the overhead and condense it in the reboiler <a class="ref" href="#src-23">23</a>.</li>
+          <li><b>Thermal coupling</b>: dividing-wall columns for three-product splits <a class="ref" href="#src-24">24</a>.</li>
+          <li><b>Better internals</b>: more stages in the same shell lower the reflux needed for the same split.</li>
+          <li><b>Tight control</b>: over-purifying a product wastes energy; controlling closer to specification saves it.</li>
+        </ul>
+      </div>
+      <aside class="sn">
+        <p><b>Scale of the prize.</b> Koch-Glitsch puts distillation at nearly 40 % of energy use in refining and chemical manufacturing <a class="ref" href="#src-11">11</a>. A few percent off the reflux of a large column is worth real money and real emissions.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 14 Operation -->
+  <section class="sec" id="operation" aria-labelledby="h-op">
+    <div class="sec-head"><p class="marker">14</p><h2 id="h-op">Control system, P&amp;ID and troubleshooting</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>A two-product column with a total condenser has five valves that matter: reflux, distillate, bottoms, reboiler heat and condenser duty. The feed is usually set by the unit upstream. Three of the five must hold inventory, because column pressure, the reflux-drum level and the sump level do not regulate themselves. That leaves two for the two product compositions <a class="ref" href="#src-38">38</a>. Most columns close one of those two with a tray temperature and leave the other on flow or ratio control <a class="ref" href="#src-38">38</a>.</p>
+        <p>Figure 8 draws that on a piping and instrumentation diagram (P&amp;ID), the way a project would: every loop, each valve and how it fails, the alarms, and a separate layer of trips and relief.</p>
+        <h3>Reading the symbols</h3>
+        <p>Instrument tags follow ISA-5.1. The first letter is the measured variable: F flow, L level, P pressure, T temperature, A analysis, PD differential pressure. The letters after it say what the device does: T transmit, I indicate, C control, V valve, AHH alarm high-high <a class="ref" href="#src-45">45</a>. All parts of one loop share its number, so <span class="nw">FT-104</span> measures, <span class="nw">FIC-104</span> controls and <span class="nw">FV-104</span> moves.</p>
+        <p>A plain circle is a field instrument. A circle in a square is a function in the basic process control system (BPCS). A diamond in a square is a safety instrumented system (SIS) function, the meaning ISA-5.1 now gives that symbol <a class="ref" href="#src-44">44</a>. A line across the middle means the operator can reach it in the control room <a class="ref" href="#src-45">45</a>. Dashed lines are electric signals. A line of small circles is a software link inside the control system: here, a cascade from one controller into a flow controller’s set point <a class="ref" href="#src-45">45</a>. FC or FO beside a valve says whether it fails closed or open when it loses its air or signal.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Why every valve has a flow loop.</b> Each valve in Figure 8 is moved by a flow controller, even when the real target is a level or a temperature. The flow loop corrects changes in upstream and downstream pressure within seconds, so the outer loop works with a clean, nearly linear handle.</p>
+      </aside>
+    </div>
+
+    <figure id="fig8" aria-labelledby="fig8-t">
+      <p class="fig-title" id="fig8-t"><span class="fn">Figure 8.</span> A column P&amp;ID needs three inventory loops, one quality loop, and trips with their own transmitters and valves</p>
+      <div class="toolbar">
+        <span class="tlab" id="f8-s-l">Inventory scheme</span>
+        <div class="seg" role="group" aria-labelledby="f8-s-l">
+          <button type="button" data-f8s="lv" aria-pressed="true">LV: distillate holds drum level</button>
+          <button type="button" data-f8s="dv" aria-pressed="false">DV: reflux holds drum level</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <span class="tlab" id="f8-p-l">Pressure control</span>
+        <div class="seg" role="group" aria-labelledby="f8-p-l">
+          <button type="button" data-f8p="cw" aria-pressed="true">Condenser coolant</button>
+          <button type="button" data-f8p="hvb" aria-pressed="false">Hot-vapour bypass</button>
+          <button type="button" data-f8p="vent" aria-pressed="false">Vent and nitrogen</button>
+        </div>
+        <span class="tlab" id="f8-l-l">Show</span>
+        <div class="seg" role="group" aria-labelledby="f8-l-l">
+          <button type="button" data-f8l="all" aria-pressed="true">Everything</button>
+          <button type="button" data-f8l="b" aria-pressed="false">Control loops</button>
+          <button type="button" data-f8l="s" aria-pressed="false">Trips and relief</button>
+        </div>
+      </div>
+      <p class="cap scroll-hint">Scroll the drawing sideways to see all of it.</p>
+      <div class="svgwrap"><div id="f8-chart"></div></div>
+      <div class="pid-info" id="f8-info" aria-live="polite"></div>
+      <ul class="legend8" aria-label="Symbols used in Figure 8">
+        <li><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" fill="#fff" stroke="#12647e" stroke-width="1.25"/></svg><span>Field instrument</span></li>
+        <li><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><rect x="4" y="4" width="28" height="28" fill="#fff" stroke="#12647e" stroke-width="1.25"/><circle cx="18" cy="18" r="14" fill="none" stroke="#12647e" stroke-width="1.25"/><line x1="4" x2="32" y1="18" y2="18" stroke="#12647e" stroke-width="1.25"/></svg><span>Control-system function, in the control room</span></li>
+        <li><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><rect x="4" y="4" width="28" height="28" fill="#fff" stroke="#ab6528" stroke-width="1.25"/><path d="M18 4L32 18L18 32L4 18Z" fill="none" stroke="#ab6528" stroke-width="1.25"/><line x1="4" x2="32" y1="18" y2="18" stroke="#ab6528" stroke-width="1.25"/></svg><span>Safety instrumented function</span></li>
+        <li><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3L33 18L18 33L3 18Z" fill="#fff" stroke="#ab6528" stroke-width="1.25"/><text x="18" y="22" text-anchor="middle" font-size="11" font-weight="600" fill="#ab6528">I</text></svg><span>Interlock <span class="nw">I-100</span> in the SIS</span></li>
+        <li><svg width="44" height="20" viewBox="0 0 44 20" aria-hidden="true"><line x1="2" x2="42" y1="7" y2="7" stroke="#12647e" stroke-width="1.25" stroke-dasharray="5 3"/><line x1="2" x2="42" y1="14" y2="14" stroke="#ab6528" stroke-width="1.25" stroke-dasharray="5 3"/></svg><span>Electric signal, to the control system or the SIS</span></li>
+        <li><svg width="44" height="20" viewBox="0 0 44 20" aria-hidden="true"><line x1="2" x2="42" y1="10" y2="10" stroke="#12647e" stroke-width="1.1"/><circle cx="8" cy="10" r="2.2" fill="#fff" stroke="#12647e"/><circle cx="21" cy="10" r="2.2" fill="#fff" stroke="#12647e"/><circle cx="34" cy="10" r="2.2" fill="#fff" stroke="#12647e"/></svg><span>Software link (cascade)</span></li>
+        <li><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><line x1="2" x2="34" y1="26" y2="26" stroke="#000" stroke-width="1.5"/><path d="M8 19L28 33L28 19L8 33Z" fill="#fff" stroke="#000" stroke-width="1.25"/><line x1="18" x2="18" y1="26" y2="12" stroke="#000" stroke-width="1.25"/><path d="M9 12A9 9 0 0 1 27 12Z" fill="#fff" stroke="#000" stroke-width="1.25"/></svg><span>Control valve</span></li>
+        <li><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><line x1="2" x2="34" y1="28" y2="28" stroke="#000" stroke-width="1.5"/><path d="M8 21L28 35L28 21L8 35Z" fill="#fff" stroke="#000" stroke-width="1.25"/><line x1="18" x2="18" y1="28" y2="14" stroke="#000" stroke-width="1.25"/><rect x="10" y="3" width="16" height="11" fill="#fff" stroke="#000" stroke-width="1.25"/></svg><span>Shutdown valve</span></li>
+        <li><svg width="36" height="20" viewBox="0 0 36 20" aria-hidden="true"><line x1="2" x2="34" y1="10" y2="10" stroke="#000" stroke-width="1.5"/><line x1="15" x2="15" y1="2" y2="18" stroke="#000" stroke-width="1.5"/><line x1="21" x2="21" y1="2" y2="18" stroke="#000" stroke-width="1.5"/></svg><span>Orifice plate (flow element)</span></li>
+      </ul>
+      <figcaption>Illustrative P&amp;ID, not from a real plant: column <span class="nw">C-101</span>, total condenser <span class="nw">E-101</span>, reflux drum <span class="nw">D-101</span>, thermosiphon reboiler <span class="nw">E-102</span> on low-pressure steam, reflux pumps <span class="nw">P-101A/B</span> and bottoms pumps <span class="nw">P-102A/B</span>. Symbols after ISA-5.1. Indicators (TI, PDI, AI) are drawn as one control-room bubble with the field transmitter implied. As on most simplified P&amp;IDs, line numbers and sizes, block and bypass valves around control valves, drains, vents, pump minimum-flow lines, standby pumps, insulation and tracing are left out. Note 1, hot-vapour bypass only: <span class="nw">E-101</span> is installed below <span class="nw">D-101</span>, and the condensate enters under the drum’s liquid surface.</figcaption>
+    </figure>
+
+    <div class="row">
+      <div class="main">
+        <h3>The loops on the drawing</h3>
+        <p>The loop list below is how a control narrative would describe Figure 8. In the LV scheme the distillate holds the drum level and the bottoms hold the sump level, so reflux and boil-up are left for composition: reflux runs on flow control and boil-up holds a stripping-section temperature. In the DV scheme the reflux holds the drum level and a rectifying-section temperature moves the distillate.</p>
+      </div>
+    </div>
+    <div class="tbl tbl-wide wide">
+      <table>
+        <caption>Loop list for Figure 8. A set point that comes from another controller is a cascade. Fail positions apply on loss of air or signal.</caption>
+        <thead><tr><th>Loop</th><th>Measures</th><th>Moves</th><th>Set point from, LV</th><th>Set point from, DV</th><th>Alarms and notes</th></tr></thead>
+        <tbody>
+          <tr><td class="lead"><span class="nw">PIC-101</span></td><td>Overhead pressure, <span class="nw">PT-101</span></td><td><span class="nw">PV-101</span>: coolant, hot-vapour bypass, or vent and nitrogen</td><td colspan="2">Operator</td><td>PAH, PAL. Trips read <span class="nw">PT-116</span>, not <span class="nw">PT-101</span>.</td></tr>
+          <tr><td class="lead"><span class="nw">FIC-102</span></td><td>Feed flow</td><td><span class="nw">FV-102</span>, fails closed</td><td colspan="2">Operator or the upstream unit</td><td>Sets throughput</td></tr>
+          <tr><td class="lead"><span class="nw">FIC-104</span></td><td>Reflux flow</td><td><span class="nw">FV-104</span>, fails open</td><td>Operator, or a ratio to feed</td><td><span class="nw">LIC-111</span></td><td>FAL; loss of reflux is a relief case</td></tr>
+          <tr><td class="lead"><span class="nw">TIC-105</span></td><td>Stripping-section tray temperature</td><td><span class="nw">FIC-106</span> set point</td><td>Operator, trimmed by <span class="nw">AI-109</span></td><td>Indication only</td><td>TAH, TAL; tray chosen by the slope rule</td></tr>
+          <tr><td class="lead"><span class="nw">FIC-106</span></td><td>Reboiler steam flow</td><td><span class="nw">FV-106</span>, fails closed</td><td><span class="nw">TIC-105</span></td><td>Operator, or a ratio to feed</td><td><span class="nw">XV-117</span> in series is the trip valve</td></tr>
+          <tr><td class="lead"><span class="nw">PDI-107</span></td><td>Column pressure drop</td><td>Nothing</td><td colspan="2">Not a controller</td><td>PDAH: flooding or foaming</td></tr>
+          <tr><td class="lead"><span class="nw">FIC-110</span></td><td>Distillate flow</td><td><span class="nw">FV-110</span>, fails closed</td><td><span class="nw">LIC-111</span></td><td><span class="nw">TIC-120</span></td><td>Taken after the reflux pump, not from the drum</td></tr>
+          <tr><td class="lead"><span class="nw">LIC-111</span></td><td>Reflux-drum level</td><td>Set point of <span class="nw">FIC-110</span> (LV) or <span class="nw">FIC-104</span> (DV)</td><td colspan="2">Operator</td><td>LAH, LAL; averaging tuning where the next unit allows</td></tr>
+          <tr><td class="lead"><span class="nw">LIC-113</span></td><td>Sump level</td><td><span class="nw">FIC-114</span> set point</td><td colspan="2">Operator</td><td>LAH, LAL; stay below the reboiler return</td></tr>
+          <tr><td class="lead"><span class="nw">FIC-114</span></td><td>Bottoms flow</td><td><span class="nw">FV-114</span>, fails closed</td><td colspan="2"><span class="nw">LIC-113</span></td><td>FAL</td></tr>
+          <tr><td class="lead"><span class="nw">TIC-120</span></td><td>Rectifying-section tray temperature</td><td><span class="nw">FIC-110</span> set point (DV only)</td><td>Indication only</td><td>Operator, trimmed by <span class="nw">AI-108</span></td><td>TAH, TAL</td></tr>
+          <tr><td class="lead"><span class="nw">AI-108</span>, <span class="nw">AI-109</span></td><td>Impurity in distillate and bottoms</td><td>Nothing directly</td><td colspan="2">Not a controller</td><td>Off-specification alarms; slow trim of a temperature set point</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="main">
+        <h3>LV or DV: which stream holds the drum level</h3>
+        <p>The level loops decide which flows are left for composition, so they are the first real choice. In the standard LV scheme the distillate D holds the drum level and the bottoms B hold the sump, leaving reflux L and boil-up V for composition. In the DV scheme the reflux holds the drum level and the distillate rate is set directly, so a change in D changes the split at once. DV and LB are called material-balance schemes for that reason <a class="ref" href="#src-38">38</a>.</p>
+        <p>Two rules decide most cases. First, hold a level with the largest stream leaving the vessel; one common guide uses reflux for the drum level when L/D is above roughly 6 <a class="ref" href="#src-38">38</a>. A column at a reflux ratio of 15 cannot hold its drum level with a distillate valve that handles a sixteenth of the liquid. Second, the level tuning should not change the composition response. That favours LV: with DV, how the column responds to a change in boil-up depends on how the drum level is tuned <a class="ref" href="#src-38">38</a>. Skogestad recommends LV with a fast temperature loop for most columns; the temperature loop also gives indirect level control, which makes LV workable for many high-reflux columns <a class="ref" href="#src-38">38</a>. Switch Figure 8 between the two schemes and watch the cascades move.</p>
+        <h3>Where the temperature goes</h3>
+        <p>A tray temperature is a cheap, fast stand-in for composition, but only on the right tray. The usual rules <a class="ref" href="#src-38">38</a><span class="ref-sep">,</span><a class="ref" href="#src-39">39</a>:</p>
+        <ul class="plain">
+          <li>Put it where the temperature changes most from one tray to the next, and avoid flat parts of the profile. For a binary column the slope of the profile matches the gain of tray temperature to reflux closely <a class="ref" href="#src-39">39</a>.</li>
+          <li>Put it inside the column, not at the ends, where temperature hardly moves with composition.</li>
+          <li>Put it at the end whose product matters most, usually the more valuable one.</li>
+          <li>Close a stripping-section temperature with boil-up. Reflux reaches a bottom tray only after a delay, so it should not control a bottom temperature <a class="ref" href="#src-38">38</a>.</li>
+          <li>Correct it for pressure. A tray temperature moves with pressure as well as composition, so many systems control a pressure-compensated temperature.</li>
+        </ul>
+        <p>Luyben compared five criteria (slope, sensitivity, singular value decomposition, invariant temperature, and least change in product purity) on columns from ideal binary to azeotropic multicomponent. Singular value decomposition gave the most effective structure <a class="ref" href="#src-40">40</a>, but the slope rule is the one most engineers try first. Install spare thermowells on a few trays either side of the chosen one; the best tray in operation is often not the one the simulation picked.</p>
+        <p>An on-line analyser measures composition directly, but a gas chromatograph takes minutes per sample. Use it to trim the temperature set point slowly, not to move a valve.</p>
+      </div>
+      <aside class="sn">
+        <p><b>The names are confusing.</b> Some texts call LV an energy-balance scheme, because L and V are the energy-related flows, and DV or LB material-balance schemes. Write on the P&amp;ID which flow holds which level and the names stop mattering.</p>
+        <p><b>Tune from the inside out.</b> Flow loops first, then pressure, then levels, then the temperature. A tray temperature that moves with pressure will chase a poorly tuned pressure loop.</p>
+      </aside>
+    </div>
+
+    <div class="row">
+      <div class="main">
+        <h3>Pressure control</h3>
+        <p>Pressure sets the temperature of every tray, so the pressure loop must be tight in the short term. Over the long term, running at the lowest pressure the condenser can hold usually raises relative volatility and saves energy <a class="ref" href="#src-38">38</a>. The method follows from the condenser. Figure 8 shows the three that are most common with a total condenser.</p>
+      </div>
+    </div>
+    <div class="tbl tbl-wide wide">
+      <table>
+        <caption>Column pressure control methods. The first three can be selected in Figure 8.</caption>
+        <thead><tr><th>Method</th><th>What the valve does</th><th>Use it for</th><th>Watch for</th></tr></thead>
+        <tbody>
+          <tr><td class="lead">Condenser coolant</td><td>Throttles cooling water, or moves fan pitch, fan speed or louvres on an air cooler. More cooling condenses more vapour and the pressure falls.</td><td>Simple total condensers; the natural choice on air coolers</td><td>Cooling water throttled to low velocity fouls, can freeze and responds slowly; one guide keeps the velocity above about 1 m/s and the outlet near 50 °C <a class="ref" href="#src-43">43</a>. Air coolers swing with the weather.</td></tr>
+          <tr><td class="lead">Flooded condenser</td><td>Valve on the condensate line. Closing it backs liquid into the condenser; flooded tubes condense little, so the pressure rises <a class="ref" href="#src-42">42</a>.</td><td>Total condensers, with a small valve in liquid service</td><td>Condensate should enter the drum below its liquid level <a class="ref" href="#src-43">43</a>. Misreading the role of vapour pressure causes many of the problems with flooded-condenser schemes <a class="ref" href="#src-42">42</a>.</td></tr>
+          <tr><td class="lead">Hot-vapour bypass</td><td>Valve in a line from the overhead to the drum vapour space; the condenser sits at grade, below the drum <a class="ref" href="#src-41">41</a>. Closing it cools the drum surface, drains condensate from the condenser and exposes more tubes, so the pressure falls <a class="ref" href="#src-43">43</a>.</td><td>Large overheads where a valve in the vapour line would be huge; condensers kept at grade for maintenance</td><td>Hot vapour heating the subcooled drum liquid upsets control; poor details have caused instability and even unit shutdowns <a class="ref" href="#src-41">41</a>. Keep liquid pockets out of the bypass line <a class="ref" href="#src-43">43</a>.</td></tr>
+          <tr><td class="lead">Vent and inert gas</td><td>Split range: nitrogen (or fuel gas) in over one half of the output, vent to flare over the other</td><td>Overheads with inerts or light ends; columns near atmospheric pressure <a class="ref" href="#src-43">43</a></td><td>Product lost to flare; inerts blanketing the condenser; nitrogen in the product</td></tr>
+          <tr><td class="lead">Vapour product</td><td>Valve on the vapour distillate of a partial condenser</td><td>Partial condensers: deethanisers, stabilisers</td><td>The drum level then needs its own handle, usually the condensation rate <a class="ref" href="#src-43">43</a></td></tr>
+          <tr><td class="lead">Vacuum system</td><td>Spillback or bleed at the ejector or vacuum-pump suction <a class="ref" href="#src-43">43</a></td><td>Vacuum columns</td><td>Air leaks that look like a control problem</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="main">
+        <h3>How the valves fail</h3>
+        <p>Every control valve on the P&amp;ID is given a position to go to when it loses air or signal, chosen so the column heads toward a cool, contained state. As a general rule, heating fails closed and cooling fails open <a class="ref" href="#src-46">46</a>. On a column that usually means reboiler steam and feed fail closed and condenser coolant fails open. Product draws fail closed, so the column keeps its inventory and vapour cannot blow through an empty drum or sump into lower-pressure equipment. Reflux is often set to fail open, to keep the top trays wet while the heat input dies away. None of this is automatic: an open reflux valve can flood the top or empty the drum, so each position is confirmed in the HAZOP.</p>
+
+        <h3>The safety layer on the drawing</h3>
+        <p>The sienna symbols in Figure 8 are a separate system. Each trip has its own transmitter (<span class="nw">PT-116</span>, <span class="nw">LT-112</span>, <span class="nw">LT-115</span>), its own logic in the SIS (interlock <span class="nw">I-100</span>) and its own final element: <span class="nw">XV-117</span> and <span class="nw">XV-121</span> in series with the control valves, and the pump motor starter. A trip that read <span class="nw">PT-101</span> and closed <span class="nw">FV-106</span> would fail together with the loop it is meant to back up, and could not count as an independent layer in a LOPA. Choose “Trips and relief” in Figure 8 to see this layer on its own.</p>
+        <p>The cause-and-effect table states the trip logic in a form that operators and the HAZOP team can check line by line. For Figure 8:</p>
+      </div>
+    </div>
+    <div class="tbl tbl-mid wide cem">
+      <table>
+        <caption>Cause-and-effect table for interlock <span class="nw">I-100</span> in Figure 8 (illustrative). X means the action is taken. Trips latch and are reset by the operator once the cause has cleared. Each set point sits between the control-system alarm and the relief set pressure or the physical limit. <span class="nw">HS-100</span> is in the control room and not drawn.</caption>
+        <thead><tr><th>Cause</th><th>Tag</th><th class="c">Close <span class="nw">XV-121</span>, feed</th><th class="c">Close <span class="nw">XV-117</span>, reboiler steam</th><th class="c">Stop <span class="nw">P-102A/B</span>, bottoms</th></tr></thead>
+        <tbody>
+          <tr><td>Column overhead pressure high-high</td><td><span class="nw">PAHH-116</span></td><td class="c">X</td><td class="c">X</td><td class="c"></td></tr>
+          <tr><td>Reflux-drum level high-high</td><td><span class="nw">LAHH-112</span></td><td class="c">X</td><td class="c">X</td><td class="c"></td></tr>
+          <tr><td>Sump level high-high</td><td><span class="nw">LAHH-115</span></td><td class="c">X</td><td class="c"></td><td class="c"></td></tr>
+          <tr><td>Sump level low-low</td><td><span class="nw">LALL-115</span></td><td class="c"></td><td class="c"></td><td class="c">X</td></tr>
+          <tr><td>Emergency shutdown push-button</td><td><span class="nw">HS-100</span></td><td class="c">X</td><td class="c">X</td><td class="c">X</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="main">
+        <p>Speed matters. In a published dynamic study of two industrial columns, a loss of cooling water took one column to its high-high pressure alarm in about 7 minutes and opened its relief valves within about 9. Pump-around reboilers kept adding heat, and the revised procedure gave operators 2 minutes after the alarm to isolate the column <a class="ref" href="#src-47">47</a>. An alarm alone leaves the operator very little time; an automatic trip on every heat source is what keeps the relief valve shut.</p>
+
+        <h3>What actually goes wrong</h3>
+        <p>Kister’s survey of 900 published malfunction case histories found plugging (of tray active areas, packing and distributors) at the top of the list, with coking, scale and corrosion, and precipitation as the usual causes. The tower base came second: liquid rising above the reboiler inlet caused premature flooding, internals damage and even tower overfilling <a class="ref" href="#src-7">7</a>. Installation mishaps are also among the top five causes <a class="ref" href="#src-31">31</a>.</p>
+        <ul class="plain">
+          <li><b>Flooding</b> shows as a rising and erratic pressure drop on <span class="nw">PDI-107</span>, worse separation, falling bottoms level and carry-over into the reflux drum.</li>
+          <li><b>Foaming</b> shows as flooding at loads well below the design, often after a contaminant arrives (hydrocarbons in amine, corrosion inhibitors, fines).</li>
+          <li><b>Weeping and dumping</b> show as a loss of efficiency at low rates, and sometimes as an unstable pressure drop.</li>
+          <li><b>Damaged internals</b> show as a step change in pressure drop or separation after an upset, a start-up or a pressure surge.</li>
+          <li><b>A misbehaving control loop</b> often looks like a process problem. Put the loop in manual: if the swings stop, the cause is tuning, a sticking valve or a bad measurement, not the column.</li>
+        </ul>
+        <p>Gamma scans locate flooding, missing trays, foaming and maldistribution without opening the column; temperature surveys and pressure-drop profiles narrow the search. Every opening of the column is a chance to inspect: levelness, weir heights, downcomer clearances, missing clamps and debris.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Start-up.</b> Columns are most vulnerable during start-up and shutdown: abnormal levels, water in hot oil, steam at the wrong place, and air reaching pyrophoric scale. Section 16 covers the safeguards.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 15 Standards -->
+  <section class="sec" id="standards" aria-labelledby="h-std">
+    <div class="sec-head"><p class="marker">15</p><h2 id="h-std">Mechanical design and standards</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>No single code covers a distillation column. The shell is a pressure vessel, the overhead and reboiler lines are process piping, the condenser and reboiler are heat exchangers, the pumps are pumps, and the whole system needs overpressure protection and a process safety programme. The trays and packing themselves are designed to vendor standards and industry research (Fractionation Research Inc., FRI) rather than to a code.</p>
+      </div>
+    </div>
+    <div class="tbl wide">
+      <table><caption>Owner and project standards (company engineering practices, PIP, NORSOK, IPS and the like) add to these; check which editions the contract invokes.</caption>
+        <thead><tr><th>Standard</th><th>What it covers for a column system</th></tr></thead>
+        <tbody>
+          <tr><td class="grp" colspan="2">Pressure equipment</td></tr>
+          <tr><td>ASME BPVC Section VIII, Division 1 (Division 2 for design by analysis)</td><td>Shell, heads, nozzles, supports. UG-22 lists the loadings to design for, including wind, earthquake, the weight of contents and internals, and piping reactions; UG-27 internal pressure; UG-28 external pressure and vacuum; UG-99 hydrostatic test. Overpressure protection now sits in Section XIII <a class="ref" href="#src-29">29</a>.</td></tr>
+          <tr><td>ASME BPVC Sections II, V and IX</td><td>Materials and allowable stresses, non-destructive examination, welding qualifications.</td></tr>
+          <tr><td>CSA B51 (Canada)</td><td>Registration of pressure-vessel and piping designs (the CRN) with the provincial authority, which in BC is Technical Safety BC <a class="ref" href="#src-32">32</a>.</td></tr>
+          <tr><td>ASCE 7 (US), National Building Code of Canada</td><td>Wind and seismic loads on tall columns and their skirts and foundations.</td></tr>
+          <tr><td class="grp" colspan="2">Piping, exchangers and machines</td></tr>
+          <tr><td>ASME B31.3, ASME B16.5 and B16.47</td><td>Overhead, reflux, feed and reboiler piping; flanges.</td></tr>
+          <tr><td>API Std 660, 661, 667</td><td>Shell-and-tube condensers and reboilers; air-cooled condensers; plate-and-frame exchangers. API 662 was withdrawn in February 2025; API 667 (2022) replaced its plate-and-frame part <a class="ref" href="#src-48">48</a>.</td></tr>
+          <tr><td>API Std 560</td><td>Fired heaters used as reboilers, as on the Texas City raffinate splitter.</td></tr>
+          <tr><td>API Std 610</td><td>Centrifugal pumps for reflux and bottoms.</td></tr>
+          <tr><td class="grp" colspan="2">Overpressure and safety</td></tr>
+          <tr><td>API Std 521</td><td>Overpressure scenarios (loss of cooling, loss of reflux, power failure, blocked outlet, fire, abnormal heat input) and the relief and flare systems that receive them <a class="ref" href="#src-28">28</a>.</td></tr>
+          <tr><td>API Std 520, Parts I and II</td><td>Sizing, selection and installation of relief devices <a class="ref" href="#src-28">28</a>.</td></tr>
+          <tr><td>IEC 61511 / ISA 84</td><td>Safety instrumented systems: high-pressure trips on the reboiler heat, independent high-level trips.</td></tr>
+          <tr><td>API RP 752 and 753</td><td>Siting of permanent and portable occupied buildings near process units.</td></tr>
+          <tr><td>CSA Z767 (Canada), OSHA 29 CFR 1910.119 (US)</td><td>Process safety management: hazard analysis, operating procedures, management of change, mechanical integrity, pre-start-up reviews. CSA Z767:24 is the second edition <a class="ref" href="#src-32">32</a>.</td></tr>
+          <tr><td class="grp" colspan="2">Inspection</td></tr>
+          <tr><td>API 510, API RP 572, API RP 580 and 581</td><td>In-service inspection, repair and rerating of pressure vessels; risk-based inspection planning.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="main">
+        <h3>What governs the shell</h3>
+        <p>For a column at modest pressure, internal pressure rarely sets the wall thickness. Wind and seismic bending on a tall, slender shell, external pressure, and the weight of a column full of water during the hydrotest usually do. The internal-pressure check for a cylindrical shell (ASME VIII-1, UG-27, circumferential stress) is still the first step:</p>
+        <div class="eq"><span>t = P R / (S E − 0.6 P) + c</span><span class="n">(41)</span></div>
+        <p class="where">P design pressure, R inside radius in the corroded condition, S allowable stress at design temperature, E joint efficiency, c corrosion allowance.</p>
+        <ul class="plain">
+          <li><b>Vacuum.</b> Any column that is steamed out can be pulled into vacuum when the steam condenses, and many engineers design such columns for full vacuum as a matter of course; the extra cost is often just thicker stiffening rings <a class="ref" href="#src-30">30</a>. If the column is not rated for vacuum, protect it with vacuum breakers and procedures, and never block it in after steaming.</li>
+          <li><b>Hydrostatic head.</b> The bottom of a tall column sees the design pressure plus the liquid head at relief conditions, and the hydrotest adds the full water head.</li>
+          <li><b>Tray supports and uplift.</b> Trays sit on rings welded to the shell and are clamped down. Specify an uplift rating where pressure surges are possible: water entering a hot column, rapid depressuring, or steam introduced too fast at start-up.</li>
+          <li><b>Levelness.</b> An out-of-level tray has an uneven liquid depth and loses efficiency and capacity. A typical acceptance limit is 3 mm out-of-level for columns up to 2 m diameter and 6 mm above <a class="ref" href="#src-31">31</a>; check the support rings at the fabrication shop, before the trays go in <a class="ref" href="#src-31">31</a>.</li>
+          <li><b>Base and sump.</b> The reboiler return must stay above the highest liquid level, with room for surge; Kister’s survey ranks tower-base problems second only to plugging <a class="ref" href="#src-7">7</a>. Fit vortex breakers on bottoms outlets and specify independent level instruments.</li>
+          <li><b>Skirt and fireproofing.</b> A pool fire under a column can weaken an unprotected skirt and bring the whole tower down; fireproof skirts and supports in fire zones.</li>
+        </ul>
+      </div>
+      <aside class="sn">
+        <p><b>Manways.</b> Usually one every 10 to 20 trays, plus at feeds, draws and the bottom; the trays below a manway need removable panels that pass through it.</p>
+        <p><b>Materials.</b> Carbon steel with a corrosion allowance for most hydrocarbon shells; stainless or higher alloys for trays and packing, where there is no allowance to spend.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 16 Safety -->
+  <section class="sec" id="safety" aria-labelledby="h-saf">
+    <div class="sec-head"><p class="marker">16</p><h2 id="h-saf">Safety: hazards and safeguards</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>A column holds a large flammable inventory near its boiling point, with a heat source at the bottom and a heat sink at the top. Most of its serious hazards come from losing the balance between the two, from losing track of where the liquid is, or from what happens when the column is opened.</p>
+        <h3>Overpressure: the scenarios API 521 asks about</h3>
+      </div>
+    </div>
+    <div class="tbl wide">
+      <table><caption>API 521 gives no credit for control action that would reduce the load; credit can be taken for a reboiler “pinch” as the column temperature rises at relieving pressure <a class="ref" href="#src-27">27</a>. The unbalanced-heat method can be either conservative or not: in one published depropaniser study the dynamic relief load was about 13 % higher than the unbalanced-heat value <a class="ref" href="#src-27">27</a>.</caption>
+        <thead><tr><th>Scenario</th><th>What happens in the column</th><th>Screening relief load</th></tr></thead>
+        <tbody>
+          <tr><td>Loss of overhead cooling (cooling water, fans, louvres)</td><td>Vapour is no longer condensed; the reboiler keeps boiling; the reflux drum empties and reflux is lost</td><td>Often the largest case: reboiler duty ÷ latent heat at relieving conditions <a class="ref" href="#src-27">27</a></td></tr>
+          <tr><td>Loss of reflux (pump trip, valve closed)</td><td>The top heats up, light material goes down, condenser load changes</td><td>Unbalanced heat; usually smaller than loss of cooling, but check <a class="ref" href="#src-27">27</a></td></tr>
+          <tr><td>Reboiler heat-input control fails open</td><td>Duty rises to the maximum the heating medium can deliver</td><td>Excess duty ÷ latent heat</td></tr>
+          <tr><td>Blocked vapour outlet; condenser flooded with liquid</td><td>Vapour has nowhere to go</td><td>Full vapour generation</td></tr>
+          <tr><td>Total or partial power failure</td><td>Pumps and fans stop together; feed may stop; compositions shift</td><td>Combine the failures; dynamic simulation often justifies a different load <a class="ref" href="#src-27">27</a></td></tr>
+          <tr><td>External pool fire</td><td>Heat input to the wetted shell</td><td>Q = 43,200 F A<sub>w</sub><sup>0.82</sup> W, with adequate drainage and firefighting <a class="ref" href="#src-28">28</a></td></tr>
+          <tr><td>Abnormal heat input or rapid vaporisation</td><td>Water or light material entering a hot column; reboiler tube rupture</td><td>Case-specific; can also damage trays</td></tr>
+          <tr><td>Overfilling</td><td>Liquid reaches the overhead line and the relief valves</td><td>Liquid or two-phase relief; prevent it instead</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="main">
+        <h3>Overfill: what Texas City taught</h3>
+        <p>On 23 March 2005, during the start-up of the isomerisation unit at BP’s Texas City refinery, operators filled the raffinate splitter, a distillation column roughly 50 m tall, for about three hours without taking any liquid out. The level rose to about 15 times its normal value, the contents were overheated, the relief valves opened, and liquid hydrocarbon went to a blowdown drum and stack that vented to atmosphere. The vapour cloud ignited, killing 15 people and injuring 180 <a class="ref" href="#src-25">25</a>.</p>
+        <p>The CSB found that the level transmitter and the high-level alarm were not working properly and misled the operators, that start-up procedures were not followed, and that 13 of the previous 16 start-ups had shown excessive levels without being investigated <a class="ref" href="#src-25">25</a>. Afterwards BP said it would eliminate blowdown stacks venting directly to atmosphere at its US refineries <a class="ref" href="#src-25">25</a>.</p>
+        <ul class="plain">
+          <li>Measure tower level with two independent instruments, compare them, and alarm on disagreement; make the high-high level trip independent of the control transmitter.</li>
+          <li>Treat start-up and shutdown as the hazardous operations they are: written procedures, experienced supervision, instruments checked before feed is introduced.</li>
+          <li>Relieve flammable materials to a closed flare system, not to an atmospheric vent.</li>
+          <li>Site occupied buildings and trailers out of reach of a credible vapour-cloud explosion (API RP 752 and 753).</li>
+          <li>Investigate near misses such as abnormal levels and pressures; they are the warnings.</li>
+        </ul>
+        <h3>Fires inside packed columns</h3>
+        <p>Corrosion of carbon steel by hydrogen sulfide forms iron sulfide, which settles on packing and ignites in air at ambient temperature. Structured packing is especially exposed: it is made of thin sheet (0.1–0.2 mm) with a huge surface, and once lit it burns as a metal fire <a class="ref" href="#src-26">26</a>. One operator reported that all of its packed-column fires had occurred in structured beds, none in random ones <a class="ref" href="#src-26">26</a>. On 26 May 2020, during a turnaround at ENEOS’s Oita refinery, a fire in the structured packing of a 6.2 m diameter, 50 m tall crude column brought the column down about 70 minutes after the temperature rise was noticed <a class="ref" href="#src-26">26</a>.</p>
+        <ul class="plain">
+          <li>Before opening, wash with an oxidising chemical (potassium permanganate is common) to passivate iron sulfide; steaming and water washing alone do not remove it <a class="ref" href="#src-26">26</a>.</li>
+          <li>Keep beds wet, monitor bed temperatures while manways are open, and have water ready to spray the packing <a class="ref" href="#src-26">26</a>.</li>
+          <li>Do not allow hot work above or below packing; new packing carries a film of lubricating oil that can burn too <a class="ref" href="#src-26">26</a>.</li>
+          <li>In fouling, sour services such as sour-water strippers, consider trays, which are easier to clean and less prone to metal fires <a class="ref" href="#src-26">26</a>.</li>
+        </ul>
+        <h3>Other hazards to cover in the HAZOP</h3>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Deviation</th><th>Typical causes</th><th>Typical safeguards</th></tr></thead>
+            <tbody>
+              <tr><td>Less pressure, vacuum</td><td>Steam-out followed by cooling or water wash; over-condensing; loss of heat while still condensing</td><td>Full-vacuum design, vacuum breaker, procedures that keep vents open</td></tr>
+              <tr><td>More temperature in the bottoms</td><td>Lost reflux, high heat input, fouling; polymerisation or decomposition of heat-sensitive bottoms</td><td>Vacuum operation, inhibitors, high-temperature alarms and trips, short residence time</td></tr>
+              <tr><td>Other than: water into a hot column</td><td>Wet feed, steam condensate, a leaking exchanger</td><td>Drained feed lines, slow warm-up, uplift-rated trays</td></tr>
+              <tr><td>Less level in the sump</td><td>Bottoms pump runs dry; hot liquid lost to downstream</td><td>Low-level trip on the bottoms pump, minimum-flow protection</td></tr>
+              <tr><td>Toxic or flammable release</td><td>Flange leaks, sampling, drains; H₂S in sour services; benzene</td><td>Closed sampling, gas detection, leak-tight design, personal protection</td></tr>
+              <tr><td>Entry and maintenance</td><td>Confined space, toxic or inert atmosphere, falls inside a tall column</td><td>Isolation by blinds, gas testing, entry permits, rescue plan</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>All of this belongs in a process safety management system: hazard analysis at each design stage, operating procedures, training, management of change, mechanical integrity and pre-start-up reviews. In Canada, CSA Z767 sets these out as a 16-element system <a class="ref" href="#src-32">32</a>.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Inherently safer first.</b> Less inventory (packing holds less liquid than trays), lower temperature (vacuum), less hazardous solvents (no benzene as an entrainer), and designs that cannot overpressure (a heating medium too cool to exceed the design pressure) beat added protection.</p>
+        <p><b>Layers of protection.</b> Basic control, alarms with operator response, an independent safety instrumented function, the relief valve, and the flare: each needs to be independent of the others to count.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 17 Examples -->
+  <section class="sec" id="examples" aria-labelledby="h-ex">
+    <div class="sec-head"><p class="marker">17</p><h2 id="h-ex">Worked examples</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Examples 1, 2 and 7 to 10 follow one column through from balance to relief valve: a benzene–toluene splitter at atmospheric pressure. Examples 3 to 6 cover the multicomponent shortcut and the three configurations without a full set of reflux and reboiler. Load the matching preset in Figure 1 to see each diagram.</p>
+      </div>
+    </div>
+
+    <article class="ex" id="ex1">
+      <div class="row"><div class="main">
+        <h3>Example 1. Product flows, recoveries and section traffic</h3>
+        <dl class="given">
+          <dt>Feed</dt><dd>100 kmol/h, 40 mol % benzene in toluene, saturated liquid (q = 1)</dd>
+          <dt>Specification</dt><dd>Distillate 95 mol % benzene, bottoms 5 mol % benzene</dd>
+          <dt>Reflux ratio</dt><dd>R = 1.878 (from Example 2)</dd>
+        </dl>
+        <ol class="steps">
+          <li>Distillate and bottoms from equations (5) and (6):<span class="calcline">D = 100 × (0.40 − 0.05)/(0.95 − 0.05) = 38.89 kmol/h;  B = 61.11 kmol/h</span></li>
+          <li>Recoveries:<span class="calcline">benzene to distillate = 38.89 × 0.95 / 40 = 92.4 %
+toluene to bottoms   = 61.11 × 0.95 / 60 = 96.8 %</span></li>
+          <li>Section flows from equation (9):<span class="calcline">L = 1.878 × 38.89 = 73.0   V = 2.878 × 38.89 = 111.9
+L̄ = 73.0 + 100 = 173.0     V̄ = 111.9 kmol/h</span></li>
+        </ol>
+        <p class="takeaway">Two purities fix two flows. If the client asks for 99 % recovery as well as 95 % purity, one of those specifications has to give: the balance has no more degrees of freedom.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex2">
+      <div class="row"><div class="main">
+        <h3>Example 2. Minimum reflux, minimum stages and the McCabe–Thiele count</h3>
+        <p>Same column. Raoult’s law gives α between 2.37 at the bottom and 2.60 at the top for benzene–toluene at 101.3 kPa, so take a constant α = 2.5. Design at R = 1.3 R<sub>min</sub>.</p>
+        <ol class="steps">
+          <li>Minimum reflux, equation (15):<span class="calcline">R_min = [0.95/0.40 − 2.5 × 0.05/0.60] / (2.5 − 1) = (2.375 − 0.208)/1.5
+  = 1.444
+R = 1.3 × 1.444 = 1.878</span></li>
+          <li>Minimum stages, equation (16):<span class="calcline">N_min = ln[(0.95/0.05)(0.95/0.05)] / ln 2.5 = ln 361 / 0.916
+  = 6.43 (incl. reboiler)</span></li>
+          <li>Step off the stages (Figure 1, Example 2 preset). Rectifying line y = 0.6525 x + 0.3301; the q-line is vertical at x = 0.40. The first steps run:<span class="calcline">stage 1: y = 0.950 → x = 0.884
+stage 2: y = 0.907 → x = 0.796
+stage 3: y = 0.849 → x = 0.693   …
+stage 7: y = 0.613 → x = 0.388  (crosses 0.40: feed stage)
+stage 14: y = 0.064 → x = 0.027  (passes x_B; reboiler)</span></li>
+          <li>Count, with the last step fractional:<span class="calcline">N = 13 + (0.059 − 0.050)/(0.059 − 0.027)
+  = 13.3 stages incl. reboiler, feed on stage 7</span></li>
+          <li>Cross-check with Gilliland, equation (24):<span class="calcline">X = (1.878 − 1.444)/2.878 = 0.151 → Y = 0.505
+  → N = (6.43 + 0.505)/(1 − 0.505) = 14.0</span></li>
+        </ol>
+        <p class="takeaway">The shortcut lands within one stage of the stepped answer. With the full Raoult’s-law curve instead of constant α, Figure 1 gives R<sub>min</sub> = 1.47 and 13.6 stages: close, because benzene–toluene is nearly ideal.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex3">
+      <div class="row"><div class="main">
+        <h3>Example 3. A four-component column by Fenske–Underwood–Gilliland–Kirkbride</h3>
+        <dl class="given">
+          <dt>Feed</dt><dd>100 kmol/h saturated liquid: A 10 %, B 40 %, C 35 %, D 15 % (mole)</dd>
+          <dt>Volatilities</dt><dd>α relative to C: A 4.0, B 2.0, C 1.0, D 0.5 (assumed constant, illustrative)</dd>
+          <dt>Keys</dt><dd>Light key B, heavy key C; 98 % of B to the distillate, 97 % of C to the bottoms</dd>
+          <dt>Design</dt><dd>R = 1.3 R<sub>min</sub></dd>
+        </dl>
+        <ol class="steps">
+          <li>Key splits:<span class="calcline">d_B = 39.20  b_B = 0.80     d_C = 1.05  b_C = 33.95 kmol/h</span></li>
+          <li>Fenske, equation (20):<span class="calcline">N_min = ln[(39.20/0.80)(33.95/1.05)] / ln 2 = ln(1,584) / 0.693 = 10.63</span></li>
+          <li>Non-keys, equation (21): A and D do not distribute.<span class="calcline">A: d/b = (1.05/33.95) × 4^10.63 ≈ 7.8 × 10⁴ → all 10 kmol/h to D
+D: d/b = (1.05/33.95) × 0.5^10.63 ≈ 2 × 10⁻⁵ → all 15 kmol/h to B
+D = 50.25 kmol/h, B = 49.75 kmol/h</span></li>
+          <li>Underwood, equation (22), q = 1, solve for θ between 1 and 2:<span class="calcline">4(0.10)/(4 − θ) + 2(0.40)/(2 − θ)
+  + 1(0.35)/(1 − θ) + 0.5(0.15)/(0.5 − θ) = 0  →  θ = 1.2947</span></li>
+          <li>Minimum reflux, equation (23), with distillate mole fractions A 0.199, B 0.780, C 0.021:<span class="calcline">R_min + 1 = 4(0.199)/2.705 + 2(0.780)/0.705 + 1(0.021)/(−0.295) = 2.435
+  →  R_min = 1.435
+R = 1.3 × 1.435 = 1.866</span></li>
+          <li>Gilliland, equation (24):<span class="calcline">X = (1.866 − 1.435)/2.866 = 0.150  →  Y = 0.505
+  →  N = (10.63 + 0.505)/(1 − 0.505) = 22.5</span></li>
+          <li>Kirkbride, equation (25), with x<sub>B,LK</sub> = 0.80/49.75 = 0.0161 and x<sub>D,HK</sub> = 1.05/50.25 = 0.0209:<span class="calcline">N_R/N_S = [(49.75/50.25)(0.35/0.40)(0.0161/0.0209)²]^0.206 = 0.872
+N_R = 10.5,  N_S = 12.0  →  feed on about stage 11 from the top</span></li>
+        </ol>
+        <p class="takeaway">About 22 to 23 theoretical stages including the reboiler, R ≈ 1.87, feed near the middle. This is the starting point for a rigorous simulation, which will move the answer by a stage or two once α varies along the column.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex4">
+      <div class="row"><div class="main">
+        <h3>Example 4. A stripping column without reflux</h3>
+        <dl class="given">
+          <dt>Feed</dt><dd>Saturated liquid, z<sub>F</sub> = 0.30, fed to the top tray; α = 4 (constant)</dd>
+          <dt>Specification</dt><dd>Bottoms x<sub>B</sub> = 0.01; reboiler, no condenser</dd>
+          <dt>Design</dt><dd>Boil-up 1.5 times the minimum</dd>
+        </dl>
+        <ol class="steps">
+          <li>The pinch is at the top. The richest overhead possible is in equilibrium with the feed:<span class="calcline">y*(0.30) = 4(0.30)/(1 + 3 × 0.30) = 0.632</span></li>
+          <li>The steepest allowed operating line joins (0.01, 0.01) to (0.30, 0.632). Its slope is L̄/V̄ = F/V̄:<span class="calcline">s_max = (0.632 − 0.01)/(0.30 − 0.01) = 2.143
+  →  (V̄/F)_min = 1/2.143 = 0.467</span></li>
+          <li>Design boil-up and overhead composition, from the balance:<span class="calcline">V̄/F = D/F = 1.5 × 0.467 = 0.700
+y_D = [0.30 − (1 − 0.700)(0.01)] / 0.700 = 0.424</span></li>
+          <li>Step down from (0.30, 0.424) with y = 1.429 x − 0.0043:<span class="calcline">stage 1: y = 0.424 → x = 0.156
+stage 2: y = 0.218 → x = 0.065
+stage 3: y = 0.089 → x = 0.024
+stage 4: y = 0.030 → x = 0.008  (reboiler)  →  3.85 stages</span></li>
+        </ol>
+        <p class="takeaway">Three trays and a reboiler clean the bottoms to 1 % and recover 99 % of the light component, but the overhead is only 42 % light, and could never exceed 63 % however tall the column. If the overhead must be pure, add a condenser and reflux.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex5">
+      <div class="row"><div class="main">
+        <h3>Example 5. A rectifying column without a reboiler</h3>
+        <dl class="given">
+          <dt>Feed</dt><dd>100 kmol/h saturated vapour, z<sub>F</sub> = 0.50, under the bottom tray; α = 2.5</dd>
+          <dt>Specification</dt><dd>Distillate x<sub>D</sub> = 0.95; total condenser, no reboiler</dd>
+          <dt>Design</dt><dd>R = 1.5 R<sub>min</sub></dd>
+        </dl>
+        <ol class="steps">
+          <li>The pinch is at the bottom. The leanest bottom liquid possible is in equilibrium with the feed vapour:<span class="calcline">x*(0.50) = 0.50/(2.5 − 1.5 × 0.50) = 0.286</span></li>
+          <li>Minimum reflux from the line through (0.95, 0.95) and (0.286, 0.50):<span class="calcline">(L/V)_min = (0.95 − 0.50)/(0.95 − 0.286) = 0.677
+  →  R_min = 0.677/0.323 = 2.10</span></li>
+          <li>At R = 3.15, L/V = 0.759 and the bottom liquid follows from equation (18):<span class="calcline">x_B = [0.50 − (1 − 0.759)(0.95)] / 0.759 = 0.357</span></li>
+          <li>Balance: with no reboiler, V = F = 100 kmol/h:<span class="calcline">D = 100 / 4.15 = 24.1 kmol/h;  B = L = 75.9 kmol/h
+check: 24.1 × 0.95 + 75.9 × 0.357 = 50.0 ✓</span></li>
+          <li>Stepping from the top (Figure 1, Example 5 preset) gives 5.4 theoretical stages.</li>
+        </ol>
+        <p class="takeaway">The rectifier makes 95 % product but recovers only 46 % of the light component; the rest leaves in a bottoms stream that can be no leaner than 28.6 %. That is why a rectifier is usually paired with a stripper that takes its bottoms, as in an ethanol plant’s beer column and rectifier.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex6">
+      <div class="row"><div class="main">
+        <h3>Example 6. Live steam or a reboiler for methanol–water?</h3>
+        <dl class="given">
+          <dt>Feed</dt><dd>100 kmol/h, 30 mol % methanol in water, saturated liquid, 101.3 kPa</dd>
+          <dt>Specification</dt><dd>x<sub>D</sub> = 0.95, x<sub>B</sub> = 0.01; R = 1.3 R<sub>min</sub></dd>
+          <dt>VLE</dt><dd>Wilson model (Figure 1, methanol–water); R<sub>min</sub> = 0.79, so R = 1.03</dd>
+        </dl>
+        <ol class="steps">
+          <li>With a reboiler:<span class="calcline">D = 100(0.30 − 0.01)/(0.95 − 0.01) = 30.85;  B = 69.15 kmol/h
+  V̄ = 62.7 kmol/h
+stages: 10.9 incl. reboiler (9.9 trays + reboiler), feed on stage 7
+methanol lost in bottoms = 69.15 × 0.01
+  = 0.69 kmol/h (2.3 % of feed methanol)</span></li>
+          <li>With live steam, from equation (12) and L̄ = B, V̄ = S:<span class="calcline">D = F (z_F − q x_B)/(x_D + R x_B) = 100(0.29)/(0.95 + 1.03 × 0.01) = 30.20
+S = (R + 1) D = 61.3 kmol/h (1,105 kg/h of steam)
+  B = R D + F = 131.1 kmol/h
+stages: 10.8 trays, feed on stage 7
+methanol lost = 131.1 × 0.01 = 1.31 kmol/h (4.4 % of feed methanol)</span></li>
+          <li>To lose no more methanol than the reboiled column, the steam column must reach x<sub>B</sub> = 0.0053, which takes 11.4 trays.</li>
+        </ol>
+        <p class="takeaway">Live steam saves the reboiler at the cost of about one and a half extra trays and nearly twice the bottoms flow to treat. It pays where a reboiler would foul or corrode, or where the bottoms go to a water treatment plant anyway.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex7">
+      <div class="row"><div class="main">
+        <h3>Example 7. Column diameter at the top and the bottom</h3>
+        <dl class="given">
+          <dt>Column</dt><dd>Examples 1 and 2; sieve trays, 600 mm spacing, downcomers 12 % of the area, design at 80 % of flood</dd>
+          <dt>Top</dt><dd>101.3 kPa, about 82 °C; vapour M = 78.8 kg/kmol; ρ<sub>L</sub> = 815 kg/m³, σ = 21 mN/m</dd>
+          <dt>Bottom</dt><dd>About 125 kPa after the tray pressure drop, 116 °C; M = 91.4 kg/kmol; ρ<sub>L</sub> = 775 kg/m³, σ = 17.5 mN/m</dd>
+        </dl>
+        <ol class="steps">
+          <li>Top section, mass flows and vapour density:<span class="calcline">V = 111.9 × 78.8 = 8,820 kg/h;  L = 73.0 × 78.8 = 5,755 kg/h
+ρ_V = PM/RT = 101.3 × 78.8 / (8.314 × 355) = 2.71 kg/m³</span></li>
+          <li>Flow parameter and capacity, equations (31)–(33):<span class="calcline">F_LV = (5,755/8,820) √(2.71/815) = 0.0376
+C_SB = 0.0105 + 8.127e-4 × 600^0.755 × exp(−1.463 × 0.0376^0.842)
+  = 0.1032 m/s
+u_nf = 0.1032 × (21/20)^0.2 × √((815 − 2.71)/2.71) = 1.80 m/s</span></li>
+          <li>Diameter, equation (34):<span class="calcline">Q_V = 8,820/3,600/2.71 = 0.903 m³/s;  u_n = 0.8 × 1.80 = 1.44 m/s
+A_n = 0.626 m²;  A_c = 0.626/0.88 = 0.711 m²;  D = 0.95 m</span></li>
+          <li>Bottom section, the same way:<span class="calcline">V̄ = 111.9 × 91.4 = 10,233 kg/h;  L̄ = 173.0 × 91.4 = 15,821 kg/h
+  ρ_V = 3.53 kg/m³
+F_LV = 0.104;  C = 0.0923 × (17.5/20)^0.2 = 0.0898 m/s;  u_nf = 1.33 m/s
+Q_V = 0.804 m³/s;  A_n = 0.757 m²;  A_c = 0.861 m²;  D = 1.05 m</span></li>
+          <li>Rounding up to the next 50 mm gives 1.05 m at 80 % of flood. I would take 1.10 m for margin and use it for the whole column; at that diameter the top runs at 60 % of flood and the bottom at 72 %.</li>
+        </ol>
+        <p class="takeaway">The bottom governs here, because the liquid load below the feed raises the flow parameter. Figure 6 has both cases as presets; Figure 7 rates the bottom tray in full and shows it inside its window.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex8">
+      <div class="row"><div class="main">
+        <h3>Example 8. Real trays, column height and a packed alternative</h3>
+        <ol class="steps">
+          <li>Efficiency by O’Connell, equation (27), with α = 2.45 and μ<sub>L</sub> ≈ 0.27 mPa·s at the average temperature:<span class="calcline">E_o = 0.492 × (2.45 × 0.27)^−0.245 = 0.544</span></li>
+          <li>Actual trays: 13.3 theoretical stages less the reboiler = 12.3 theoretical trays.<span class="calcline">N_actual = 12.3 / 0.544 = 22.6  →  23 trays</span></li>
+          <li>Height, equation (39), with 1.5 m above the top tray, 2.5 m below the bottom tray and 0.3 m extra at the feed:<span class="calcline">H = (23 − 1) × 0.6 + 1.5 + 2.5 + 0.3 = 17.5 m tangent to tangent</span></li>
+          <li>Packed alternative with a Y-type structured packing of 250 m²/m³, equation (30):<span class="calcline">HETP = 100/250 + 0.1 = 0.50 m;  Z = 12.3 × 0.50 = 6.2 m of packing</span></li>
+        </ol>
+        <p class="takeaway">O’Connell is conservative for this service: field efficiencies near 80 % are reported for low-α aromatics <a class="ref" href="#src-35">35</a>, which would give 16 trays. The packed column is much shorter and its pressure drop is a few millibar against about 250 mbar for 23 trays, which matters only if the column runs under vacuum or the bottoms are heat-sensitive.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex9">
+      <div class="row"><div class="main">
+        <h3>Example 9. Condenser and reboiler duties and utilities</h3>
+        <ol class="steps">
+          <li>Condenser, total, saturated reflux, equation (11), with λ<sub>benzene</sub> = 30.7 MJ/kmol:<span class="calcline">Q_C = 111.9 × 30.72 / 3,600 = 0.955 MW</span></li>
+          <li>Cooling water for a 10 K rise:<span class="calcline">m = 955 / (4.18 × 10) = 22.8 kg/s ≈ 82 m³/h</span></li>
+          <li>Reboiler, with λ<sub>toluene</sub> = 33.2 MJ/kmol:<span class="calcline">Q_R = 111.9 × 33.18 / 3,600 = 1.03 MW</span></li>
+          <li>Steam at 5 bar a (latent heat about 2,108 kJ/kg):<span class="calcline">m_steam = 1,031 / 2,108 × 3,600 = 1,760 kg/h</span></li>
+        </ol>
+        <p class="takeaway">Every 0.1 off the reflux ratio saves 38.9 × 0.1 = 3.9 kmol/h of boil-up, about 36 kW at the reboiler. Over a year that adds up quickly, which is why reflux is worth optimising and why over-purifying a product is waste.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex10">
+      <div class="row"><div class="main">
+        <h3>Example 10. A relief load and a shell thickness</h3>
+        <ol class="steps">
+          <li>Loss of overhead cooling, unbalanced-heat screening: the reboiler keeps delivering 1.03 MW and nothing is condensed. Take the latent heat of the benzene-rich overhead at relieving pressure as about 350 kJ/kg (lower than the 393 kJ/kg at 1 atm):<span class="calcline">W = 1,031 kW / 350 kJ/kg × 3,600 = 10,600 kg/h of vapour</span></li>
+          <li>Shell for internal pressure, equation (41): design 0.35 MPa gauge, D = 1,100 mm, SA-516 Grade 70 at S = 138 MPa, spot radiography E = 0.85, c = 3 mm:<span class="calcline">R = 550 + 3 = 553 mm
+t = 0.35 × 553 / (138 × 0.85 − 0.6 × 0.35) + 3 = 1.65 + 3 = 4.7 mm</span></li>
+        </ol>
+        <p class="takeaway">Pressure needs less than 5 mm here. Full vacuum (UG-28), wind on an 18 m column and the water-filled hydrotest will set the real thickness and the stiffening. The relief valve is then sized for 10,600 kg/h to API 520, unless a dynamic study with the credits API 521 allows supports a different load.</p>
+      </div></div>
+    </article>
+  </section>
+
+  <!-- 18 Problems -->
+  <section class="sec" id="problems" aria-labelledby="h-prob">
+    <div class="sec-head"><p class="marker">18</p><h2 id="h-prob">Practice problems</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Try each one before opening the solution. Answers within 2 % count as correct unless stated. Several can be checked in Figures 1, 6, 7 and 8.</p>
+      </div>
+    </div>
+
+    <article class="ex prob" id="p1">
+      <div class="row"><div class="main">
+        <h3>Problem 1. Distillate flow</h3>
+        <p>A column takes 250 kmol/h of a feed with 35 mol % light component. The distillate must contain 97 % and the bottoms 2 %. Find the distillate flow.</p>
+        <div class="check"><label class="lbl" for="p1-in">D</label><div class="field"><input id="p1-in" inputmode="decimal"><span class="unit">kmol/h</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p1" data-ans="86.84">Check answer</button><span class="fb" id="p1-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p1-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p1-sol" hidden><span class="calcline">D = 250 × (0.35 − 0.02)/(0.97 − 0.02) = 86.8 kmol/h</span><p>Recovery of the light component in the distillate: 86.8 × 0.97 / 87.5 = 96.3 %.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p2">
+      <div class="row"><div class="main">
+        <h3>Problem 2. Minimum reflux</h3>
+        <p>A saturated-liquid feed with z<sub>F</sub> = 0.50 is split to x<sub>D</sub> = 0.98. The relative volatility is constant at 2.2. Find R<sub>min</sub>.</p>
+        <div class="check"><label class="lbl" for="p2-in">R<sub>min</sub></label><div class="field"><input id="p2-in" inputmode="decimal"><span class="unit">–</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p2" data-ans="1.56">Check answer</button><span class="fb" id="p2-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p2-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p2-sol" hidden><span class="calcline">R_min = [0.98/0.50 − 2.2 × 0.02/0.50] / (2.2 − 1) = (1.960 − 0.088)/1.2
+  = 1.56</span><p>Check it in Figure 1 with constant α = 2.2: the tile shows the same value.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p3">
+      <div class="row"><div class="main">
+        <h3>Problem 3. Minimum stages</h3>
+        <p>For the same mixture, x<sub>D</sub> = 0.98 and x<sub>B</sub> = 0.03. Find the minimum number of theoretical stages, including the reboiler.</p>
+        <div class="check"><label class="lbl" for="p3-in">N<sub>min</sub></label><div class="field"><input id="p3-in" inputmode="decimal"><span class="unit">stages</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p3" data-ans="9.345">Check answer</button><span class="fb" id="p3-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p3-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p3-sol" hidden><span class="calcline">N_min = ln[(0.98/0.02)(0.97/0.03)] / ln 2.2 = ln(1,584.3)/0.7885 = 9.34</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p4">
+      <div class="row"><div class="main">
+        <h3>Problem 4. A subcooled feed</h3>
+        <p>A liquid feed enters at 55 °C. Its bubble point is 95 °C, its heat capacity 160 kJ/(kmol·K) and its latent heat 32,000 kJ/kmol. Find q.</p>
+        <div class="check"><label class="lbl" for="p4-in">q</label><div class="field"><input id="p4-in" inputmode="decimal"><span class="unit">–</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p4" data-ans="1.2">Check answer</button><span class="fb" id="p4-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p4-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p4-sol" hidden><span class="calcline">q = 1 + 160 × (95 − 55)/32,000 = 1.20;   q-line slope = q/(q − 1) = 6</span><p>The extra 0.2 F of liquid below the feed is vapour condensed by the cold feed: the stripping section carries more liquid and the rectifying section less vapour.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p5">
+      <div class="row"><div class="main">
+        <h3>Problem 5. Stages at a real reflux ratio</h3>
+        <p>With R<sub>min</sub> = 1.56 and N<sub>min</sub> = 9.34 from Problems 2 and 3, estimate the theoretical stages (including the reboiler) at R = 2.0 with Molokanov’s equation.</p>
+        <div class="check"><label class="lbl" for="p5-in">N</label><div class="field"><input id="p5-in" inputmode="decimal"><span class="unit">stages</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p5" data-ans="20.03">Check answer</button><span class="fb" id="p5-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p5-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p5-sol" hidden><span class="calcline">X = (2.0 − 1.56)/3.0 = 0.1467
+Y = 1 − exp{[(1 + 54.4 × 0.1467)/(11 + 117.2 × 0.1467)]
+          × [(0.1467 − 1)/√0.1467]} = 0.508
+N = (9.34 + 0.508)/(1 − 0.508) = 20.0</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p6">
+      <div class="row"><div class="main">
+        <h3>Problem 6. Actual trays</h3>
+        <p>A column needs 20 theoretical trays (excluding the reboiler). The keys have α = 1.9 and the liquid viscosity at the average temperature is 0.35 mPa·s. How many actual trays does O’Connell’s correlation give? Round up.</p>
+        <div class="check"><label class="lbl" for="p6-in">Trays</label><div class="field"><input id="p6-in" inputmode="decimal"><span class="unit">trays</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p6" data-ans="37" data-tol="0.5">Check answer</button><span class="fb" id="p6-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p6-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p6-sol" hidden><span class="calcline">E_o = 0.492 × (1.9 × 0.35)^−0.245 = 0.544;   20 / 0.544 = 36.8
+  →  37 trays</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p7">
+      <div class="row"><div class="main">
+        <h3>Problem 7. Flooding velocity at high pressure</h3>
+        <p>From Fair’s chart C<sub>SB</sub> = 0.085 m/s. The liquid has ρ<sub>L</sub> = 650 kg/m³ and σ = 15 mN/m; the vapour has ρ<sub>V</sub> = 12 kg/m³. Find the flooding velocity on the net area (non-foaming, hole area 10 %).</p>
+        <div class="check"><label class="lbl" for="p7-in">u<sub>n,f</sub></label><div class="field"><input id="p7-in" inputmode="decimal"><span class="unit">m/s</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p7" data-ans="0.5851">Check answer</button><span class="fb" id="p7-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p7-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p7-sol" hidden><span class="calcline">u_nf = 0.085 × (15/20)^0.2 × √((650 − 12)/12) = 0.085 × 0.944 × 7.29
+  = 0.585 m/s</span><p>Dense vapour cuts the flooding velocity sharply; that is why high-pressure columns are wide for their mass flow.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p8">
+      <div class="row"><div class="main">
+        <h3>Problem 8. Diameter from the vapour volume</h3>
+        <p>A column carries 2.4 m³/s of vapour at a design velocity of 1.2 m/s on the net area. Downcomers take 12 % of the area. Find the diameter.</p>
+        <div class="check"><label class="lbl" for="p8-in">D</label><div class="field"><input id="p8-in" inputmode="decimal"><span class="unit">m</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p8" data-ans="1.701">Check answer</button><span class="fb" id="p8-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p8-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p8-sol" hidden><span class="calcline">A_n = 2.4/1.2 = 2.00 m²;  A_c = 2.00/0.88 = 2.27 m²
+  D = √(4 × 2.27/π) = 1.70 m</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p9">
+      <div class="row"><div class="main">
+        <h3>Problem 9. Crest over the weir</h3>
+        <p>A tray passes 12 kg/s of liquid with ρ<sub>L</sub> = 780 kg/m³ over a 1.2 m weir. Find the weir crest.</p>
+        <div class="check"><label class="lbl" for="p9-in">h<sub>ow</sub></label><div class="field"><input id="p9-in" inputmode="decimal"><span class="unit">mm</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p9" data-ans="41.08">Check answer</button><span class="fb" id="p9-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p9-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p9-sol" hidden><span class="calcline">h_ow = 750 × [12/(780 × 1.2)]^(2/3) = 750 × 0.0548 = 41.1 mm of liquid</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p10">
+      <div class="row"><div class="main">
+        <h3>Problem 10. Dry tray pressure drop</h3>
+        <p>Vapour passes the holes at 15 m/s with ρ<sub>V</sub> = 3 kg/m³ over liquid of 800 kg/m³. The orifice coefficient is 0.84. Find the dry-tray head.</p>
+        <div class="check"><label class="lbl" for="p10-in">h<sub>d</sub></label><div class="field"><input id="p10-in" inputmode="decimal"><span class="unit">mm</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p10" data-ans="60.99">Check answer</button><span class="fb" id="p10-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p10-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p10-sol" hidden><span class="calcline">h_d = 51 × (15/0.84)² × 3/800 = 51 × 318.9 × 0.00375 = 61.0 mm of liquid</span><p>The hole F-factor is 15 × √3 = 26 Pa<sup>0.5</sup>, comfortably above the weeping limits of equation (38).</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p11">
+      <div class="row"><div class="main">
+        <h3>Problem 11. Downcomer backup</h3>
+        <p>A tray has h<sub>w</sub> = 50 mm, h<sub>ow</sub> = 12 mm, a total tray drop h<sub>t</sub> = 110 mm and a head loss under the downcomer h<sub>dc</sub> = 8 mm, all as liquid. The tray spacing is 600 mm. Find the clear-liquid backup h<sub>b</sub>.</p>
+        <div class="check"><label class="lbl" for="p11-in">h<sub>b</sub></label><div class="field"><input id="p11-in" inputmode="decimal"><span class="unit">mm</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p11" data-ans="180">Check answer</button><span class="fb" id="p11-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p11-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p11-sol" hidden><span class="calcline">h_b = (50 + 12) + 110 + 8 = 180 mm;  limit ½(600 + 50) = 325 mm
+  →  55 % of the limit</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p12">
+      <div class="row"><div class="main">
+        <h3>Problem 12. Packed height</h3>
+        <p>An organic separation needs 18 theoretical stages. Estimate the packed height with a Y-type structured packing of 250 m²/m³ using Kister’s rule.</p>
+        <div class="check"><label class="lbl" for="p12-in">Z</label><div class="field"><input id="p12-in" inputmode="decimal"><span class="unit">m</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p12" data-ans="9.0">Check answer</button><span class="fb" id="p12-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p12-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p12-sol" hidden><span class="calcline">HETP = 100/250 + 0.1 = 0.50 m;  Z = 18 × 0.50 = 9.0 m</span><p>For an aqueous system the rule doubles the HETP to 1.0 m and the height to 18 m. Split long sections into beds with redistributors.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p13">
+      <div class="row"><div class="main">
+        <h3>Problem 13. Pressure drop at flood in a packed bed</h3>
+        <p>A packing has a packing factor of 18 ft⁻¹. Find the pressure drop at flood from Kister and Gill’s equation, in mbar per metre.</p>
+        <div class="check"><label class="lbl" for="p13-in">ΔP<sub>flood</sub></label><div class="field"><input id="p13-in" inputmode="decimal"><span class="unit">mbar/m</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p13" data-ans="7.414">Check answer</button><span class="fb" id="p13-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p13-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p13-sol" hidden><span class="calcline">ΔP = 0.12 × 18^0.7 = 0.908 in. H₂O/ft
+× 83.3 = 75.6 mm H₂O/m  ×  0.0981 = 7.4 mbar/m</span><p>The equation is in US units; convert only at the end.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p14">
+      <div class="row"><div class="main">
+        <h3>Problem 14. Relief load for loss of cooling</h3>
+        <p>A column’s reboiler delivers 2.5 MW. The overhead vapour’s latent heat at relieving conditions is 300 kJ/kg. Estimate the relief load by the unbalanced-heat method, with no credits.</p>
+        <div class="check"><label class="lbl" for="p14-in">W</label><div class="field"><input id="p14-in" inputmode="decimal"><span class="unit">kg/h</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p14" data-ans="30000">Check answer</button><span class="fb" id="p14-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p14-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p14-sol" hidden><span class="calcline">W = 2,500 kW / 300 kJ/kg = 8.33 kg/s = 30,000 kg/h</span><p>If the heating medium is steam at a fixed temperature, the reboiler duty falls as the column temperature rises at relieving pressure; that “pinch” is a legitimate credit if it is calculated.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p15">
+      <div class="row"><div class="main">
+        <h3>Problem 15. Shell thickness</h3>
+        <p>A column has a design pressure of 1.2 MPa gauge and an inside diameter of 2,400 mm; SA-516-70 at 138 MPa, full radiography (E = 1.0), corrosion allowance 3 mm. Find the required thickness including the allowance.</p>
+        <div class="check"><label class="lbl" for="p15-in">t</label><div class="field"><input id="p15-in" inputmode="decimal"><span class="unit">mm</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p15" data-ans="13.52">Check answer</button><span class="fb" id="p15-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p15-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p15-sol" hidden><span class="calcline">R = 1,200 + 3 = 1,203 mm
+t = 1.2 × 1,203 / (138 × 1.0 − 0.6 × 1.2) + 3 = 10.5 + 3 = 13.5 mm
+  →  order 14 mm or more</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p16">
+      <div class="row"><div class="main">
+        <h3>Problem 16. Cooling water for the condenser</h3>
+        <p>A condenser removes 4.2 MW. Cooling water may rise 10 K (c<sub>p</sub> = 4.18 kJ/(kg·K)). Find the water flow.</p>
+        <div class="check"><label class="lbl" for="p16-in">m</label><div class="field"><input id="p16-in" inputmode="decimal"><span class="unit">kg/s</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p16" data-ans="100.5">Check answer</button><span class="fb" id="p16-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p16-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p16-sol" hidden><span class="calcline">m = 4,200 / (4.18 × 10) = 100.5 kg/s ≈ 362 m³/h</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p17">
+      <div class="row"><div class="main">
+        <h3>Problem 17. Minimum boil-up in a stripper</h3>
+        <p>A reboiled stripper with no reflux takes a saturated-liquid feed of z<sub>F</sub> = 0.20 on its top tray; α = 4. The bottoms must reach x<sub>B</sub> = 0.005. Find the minimum boil-up as V̄/F.</p>
+        <div class="check"><label class="lbl" for="p17-in">(V̄/F)<sub>min</sub></label><div class="field"><input id="p17-in" inputmode="decimal"><span class="unit">–</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p17" data-ans="0.3939">Check answer</button><span class="fb" id="p17-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p17-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p17-sol" hidden><span class="calcline">y*(0.20) = 0.8/1.6 = 0.500
+(L̄/V̄)_max = (0.500 − 0.005)/(0.20 − 0.005) = 2.538
+  →  (V̄/F)_min = 1/2.538 = 0.394</span><p>Check it in Figure 1: stripper, constant α = 4, z<sub>F</sub> = 0.20, x<sub>B</sub> = 0.005.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p18">
+      <div class="row"><div class="main">
+        <h3>Problem 18. The hydrochloric acid azeotrope in mole fraction</h3>
+        <p>Constant-boiling hydrochloric acid at 101.3 kPa is 20.2 wt % HCl. Convert to mole fraction HCl (M = 36.46 and 18.02).</p>
+        <div class="check"><label class="lbl" for="p18-in">x<sub>HCl</sub></label><div class="field"><input id="p18-in" inputmode="decimal"><span class="unit">–</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p18" data-ans="0.1112">Check answer</button><span class="fb" id="p18-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p18-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p18-sol" hidden><span class="calcline">x = (20.2/36.46) / (20.2/36.46 + 79.8/18.02) = 0.554/(0.554 + 4.430)
+  = 0.111</span><p>A maximum-boiling azeotrope: distilling dilute acid sends water overhead and leaves the bottoms at this composition.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p19">
+      <div class="row"><div class="main">
+        <h3>Problem 19. Which stream should hold the drum level?</h3>
+        <p>A propylene–propane splitter runs at a reflux ratio L/D of 15 with the LV scheme of Figure 8: <span class="nw">LIC-111</span> sets the distillate flow. At turndown the drum level swings and <span class="nw">FV-110</span> works between 5 and 15 % open. What would you change on the P&amp;ID, and what does the change do to the composition control?</p>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p19-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p19-sol" hidden><p>The distillate is one sixteenth of the liquid leaving the drum, so a small error in the reflux flow is a large error in level, and the distillate valve works near its closed end, where it controls badly. Hold the level with the largest stream: move <span class="nw">LIC-111</span> onto the reflux set point (the DV scheme). The distillate then becomes a composition handle, set by a rectifying-section temperature (<span class="nw">TIC-120</span>) or, on a splitter where the tray temperatures barely change, by the analyser <span class="nw">AI-108</span> through a slow cascade.</p><p>The price is that reflux now moves only through the level loop, so <span class="nw">LIC-111</span> must be tuned tight, and its tuning now affects how the column responds to composition moves. Select DV in Figure 8 to see the new cascades.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p20">
+      <div class="row"><div class="main">
+        <h3>Problem 20. Spot the problem on the P&amp;ID</h3>
+        <p>A draft P&amp;ID shows the column’s high-high pressure trip taking its signal from <span class="nw">PT-101</span>, the pressure controller’s transmitter, and closing <span class="nw">FV-106</span>, the steam control valve, through a solenoid. The PSV has been deleted “because the trip now protects the column”. List what is wrong and how you would fix it.</p>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p20-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p20-sol" hidden><p>Three problems. The trip shares its transmitter with <span class="nw">PIC-101</span>: if <span class="nw">PT-101</span> reads low, the controller lets the pressure rise and the trip never sees it. It shares its valve with the control loop: if <span class="nw">FV-106</span> sticks open, nothing stops the steam. Neither counts as an independent layer.</p><p>The fix is the layout in Figure 8: a separate <span class="nw">PT-116</span> into the SIS, logic in interlock <span class="nw">I-100</span>, and a separate <span class="nw">XV-117</span> in series with <span class="nw">FV-106</span>, also closing the feed. Set the trip between the PIC high alarm and the relief set pressure. Keep the PSV: it is still required by the pressure-vessel code and is the last layer, sized for the governing API 521 case.</p></div>
+      </div></div>
+    </article>
+  </section>
+
+  <!-- 19 Data sheet -->
+  <section class="sec" id="datasheet" aria-labelledby="h-ds">
+    <div class="sec-head"><p class="marker">19</p><h2 id="h-ds">What goes on the column data sheet</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>The process data sheet is where a column design becomes an enquiry to the internals vendor and the vessel fabricator. Give every case that matters, not only the normal one.</p>
+      </div>
+    </div>
+    <ul class="checklist wide">
+      <li><b>Service and cases.</b> Tag, service, and every case: normal, maximum, minimum (turndown), start-up and any alternate feeds.</li>
+      <li><b>Separation.</b> Feed composition and condition; product specifications as purities and recoveries; the key components.</li>
+      <li><b>Stage requirements.</b> Theoretical stages per section, feed and draw locations, assumed efficiency or HETP and its basis.</li>
+      <li><b>Loads per section.</b> Top and bottom of each section: vapour and liquid mass flows, densities, viscosities, surface tension, molar masses, temperatures and pressures.</li>
+      <li><b>System behaviour.</b> Foaming tendency and system factor, fouling, solids, polymerisation, corrosion, two liquid phases.</li>
+      <li><b>Internals.</b> Tray type and number of passes or packing type; tray spacing; minimum turndown; allowable pressure drop; feed and draw devices; distributors.</li>
+      <li><b>Conditions.</b> Operating and design pressure and temperature, minimum design metal temperature, vacuum design (full or partial).</li>
+      <li><b>Exchangers.</b> Condenser and reboiler duties for each case, type (thermosiphon, kettle, fired), heating and cooling media.</li>
+      <li><b>Nozzles and levels.</b> Nozzle schedule; sump hold-up; normal, alarm and trip levels; reboiler return elevation; independent level connections.</li>
+      <li><b>Control and instrumentation.</b> Pressure-control method, which streams hold the levels, the temperature-control tray and spare thermowells, analyser sample points, and trip set points.</li>
+      <li><b>Relief.</b> Set pressure and the governing case, with loss of cooling, loss of reflux, power failure and fire noted.</li>
+      <li><b>Materials.</b> Shell, internals and packing materials; corrosion allowance; cladding; sour service.</li>
+      <li><b>Codes.</b> ASME VIII (or the contract code), CSA B51 registration if installed in Canada, wind and seismic basis, owner standards.</li>
+    </ul>
+  </section>
+
+  <!-- 20 Sources -->
+  <section class="sec" id="sources" aria-labelledby="h-src">
+    <div class="sec-head"><p class="marker">20</p><h2 id="h-src">Sources</h2></div>
+    <ol class="sources wide">
+      <li id="src-1">H. Z. Kister, <i>Distillation Design</i>, McGraw-Hill, 1992, and <i>Distillation Operation</i>, McGraw-Hill, 1990.</li>
+      <li id="src-2">J. D. Seader, E. J. Henley and D. K. Roper, <i>Separation Process Principles</i>, Wiley; P. C. Wankat, <i>Separation Process Engineering</i>, Pearson. Fenske, Underwood, Gilliland and Kirkbride methods; optimum reflux.</li>
+      <li id="src-3">G. Towler and R. K. Sinnott, <i>Chemical Engineering Design</i> (Coulson and Richardson’s Volume 6), Elsevier: sieve-tray design method, weir crest, dry-plate drop, residual head, downcomer backup, design at 80–85 % of flood.</li>
+      <li id="src-4"><i>Perry’s Chemical Engineers’ Handbook</i>, McGraw-Hill, Sections 13 and 14; van Laar constants for ethanol–water and acetone–chloroform as reproduced in <a href="https://en.wikipedia.org/wiki/Van_Laar_equation">Wikipedia, “Van Laar equation”</a>.</li>
+      <li id="src-5">J. M. Smith, H. C. Van Ness and M. M. Abbott, <i>Introduction to Chemical Engineering Thermodynamics</i>, McGraw-Hill: Antoine constants (Table B.2) and Wilson parameters (Table 12.5, from the DECHEMA collection). <a href="https://www.scribd.com/doc/267448982/Wilson-and-NRTL">Copy of Table 12.5</a>.</li>
+      <li id="src-6">H. Z. Kister, <a href="https://www.thechemicalengineer.com/features/rules-of-thumb-distillation">“Rules of thumb: distillation”</a>, <i>The Chemical Engineer</i>: flood C-factors, downcomer choke velocities, O’Connell accuracy, HETP rules, spray regime.</li>
+      <li id="src-7">H. Z. Kister, <a href="https://doi.org/10.1205/026387603321158159">“What caused tower malfunctions in the last 50 years?”</a>, <i>Trans IChemE</i> 81 (2003); <a href="https://aiche.org/community/sites/local-sections/virtual-local-section/events/what-caused-tower-malfunctions-last-50-years">AIChE summary</a>.</li>
+      <li id="src-8">A. I. Lygeros and K. G. Magoulas, “Column flooding and entrainment”, <i>Hydrocarbon Processing</i> 65(12), 43 (1986), <a href="https://www.osti.gov/biblio/7186947">OSTI record</a>; M. A. Minhas, <a href="https://chemengonline.com/entrainment-flooding-and-weeping-velocities">“Entrainment flooding and weeping velocities”</a>, <i>Chemical Engineering</i>, January 2025; Perry’s <i>Chemical Engineers’ Handbook</i>, equation 14-90; <a href="https://pubs.acs.org/doi/10.1021/acs.iecr.4c03115">“Improved correlations for threshold flooding and entrainment in sieve trays”</a>, <i>Industrial &amp; Engineering Chemistry Research</i> (2025), on the error of the fit.</li>
+      <li id="src-9">M. Duss and R. Taylor, <a href="https://aiche.org/resources/publications/cep/2018/july/predict-distillation-tray-efficiency">“Predict distillation tray efficiency”</a>, <i>Chemical Engineering Progress</i>, July 2018, on O’Connell’s correlation.</li>
+      <li id="src-10">A. F. Aryan, <a href="https://www.hydrocarbonengineering.com/special-reports/15122025/improving-tray-efficiency-by-reducing-weeping">“Improving tray efficiency by reducing weeping”</a>, <i>Hydrocarbon Engineering</i>, March 2025: Prince and Branan hole F-factor limits, standard sieve-tray geometry, minimum dry pressure drop.</li>
+      <li id="src-11">E. Ruhl and K. Davison (Koch-Glitsch), <a href="https://ou.edu/content/dam/pacs/laurance-reid/documents/8.%20DISTILLATION%20TRAY%20VALVE%20FEATURES.pdf">“Distillation tray valve features: a visual evaluation”</a>, Laurance Reid Gas Conditioning Conference, 2026.</li>
+      <li id="src-12">Koch-Glitsch, <a href="https://www.koch-glitsch.com/services/digital-services">KG-TOWER software</a>; <a href="https://www.scribd.com/doc/291916557/KGTowerV2-0">Introduction to KG-TOWER</a> (system factors, small-diameter caution); <a href="https://www.scribd.com/doc/299162636/Absorber-Report">example KG-TOWER tray report</a>.</li>
+      <li id="src-13">Sulzer, <a href="https://www.sulzer.com/en/shared/products/sulcol-for-windows">SULCOL for Windows</a>.</li>
+      <li id="src-14">Sulzer Chemtech, <a href="https://skoge.folk.ntnu.no/prost/proceedings/distillation10/DA2010%20Sponsor%20Information/Sulzer/Structured_Packings_20100217.pdf">Structured packings for distillation, absorption and reactive distillation</a> (2010) and <a href="https://www.sulzer.com/en/-/media/files/products/separation-technology/brochures/english/structured_packings.pdf">current brochure</a>; <a href="https://ptqmagazines.digitalrefining.com/view/315448110/54/">PTQ Q3 2024</a> on the history of BX and Mellapak.</li>
+      <li id="src-15">Koch-Glitsch, <a href="https://skoge.folk.ntnu.no/prost/proceedings/distillation10/DA2010%20Sponsor%20Information/Koch%20Glitsch/Packed_Tower/Random_Packing/IMTP_RP.pdf">IMTP high-performance random packing</a> brochure: void fractions, pressure-drop and HETP curves, design to 90 % of maximum efficient capacity.</li>
+      <li id="src-16">D. R. Summers, <a href="https://www.sulzer.com/-/media/files/products/separation-technology/distillation-and-absorption/technicalarticles/tray_capacity_limitations_at_low_surface_tension_drsummers.pdf">“Tray capacity limitations at low surface tension”</a>, Sulzer; <a href="https://www.scribd.com/doc/83388300/AIChEWeirLoadingSpr2009">“The redundancy of weir loading criteria”</a>, AIChE Spring Meeting 2009 (Nutter weir-load table).</li>
+      <li id="src-17">Digital Refining, <a href="https://www.digitalrefining.com/article/1000325/high-capacity-distillation-revamps">“High capacity distillation revamps”</a>: components of downcomer backup.</li>
+      <li id="src-18">Kister and Gill flood pressure drop and GPDC charts as given in Perry’s Section 14 (<a href="https://www.scribd.com/document/436148446/Packed-Bed-flooding-pdf">copy</a>); H. Z. Kister et al., <a href="https://www.aiche.org/resources/publications/cep/2007/july/realistically-predict-capacity-and-pressure-drop-packed-columns">“Realistically predict capacity and pressure drop for packed columns”</a>, CEP, July 2007.</li>
+      <li id="src-19">S. Young, <i>Distillation Principles and Processes</i>, 1922, azeotrope data at different pressures (<a href="https://chestofbooks.com/science/chemistry/Distillation-Principles-And-Processes/List-Of-Known-Azeotropic-Mixtures-Part-4.html">online text</a>); E. C. Voutsas et al., <a href="https://trc.nist.gov/ThermoML/10.1016/j.fluid.2011.06.009.html">ethanol–water VLE near the azeotrope</a>, <i>Fluid Phase Equilibria</i> 308 (2011).</li>
+      <li id="src-20"><a href="https://en.wikipedia.org/wiki/Azeotrope_tables">Wikipedia, “Azeotrope tables”</a>, from the CRC Handbook and Lange’s Handbook.</li>
+      <li id="src-21"><a href="https://koreascience.kr/article/JAKO201723840540972.pdf">“Steady state design for the separation of acetone–chloroform maximum boiling azeotrope using three different solvents”</a>, <i>Korean Chemical Engineering Research</i> 55(4), 2017.</li>
+      <li id="src-22">De Dietrich Process Systems, <a href="https://dedietrich.com/en/node/901">Hydrochloric acid treatment</a> (extractive rectification with sulfuric acid, dual-pressure process); <a href="https://en.wikipedia.org/wiki/Hydrochloric_acid">Wikipedia, “Hydrochloric acid”</a>.</li>
+      <li id="src-23">US Patent 10,315,971 (<a href="https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/10315971">PDF</a>) and US Patent 10,214,695 (<a href="https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/10214695">PDF</a>), propylene–propane splitters; <a href="https://www.chemengonline.com/distillation-optimization-by-vapor-recompression/">“Distillation optimization by vapor recompression”</a>, <i>Chemical Engineering</i>.</li>
+      <li id="src-24">R. Schulz (Koch-Glitsch), <a href="https://folk.ntnu.no/skoge/dwc-workshop-2023/schulz/AIChE2023Spring_Houston_Schulz.pdf">“Dividing wall columns: novel applications with case studies”</a>, Kister Distillation Symposium, 2023; I. J. Halvorsen, <a href="https://www.sintef.no/upload/Energi/Arrangementer/TGTC09/A3_3_Halvorsen.pdf">dividing-wall columns</a>, SINTEF, 2009; H. M. Lorenz et al., <a href="https://www.aidic.it/cet/18/69/039.pdf">“Divided wall columns: usefulness and challenges”</a>, <i>Chemical Engineering Transactions</i> 69 (2018): first DWC by BASF in 1985, hundreds since.</li>
+      <li id="src-25">US Chemical Safety Board, <a href="https://www.csb.gov/assets/1/20/CSBFinalReportBP.pdf">Refinery explosion and fire, BP Texas City</a>, Report 2005-04-I-TX, 2007; <a href="https://www.ehstoday.com/news/ehs_imp_37855">EHS Today</a> on the CSB preliminary findings; <a href="https://www.ogj.com/general-interest/article/17243894/csb-cites-six-safety-issues-in-bp-refinery-explosion">Oil &amp; Gas Journal</a>, 2005.</li>
+      <li id="src-26">Koch-Glitsch, <a href="https://skoge.folk.ntnu.no/prost/proceedings/distillation10/DA2010%20Sponsor%20Information/Koch%20Glitsch/Technical_Articles/Packing/Minimize_Risk_of_Fire.pdf">“Minimize the risk of fire in structured packing”</a>; AFPM, <a href="https://www.afpm.org/data-reports/technical-papers/qa-search/question-58-does-your-sitecompany-require-use-chemical-wash">Q&amp;A on chemical washes for structured packing</a>; T. Sasaki, <a href="https://aiche.org/academy/conferences/aiche-spring-meeting-and-global-congress-on-process-safety/2021/proceeding/paper/131b-structure-packing-fire-risk-and-mitigation-plan-distillation-column-eneos-corporation-oita">ENEOS Oita structured-packing fire</a>, AIChE GCPS 2021; P. Lenfeld and I. Buttridge, <a href="https://www.chemengonline.com/plant-revamps-and-turnarounds-some-lessons-learned/">“Plant revamps and turnarounds: some lessons learned”</a>, <i>Chemical Engineering</i>.</li>
+      <li id="src-27">Digital Refining, <a href="https://digitalrefining.com/article/1000487/calculating-column-relief-loads">“Calculating column relief loads”</a>; <a href="https://ptqmagazines.digitalrefining.com/PTQ-Q3-2025/90/">PTQ Q3 2025</a> on dynamic relief studies; D. A. Mukharror et al., dynamic simulation of cooling-water and reflux failure, IChemE Hazards 31, 2021 (source 47).</li>
+      <li id="src-28">API Standard 521, 7th edition, 2020 (<a href="https://www.hydrocarbonengineering.com/refining/08062020/api-publishes-7th-edition-of-api-standard-521">notice</a>) and API Standard 520 Parts I and II, 2020 (<a href="https://www.hydrocarbonengineering.com/refining/09112020/api-updates-suite-of-standards-addressing-pressure-relieving-device-safety">notice</a>); fire-case relation as summarised in <i>Chemical Engineering</i>, January 2010 (<a href="https://www.scribd.com/document/62390987/chemeng-201001-aa2bc0b481-pp">copy</a>).</li>
+      <li id="src-29">ASME BPVC Section VIII, Division 1: UG-27 as summarised on <a href="https://cr4.globalspec.com/thread/19446/Design-Calculations-for-High-Pressure-Vessel-Above-1000PSI">CR4</a>; TWI, <a href="https://www.twi-global.com/locations/india/news-and-events/events/changes-in-asme-bpvc-2025-edition-section-viii-division-1">changes in the 2025 edition</a>; M. Henry, <a href="https://tappi.org/globalassets/nano-2023/9.3_henry.m.pdf">the move of overpressure protection to Section XIII</a>, TAPPI 2023.</li>
+      <li id="src-30">Eng-Tips discussions on <a href="https://eng-tips.com/threads/full-vacuum-design.502124">full-vacuum design</a> and <a href="https://eng-tips.com/threads/tower-design-vacuum.105493">tower design for vacuum</a>.</li>
+      <li id="src-31">Red-Bag, <a href="https://red-bag.com/engineering-guides/245-bn-eg-ue102-trayed-and-packed-tower-inspections.html">trayed and packed tower inspections</a> (levelness tolerances); FRI, <a href="https://www.chemicalprocessing.com/processing-equipment/design-simulation/article/11375592/properly-install-column-internals">“Properly install column internals”</a>, <i>Chemical Processing</i>; <a href="https://www.aidic.it/cet/18/69/084.pdf">installation of column internals</a>, <i>Chemical Engineering Transactions</i> 69 (2018); H. Z. Kister, <a href="https://aiche.org/conferences/aiche-spring-meeting-and-global-congress-on-process-safety/2013/proceeding/paper/28d-refinery-tower-inspections-discovering-problems-and-solving-malfunctions-2">refinery tower inspections</a>, AIChE 2013.</li>
+      <li id="src-32">CSA Z767:24, <i>Process safety management</i> (<a href="https://ccn-scc.ca/standardsdb/standards/4033372">SCC record</a>), with its 16 elements summarised by the <a href="https://pellet.org/wp-content/uploads/2023/10/psm-overview-factsheet.pdf">Wood Pellet Association of Canada</a>; CSA B51, <i>Boiler, pressure vessel, and pressure piping code</i> (<a href="https://scc-ccn.ca/standardsdb/standards/4029778">SCC record</a>).</li>
+      <li id="src-33">M. Fermeglia, University of Trieste, <a href="https://moodle2.units.it/pluginfile.php/395399/mod_resource/content/1/09_StagedColumnDesign.pdf">staged column design</a> and <a href="https://moodle2.units.it/pluginfile.php/396008/mod_resource/content/3/10_PackedColumnDesign.pdf">packed column design</a> lecture notes, 2021.</li>
+      <li id="src-34">Iowa State University, <a href="https://iastate.pressbooks.pub/chemicalengineeringseparations/?p=60"><i>Chemical Engineering Separations</i></a>, hole-area factor for Fair’s correlation.</li>
+      <li id="src-35">K. Kolmetz, KLM Technology Group, <a href="https://www.slideshare.net/KarlKolmetz/propylene-c3-splitter-tower-efficiency">“Propylene (C3) splitter tower efficiency”</a>: general field tray efficiencies.</li>
+      <li id="src-36">Sulzer Chemtech, <a href="https://sulzer.ch/-/media/files/products/process-techology/processes-and-applications/brochures/separation_technology_for_the_chemical_process_industry.pdf">Separation technology for the chemical process industry</a>: structured packing in styrene distillation.</li>
+      <li id="src-37">Total training course EXP-PR-PR180, <a href="https://www.scribd.com/document/794325294/Distillation-Process-Overview">Distillation</a>: choosing packed or trayed columns.</li>
+      <li id="src-38">S. Skogestad, “The dos and don’ts of distillation column control”, <i>Chemical Engineering Research and Design</i> 85 (2007); <a href="https://skoge.folk.ntnu.no/publications/2007/skogestad_distillation-dos-and-donts_special-issue-of-cherd/old-submitted/dist06-extended.pdf">submitted version, November 2006</a>: degrees of freedom, LV and DV schemes, temperature location.</li>
+      <li id="src-39">E. S. Hori and S. Skogestad, “Selection of control structure and temperature location for two-product distillation columns”, <i>Chemical Engineering Research and Design</i> 85 (2007) 293–306, <a href="https://skoge.folk.ntnu.no/prost/proceedings/npc07/NTNU/ntnu06.pdf">PDF</a>.</li>
+      <li id="src-40">W. L. Luyben, “Evaluation of criteria for selecting temperature control trays in distillation columns”, <i>Journal of Process Control</i> 16 (2006); <a href="https://proceedings.aiche.org/conferences/aiche-annual-meeting/2005/proceeding/paper/557b-evaluation-criteria-selecting-temperature-control-trays-distillation-columns-0">AIChE Annual Meeting 2005 abstract, paper 557b</a>.</li>
+      <li id="src-41">AIChE, <i>CEP</i> (May 2020), <a href="https://www.aiche.org/resources/publications/cep/2020/may/details-matter-hot-vapor-bypass-systems">Details matter in hot-vapor bypass systems</a>.</li>
+      <li id="src-42">AIChE Spring Meeting 2015, paper 179f, <a href="https://aiche.org/conferences/aiche-spring-meeting-and-global-congress-on-process-safety/2015/proceeding/paper/179f-flooded-condensers-controls-principles-and-troubleshooting-2">Flooded condensers controls: principles and troubleshooting</a>.</li>
+      <li id="src-43">What Is Piping, <a href="https://whatispiping.com/distillation-column-control/">Distillation column control: pressure control</a>: methods, cooling-water velocity, condensate entry and product draws.</li>
+      <li id="src-44">J. Federlein, <i>InTech</i> (October 2024), <a href="https://www.automation.com/en-us/articles/november-2024/document-projects-updated-isa51-standard">Document projects consistently with the updated ISA-5.1 standard</a>: circle-in-square for the BPCS, diamond-in-square for an SIS.</li>
+      <li id="src-45">Control Engineering, <a href="https://www.controleng.com/how-to-read-pids-3/">How to read P&amp;IDs</a>: ISA-5.1 letters, location bars and signal lines.</li>
+      <li id="src-46">Washington University in St. Louis, ChE 477, <a href="https://classes.engineering.wustl.edu/2009/spring/che478a/homeworks/notes_on_control.doc">lecture notes on process control</a>: fail-open cooling and fail-closed heating.</li>
+      <li id="src-47">D. A. Mukharror, Z. Harun, Z. A. Putra and N. A. H. Md Nordin, <a href="https://www.icheme.org/media/27725/hazards-31-paper-29-harun.pdf">Assessment of operators’ response time on safe operation of distillation columns: a process dynamic analysis</a>, IChemE Hazards 31, Symposium Series 168 (2021).</li>
+      <li id="src-48">API Std 662 withdrawn 15 February 2025 (<a href="https://shop.standards.ie/en-ie/standards/api-662-2006-97084_saig_api_api_203494">Standards Ireland record</a>); API Std 667, <i>Plate-and-frame heat exchangers</i>, 1st edition, March 2022 (<a href="https://standards.globalspec.com/std/14501017/std-667">GlobalSpec record</a>). Checked 15 November 2026.</li>
+    </ol>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div>
+      <div class="foot-name">Alireza Moghaddam, EIT</div>
+      <p>Chemical process engineering · Metro Vancouver</p>
+    </div>
+    <div class="foot-links">
+      <a href="https://github.com/alotfi73">GitHub</a>
+      <a href="/about/">About</a>
+    </div>
+    <p class="foot-note">Educational content. Numbers are illustrative unless stated; codes, standards and your company's specifications govern any real design.</p>
+  </div>
+</footer>
+<script src="js/model.js"></script>
+<script src="js/page.js"></script>
+</body>
+</html>
