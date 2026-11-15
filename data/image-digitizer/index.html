@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image digitizer — measure areas and read data from chart images · Alireza Moghaddam</title>
+  <meta name="description" content="Calibrate linear or log chart axes or a scale bar, measure areas by drawing or by colour, compute area ratios, read data points, and export to Excel, CSV, text or PNG. Runs in the browser; images are not uploaded.">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/page.css">
+  <link rel="stylesheet" href="css/digitizer.css">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/icons/site.webmanifest">
+  <meta name="theme-color" content="#4c5157">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Alireza Moghaddam, EIT">
+  <meta property="og:title" content="Image digitizer: measure areas and read data from chart images">
+  <meta property="og:description" content="Calibrate linear or log chart axes or a scale bar, measure areas by drawing or by colour, compute area ratios, read data points, and export to Excel, CSV, text or PNG. Runs in the browser; images are not uploaded.">
+  <meta property="og:url" content="https://chemprocesseng.com/data/image-digitizer/">
+  <meta property="og:image" content="https://chemprocesseng.com/assets/brand/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>.site-nav .wordmark{display:inline-flex;align-items:center;gap:12px}.site-nav .wordmark img{display:block;border-radius:8px}</style>
+</head>
+<body>
+  <a class="skip" href="#tool">Skip to the tool</a>
+
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="wordmark" href="/"><img src="/assets/brand/logo-icon.svg" width="36" height="36" alt="">Alireza Moghaddam</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="/calculators/">Calculators</a></li>
+          <li><a href="/lessons/">Lessons</a></li>
+          <li><a href="/data/" aria-current="page">Data</a></li>
+          <li><a href="/analysis/">Analysis</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <header class="page-head">
+        <p class="crumbs"><a href="/data/">Data</a><span aria-hidden="true">/</span>Image digitizer</p>
+        <h1 class="display">Measure areas and read data from chart images</h1>
+        <p class="standfirst">Calibrate the axes, trace an area or pick it by colour, and get real values on linear or log scales. Everything runs in your browser, so the image never leaves your computer.</p>
+        <p class="byline"><span class="author">Alireza Moghaddam</span><span>Updated 7 November 2026</span><span>Exact polygon integration, pixel-weighted colour regions</span></p>
+      </header>
+
+      <!-- The whole tool is built inside this element. -->
+      <div class="tool" id="tool">
+        <div id="image-digitizer" data-image-digitizer></div>
+      </div>
+
+      <section class="section" aria-labelledby="method">
+        <p class="marker">Method</p>
+        <h2 class="headline" id="method">How the numbers are computed</h2>
+        <div class="split">
+          <div class="prose">
+            <p>Four reference points fix the mapping from pixels to axis values. The line through X1 and X2 is a line of constant Y, and the line through Y1 and Y2 is a line of constant X. That gives an affine map, so rotated or slightly skewed scans are handled without extra steps.</p>
+            <div class="eq"><code>u = a·x<sub>px</sub> + b·y<sub>px</sub> + e      v = c·x<sub>px</sub> + d·y<sub>px</sub> + f</code><span class="n">(1)</span></div>
+            <p>Here u = X on a linear axis and u = log<sub>10</sub> X on a log axis; v is the same for Y. A shape drawn with straight edges is a polygon in (u, v), and its real area follows from Green’s theorem, integrated exactly along every edge:</p>
+            <div class="eq"><code>A = | ∮ X dY | = | Σ<sub>edges</sub> ∫ X(u) · Y′(v) dv |</code><span class="n">(2)</span></div>
+            <p>Colour regions are measured pixel by pixel. Each pixel adds the real area it covers, which grows with X and Y on log axes:</p>
+            <div class="eq"><code>A = Σ<sub>pixels</sub> |ad − bc| · (ln 10 · X) · (ln 10 · Y)</code><span class="n">(3)</span></div>
+            <p>The ln 10 · X factor applies only to a log X axis, and ln 10 · Y only to a log Y axis. A ratio is the sub area divided by the main area in real units. The tool also reports the on-screen (pixel) ratio and how much of the sub area lies inside the main area.</p>
+
+            <figure>
+              <p class="figtitle">Table 1. Areas from the tool match exact answers on linear, log and rotated axes</p>
+              <table class="data">
+                <thead><tr><th>Check</th><th>Exact</th><th>Tool</th><th>Error, %</th></tr></thead>
+                <tbody>
+                  <tr><td>Log–log triangle, polygon</td><td>81</td><td>81.0000</td><td>0.000</td></tr>
+                  <tr><td>Semi-log triangle, polygon</td><td>2.90865</td><td>2.90865</td><td>0.000</td></tr>
+                  <tr><td>Axes rotated 30°, rectangle</td><td>10</td><td>10.0000</td><td>0.000</td></tr>
+                  <tr><td>Log–log chart, rectangle traced as polygon</td><td>810</td><td>810.000</td><td>0.000</td></tr>
+                  <tr><td>Log–log chart, same rectangle by colour</td><td>810</td><td>808.437</td><td>−0.19</td></tr>
+                  <tr><td>Log–log chart, area under √x / 5 by colour</td><td>3082.88</td><td>3063.97</td><td>−0.61</td></tr>
+                </tbody>
+              </table>
+              <figcaption>Polygon checks use exact corner coordinates. The chart checks use a 880 × 660 px matplotlib figure, calibrated by clicking tick marks as a reader would. Colour regions lose part of the edge pixels, so their error shrinks as the region gets larger on screen.</figcaption>
+            </figure>
+          </div>
+          <aside class="sidenotes" aria-label="Notes">
+            <p><b>Why log areas look wrong.</b> On a log–log plot, a square one decade on each side holds 81 units² between 1 and 10, but 8 100 units² between 10 and 100. The tool reports the real area and, next to it, the axis-space area in decades².</p>
+            <p><b>Accuracy.</b> Pick reference points far apart and zoom in before clicking. A 1 px error over a 500 px span is 0.2 % of the axis.</p>
+            <p><b>Formats.</b> Browsers open PNG, JPG, GIF, BMP, WebP and SVG. Export PDF or TIFF figures to PNG first.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="limits">
+        <p class="marker">Notes</p>
+        <h2 class="headline" id="limits">What to watch for</h2>
+        <div class="prose">
+          <ul>
+            <li>JPEG compression blurs colours. A colour tolerance of 30–60 usually separates a filled region cleanly; tick “Fill holes” when grid lines or labels cut through it.</li>
+            <li>A freehand shape that crosses itself is measured with signed areas. Draw around the region without crossing.</li>
+            <li>“Save project” stores the image, calibration, shapes and points in one file, so a measurement can be checked or repeated later.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <div>
+        <a class="wordmark" href="/">Alireza Moghaddam</a>
+        <p>Process engineering calculations, lessons, data and techno-economics. Images opened in this tool stay on your computer.</p>
+      </div>
+      <ul>
+        <li><a href="/calculators/">Calculators</a></li>
+        <li><a href="/lessons/">Lessons</a></li>
+        <li><a href="/data/">Data</a></li>
+        <li><a href="/analysis/">Analysis</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="js/xlsx-lite.js"></script>
+  <script src="js/digitizer.js"></script>
+</body>
+</html>
