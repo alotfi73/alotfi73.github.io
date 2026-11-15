@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Image digitizer — measure areas and read data from chart images · Alireza Moghaddam</title>
+  <title>Image digitizer — measure areas and read data from chart images · Chemical Process Engineering</title>
   <meta name="description" content="Calibrate linear or log chart axes or a scale bar, measure areas by drawing or by colour, compute area ratios, read data points, and export to Excel, CSV, text or PNG. Runs in the browser; images are not uploaded.">
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/page.css">
@@ -14,7 +14,7 @@
   <link rel="manifest" href="/assets/icons/site.webmanifest">
   <meta name="theme-color" content="#4c5157">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Alireza Moghaddam, EIT">
+  <meta property="og:site_name" content="Chemical Process Engineering">
   <meta property="og:title" content="Image digitizer: measure areas and read data from chart images">
   <meta property="og:description" content="Calibrate linear or log chart axes or a scale bar, measure areas by drawing or by colour, compute area ratios, read data points, and export to Excel, CSV, text or PNG. Runs in the browser; images are not uploaded.">
   <meta property="og:url" content="https://chemprocesseng.com/data/image-digitizer/">
@@ -22,25 +22,53 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <style>.site-nav .wordmark{display:inline-flex;align-items:center;gap:12px}.site-nav .wordmark img{display:block;border-radius:8px}</style>
+  <style>
+:root{--f-display:var(--serif);--border-strong:#b1b5b9}
+.wrap{max-width:var(--page-max)}
+/* Navigation: full logo as the home link, five section links */
+.nav{background:var(--surface);border-bottom:1px solid var(--border)}
+.nav-in{max-width:1200px;margin:0 auto;padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:block;flex:none;line-height:0;border-radius:10px;text-decoration:none}
+.brand img{display:block;width:52px;height:52px}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:28px}
+.nav ul a{display:block;text-decoration:none;font-size:15px;line-height:1.65;padding:23px 0 21px;border-bottom:2px solid transparent;white-space:nowrap}
+.nav ul a[aria-current="page"]{border-bottom-color:var(--ink)}
+.nav ul a:hover{border-bottom-color:var(--border-strong)}
+@media (max-width:640px){
+  .nav-in{flex-wrap:wrap;height:auto;padding:10px 20px 0;gap:2px}
+  .brand img{width:44px;height:44px}
+  .nav nav{width:100%}
+  .nav ul{justify-content:space-between;gap:8px}
+  .nav ul a{font-size:14px;padding:10px 0 9px}
+}
+/* Footer: the one dark band */
+.foot{background:var(--brand-deep);color:#fff;margin-top:110px}
+.foot-in{max-width:1200px;margin:0 auto;padding:44px 40px 40px;display:flex;flex-wrap:wrap;gap:20px 48px;justify-content:space-between;font-size:14px;line-height:1.6}
+.foot a{color:#fff}
+.foot-name{font:400 22px/1.3 var(--f-display)}
+.foot p{margin:4px 0 0}
+.foot-links{display:flex;flex-wrap:wrap;gap:8px 24px;list-style:none;margin:0;padding:0}
+.foot-note{flex-basis:100%;opacity:.85;max-width:760px;margin:0}
+@media (max-width:700px){ .foot-in{padding:36px 20px 32px} }
+  </style>
 </head>
 <body>
   <a class="skip" href="#tool">Skip to the tool</a>
 
-  <header class="site-nav">
-    <div class="wrap">
-      <a class="wordmark" href="/"><img src="/assets/brand/logo-icon.svg" width="36" height="36" alt="">Alireza Moghaddam</a>
-      <nav aria-label="Main">
-        <ul>
-          <li><a href="/calculators/">Calculators</a></li>
-          <li><a href="/lessons/">Lessons</a></li>
-          <li><a href="/data/" aria-current="page">Data</a></li>
-          <li><a href="/analysis/">Analysis</a></li>
-          <li><a href="/about/">About</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/" aria-label="Chemical Process Engineering, home"><img src="/assets/brand/logo.svg" width="52" height="52" alt=""></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="/calculators/">Calculators</a></li>
+        <li><a href="/lessons/">Lessons</a></li>
+        <li><a href="/data/" aria-current="page">Data</a></li>
+        <li><a href="/analysis/">Analysis</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
   <main>
     <div class="wrap">
@@ -48,7 +76,7 @@
         <p class="crumbs"><a href="/data/">Data</a><span aria-hidden="true">/</span>Image digitizer</p>
         <h1 class="display">Measure areas and read data from chart images</h1>
         <p class="standfirst">Calibrate the axes, trace an area or pick it by colour, and get real values on linear or log scales. Everything runs in your browser, so the image never leaves your computer.</p>
-        <p class="byline"><span class="author">Alireza Moghaddam</span><span>Updated 7 November 2026</span><span>Exact polygon integration, pixel-weighted colour regions</span></p>
+        <p class="byline"><span class="author"><a href="/about/#authors" style="color:inherit;text-decoration:none">Alireza Lotfollahzade</a>, EIT</span><span>Updated 7 November 2026</span><span>Exact polygon integration, pixel-weighted colour regions</span></p>
       </header>
 
       <!-- The whole tool is built inside this element. -->
@@ -107,21 +135,23 @@
     </div>
   </main>
 
-  <footer class="site-foot">
-    <div class="wrap">
-      <div>
-        <a class="wordmark" href="/">Alireza Moghaddam</a>
-        <p>Process engineering calculations, lessons, data and techno-economics. Images opened in this tool stay on your computer.</p>
-      </div>
-      <ul>
-        <li><a href="/calculators/">Calculators</a></li>
-        <li><a href="/lessons/">Lessons</a></li>
-        <li><a href="/data/">Data</a></li>
-        <li><a href="/analysis/">Analysis</a></li>
-        <li><a href="/about/">About</a></li>
-      </ul>
+  <footer class="foot">
+  <div class="foot-in">
+    <div>
+      <div class="foot-name">Chemical Process Engineering</div>
+      <p>Lessons, calculators and tools for chemical engineering students and engineers.</p>
     </div>
-  </footer>
+    <ul class="foot-links">
+      <li><a href="/calculators/">Calculators</a></li>
+      <li><a href="/lessons/">Lessons</a></li>
+      <li><a href="/data/">Data</a></li>
+      <li><a href="/analysis/">Analysis</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="https://github.com/alotfi73">GitHub</a></li>
+    </ul>
+    <p class="foot-note">Run by Alireza Lotfollahzade, EIT, in Metro Vancouver. Educational content: numbers are illustrative unless stated, and codes, standards and your company's specifications govern any real design.</p>
+  </div>
+</footer>
 
   <script src="js/xlsx-lite.js"></script>
   <script src="js/digitizer.js"></script>
