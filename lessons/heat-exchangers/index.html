@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heat exchangers: types, sizing, standards and control · Chemical Process Engineering</title>
+<meta name="description" content="Heat exchanger types, LMTD and ε–NTU sizing, a calculator, five worked examples, a P&amp;ID with its control system, and the governing codes and standards (ASME, TEMA, API, ISO, HEI, CSA B51, IPS).">
+
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/assets/icons/site.webmanifest">
+<meta name="theme-color" content="#4c5157">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Chemical Process Engineering">
+<meta property="og:title" content="Heat exchangers: types, sizing, standards and control">
+<meta property="og:description" content="Types, LMTD and ε–NTU sizing, a calculator, worked examples, a P&amp;ID with its control system, and the governing codes and standards.">
+<meta property="og:url" content="https://chemprocesseng.com/lessons/heat-exchangers/">
+<meta property="og:image" content="https://chemprocesseng.com/assets/brand/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://chemprocesseng.com/lessons/heat-exchangers/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,300;6..72,400&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: an edited technical report. 680 px reading column with a 240 px sidenote rail,
+   black rules above sections, one interactive calculator card, figures without frames. */
+:root{
+  --primary:#a6d7f0; --primary-hover:#8fcbe9; --secondary:#8f5a39;
+  --ink:#000; --ink-muted:#4d5459; --ink-subtle:#5f646a;
+  --interactive:#12647e; --brand-deep:#3a2206;
+  --canvas:#f5f7f8; --surface:#fff; --surface-sunken:#e6e9eb;
+  --border:#e5e7eb; --border-strong:#b1b5b9; --rule:#000;
+  --success:#006b48; --warning:#9e4200; --error:#b42318;
+  --chart-1:#12647e; --chart-2:#ab6528; --chart-muted:#b1b5b9; --chart-grid:#e6e9eb;
+  --f-display:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-body:"Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --ease:cubic-bezier(0.4,0.14,0.3,1); --ease-enter:cubic-bezier(0,0,0.3,1);
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--interactive);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0 0 1em}
+sub,sup{line-height:0}
+.num{font-variant-numeric:tabular-nums}
+
+/* Navigation (site template) */
+.skip{position:absolute;left:-9999px;top:0;background:var(--surface);padding:8px 12px}
+.skip:focus{left:12px;top:12px;z-index:10}
+
+/* Page frame */
+.page{max-width:1200px;margin:0 auto;padding:0 40px}
+.grid{display:grid;grid-template-columns:minmax(0,680px) 240px;gap:0 64px}
+.main-col{grid-column:1}
+.side{grid-column:2;font-size:14px;line-height:1.55;color:var(--ink-muted)}
+.full{grid-column:1 / -1}
+
+/* Header */
+.header{padding:40px 0 8px}
+.crumb{font-size:14px;color:var(--ink-subtle);margin-bottom:18px}
+.crumb a{color:var(--ink-subtle)}
+.marker{font-family:var(--f-display);font-size:15px;color:var(--secondary);letter-spacing:0.02em;margin:0 0 10px}
+h1{font-family:var(--f-display);font-weight:300;font-size:56px;line-height:1.12;letter-spacing:-0.01em;max-width:900px}
+.standfirst{font-size:19px;font-weight:300;line-height:1.6;color:var(--ink-muted);max-width:680px;margin:18px 0 22px}
+.byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:920px}
+
+/* Sections */
+section{padding-top:84px}
+.sec-head{border-top:1px solid var(--rule);padding-top:18px;margin-bottom:24px}
+h2{font-family:var(--f-display);font-weight:300;font-size:40px;line-height:1.15;letter-spacing:-0.005em}
+h3{font-family:var(--f-body);font-weight:600;font-size:19px;line-height:1.35;margin:36px 0 10px}
+h4{font-family:var(--f-body);font-weight:600;font-size:16px;margin:24px 0 6px}
+.lead{font-size:19px;font-weight:300;line-height:1.6}
+ul.plain,ol.plain{padding-left:1.2em;margin:0 0 1em}
+ul.plain li,ol.plain li{margin-bottom:.45em}
+
+/* Sidenotes */
+.sn{border-left:2px solid var(--secondary);padding-left:14px;margin-bottom:22px}
+.sn strong{color:var(--ink);font-weight:600}
+.side .toc{list-style:none;padding:0;margin:0}
+.side .toc li{padding:6px 0;border-bottom:1px solid var(--border)}
+.side .toc a{text-decoration:none;color:var(--ink)}
+.side .toc a:hover{text-decoration:underline}
+.sticky{position:sticky;top:24px}
+
+/* Equations */
+.eq{font-family:var(--f-mono);font-size:14px;line-height:1.7;background:var(--surface);border-radius:4px;padding:14px 18px;margin:16px 0 20px;overflow-x:auto;display:flex;justify-content:space-between;gap:24px;white-space:nowrap}
+.eq .no{color:var(--ink-subtle)}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:18px 0 8px;background:transparent}
+table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.5}
+thead th{font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--ink-subtle);text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);vertical-align:bottom}
+tbody td{padding:10px 12px 10px 0;border-bottom:1px solid var(--border);vertical-align:top}
+tbody td:first-child{font-weight:600}
+td.r,th.r{text-align:right}
+.tbl-cap{font-size:13px;color:var(--ink-subtle);margin:6px 0 0}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 7px;border-radius:4px;background:var(--surface-sunken);color:var(--ink-muted);white-space:nowrap}
+
+/* Figures */
+figure{margin:32px 0;padding-top:12px;border-top:1px solid var(--rule)}
+figcaption.title{font-family:var(--f-body);font-weight:600;font-size:16px;margin-bottom:12px}
+figcaption.cap{font-size:13px;color:var(--ink-subtle);line-height:1.5;margin-top:10px}
+figure svg{display:block;width:100%;height:auto}
+
+/* Calculator */
+.calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin-top:8px}
+.card{background:var(--surface);border-radius:8px;padding:24px;border:1px solid var(--border)}
+.card-title{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:300;font-size:23px;line-height:1.25;margin:0 0 18px}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;font-size:14px;margin-bottom:4px}
+.field .row{display:flex;align-items:center;gap:12px}
+.field input[type=range]{flex:1;accent-color:var(--interactive);min-width:0}
+.numbox{display:flex;align-items:center;border:1px solid var(--border-strong);border-radius:8px;background:var(--surface);height:40px;width:118px;flex:none;padding:0 10px 0 0}
+.numbox:focus-within{outline:2px solid var(--interactive);outline-offset:1px}
+.numbox input{border:0;outline:0;width:100%;min-width:0;height:100%;padding:0 4px 0 10px;font:inherit;font-size:15px;font-variant-numeric:tabular-nums;text-align:right;background:transparent}
+.numbox span{font-size:13px;color:var(--ink-subtle);white-space:nowrap}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 18px}
+.seg button,.btn-sec{font:inherit;font-size:13px;font-weight:600;color:var(--secondary);background:var(--surface);border:1px solid var(--ink);border-radius:20px;padding:6px 14px;min-height:34px;cursor:pointer;transition:transform 200ms var(--ease),background 200ms var(--ease)}
+.seg button[aria-pressed="true"]{background:var(--primary);color:var(--ink);border-color:var(--ink)}
+.seg button:hover,.btn-sec:hover{background:#f2f8fb}
+.seg button[aria-pressed="true"]:hover{background:var(--primary-hover)}
+.seg button:active,.btn-sec:active,.btn-pri:active{transform:scale(.98)}
+.presets-label{font-size:13px;font-weight:600;color:var(--ink-subtle);margin:6px 0 6px}
+.assume{font-size:13px;color:var(--ink-muted);margin:14px 0 0;padding-left:1.1em}
+.assume li{margin-bottom:3px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;transition:background 1500ms var(--ease)}
+.tile.flash{background:var(--primary);transition:none}
+.tile .v{font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1.1;letter-spacing:-0.01em;font-variant-numeric:tabular-nums}
+.tile .u{font-size:14px;color:var(--ink-muted);margin-left:4px;font-family:var(--f-body)}
+.tile .q{font-size:13px;color:var(--ink-subtle);margin-top:6px}
+.status{font-size:14px;margin:12px 0 0;min-height:1.5em}
+.status.ok{color:var(--success)} .status.warn{color:var(--warning)} .status.err{color:var(--error)}
+.working{margin-top:12px}
+.toggle{font:inherit;font-weight:600;background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;gap:8px}
+.toggle .chev{display:inline-block;transition:transform 400ms var(--ease)}
+.toggle[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.working ol{font-family:var(--f-mono);font-size:13px;line-height:1.75;margin:14px 0 0;padding-left:1.8em;overflow-x:auto}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+.btn-pri{font:inherit;font-size:16px;font-weight:600;color:var(--ink);background:var(--primary);border:0;border-radius:100px;height:44px;padding:10px 48px 10px 24px;position:relative;cursor:pointer;transition:background 200ms var(--ease),transform 200ms var(--ease)}
+.btn-pri::after{content:"→";position:absolute;right:22px;top:50%;transform:translateY(-52%);transition:transform 200ms var(--ease)}
+.btn-pri:hover{background:var(--primary-hover)}
+.btn-pri:hover::after{transform:translate(3px,-52%)}
+.btn-sec{font-size:16px;height:44px;padding:10px 24px;text-decoration:none;display:inline-flex;align-items:center}
+.copied{font-size:13px;color:var(--success)}
+
+/* Examples */
+.example{margin:40px 0 0}
+.example h3{margin-top:0;font-family:var(--f-display);font-weight:400;font-size:28px;line-height:1.25}
+.given{font-size:14px;color:var(--ink-muted);background:var(--surface);border-radius:8px;padding:14px 18px;margin:12px 0 14px}
+.answer{border-left:2px solid var(--secondary);padding-left:14px;margin:14px 0}
+.steps{font-family:var(--f-mono);font-size:13px;line-height:1.8;background:var(--surface);border-radius:4px;padding:14px 18px 14px 40px;overflow-x:auto;margin:10px 0 14px}
+
+/* P&ID (shared conventions with the compressors page) */
+.svgwrap{overflow-x:auto;background:var(--surface);border-radius:8px;padding:12px 8px}
+.svgwrap svg{display:block;width:100%;min-width:820px;height:auto}
+.pfd text{font:400 12px var(--f-body);fill:var(--ink)}
+.pfd .lbl-s{font-size:11px;fill:var(--ink-subtle)}
+.pfd .zone{font-size:11px;fill:var(--ink-subtle);font-weight:600}
+.pfd .pipe{fill:none;stroke:var(--ink);stroke-width:1.75}
+.pfd .cw{fill:none;stroke:#4676bf;stroke-width:1.75}
+.pfd .imp{fill:none;stroke:var(--ink);stroke-width:1}
+.pfd .sig{fill:none;stroke:#12647e;stroke-width:1.25;stroke-dasharray:4 3}
+.pfd .eqp{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.pfd .vlv{fill:var(--surface);stroke:var(--ink);stroke-width:1.25}
+.pfd .vlv-cw{fill:var(--surface);stroke:#4676bf;stroke-width:1.25}
+.pfd .inst{fill:var(--surface);stroke:#12647e;stroke-width:1.25}
+.pfd .inst-t{font:600 9.5px var(--f-body);fill:#12647e}
+.pfd .fail{font:600 10px var(--f-body);fill:var(--ink-subtle)}
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px 24px;margin:18px 0 6px;padding:0;list-style:none}
+.legend li{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.35}
+.legend svg{flex:none;width:56px;height:30px}
+.legend b{font-weight:600}
+.legend .d{display:block;font-size:12.5px;color:var(--ink-subtle)}
+.lettercodes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px 24px;font-size:14px;margin:8px 0 0}
+.lettercodes span b{font-family:var(--f-mono);font-weight:500;display:inline-block;min-width:30px}
+
+/* Footer (site template) */
+
+/* Responsive */
+@media (max-width:1000px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .side,.main-col{grid-column:1}
+  .side{margin:8px 0 0}
+  .sticky{position:static}
+  .side.toc-side{display:none}
+}
+@media (max-width:860px){ .calc{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:700px){
+  .page{padding-left:20px;padding-right:20px}
+  h1{font-size:38px}
+  h2{font-size:32px}
+  section{padding-top:46px}
+}
+@media (max-width:520px){
+  .tiles{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  .tile{transition:background 120ms linear}
+  .toggle .chev,.btn-pri,.btn-pri::after,.seg button{transition:none}
+}
+
+/* Site chrome (nav, search, footer, back-to-top) lives in /assets/css/site.css */
+.byline a.author{color:var(--ink);font-weight:600;text-decoration:none}
+.byline a.author:hover{text-decoration:underline}
+</style>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script src="/assets/js/site.js" defer></script>
+</head>
+<body>
+
+<a class="skip" href="#content">Skip to the lesson</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/"><img src="/assets/brand/logo.svg" width="52" height="52" alt=""><span class="brand-name">Chemical Process Engineering</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="/calculators/">Calculators</a></li>
+        <li><a href="/lessons/" aria-current="page">Lessons</a></li>
+        <li><a href="/data/">Data</a></li>
+        <li><a href="/analysis/">Analysis</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+    <form class="site-search" action="/search/" method="get" role="search">
+      <label class="sr-only" for="site-q">Search the site</label>
+      <input type="search" id="site-q" name="q" placeholder="Search" autocomplete="off" enterkeyhint="search">
+      <button type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle cx="7.5" cy="7.5" r="5.25" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="m11.5 11.5 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></button>
+    </form>
+    <a class="search-link" href="/search/" aria-label="Search the site"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle cx="7.5" cy="7.5" r="5.25" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="m11.5 11.5 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></a>
+  </div>
+</header>
+
+<main class="page" id="content">
+  <header class="header">
+    <p class="crumb"><a href="/lessons/">Lessons</a> / Heat transfer</p>
+    <h1>Heat exchangers: types, sizing and the standards behind them</h1>
+    <p class="standfirst">How the common exchanger types differ, how to size one by hand well enough to check a vendor, which codes govern the hardware, and five worked examples from refinery, utility and carbon-capture service.</p>
+    <div class="byline">
+      <span><a class="author" href="/about/#authors">Alireza Lotfollahzade</a>, EIT</span>
+      <span>Updated 15 November 2026</span>
+      <span>About 35 min read</span>
+      <span>Standard editions checked 15 November 2026</span>
+    </div>
+  </header>
+
+  <!-- ============ 1. The equation ============ -->
+  <section id="basics" style="padding-top:48px">
+    <div class="grid">
+      <div class="main-col">
+        <p class="lead">Every exchanger, from a kitchen radiator to a crude preheat train, is sized with the same three ideas: an energy balance, a driving temperature difference, and a conductance that tells you how easily heat crosses the wall.</p>
+        <p>I keep re-deriving these on project after project, so this page puts the method, the hardware and the paperwork in one place. The hand methods here are for screening and for checking the output of rigorous tools such as HTRI or Aspen EDR. They do not replace them.</p>
+
+        <div class="eq"><span>Q = ṁ<sub>h</sub>·c<sub>p,h</sub>·(T<sub>1</sub> − T<sub>2</sub>) = ṁ<sub>c</sub>·c<sub>p,c</sub>·(t<sub>2</sub> − t<sub>1</sub>)</span><span class="no">(1)</span></div>
+        <div class="eq"><span>Q = U · A · F · ΔT<sub>lm</sub></span><span class="no">(2)</span></div>
+        <div class="eq"><span>ΔT<sub>lm</sub> = (ΔT<sub>a</sub> − ΔT<sub>b</sub>) / ln(ΔT<sub>a</sub>/ΔT<sub>b</sub>),&nbsp;&nbsp; ΔT<sub>a</sub> = T<sub>1</sub> − t<sub>2</sub>,&nbsp; ΔT<sub>b</sub> = T<sub>2</sub> − t<sub>1</sub></span><span class="no">(3)</span></div>
+
+        <p>Capital T is the hot stream and lower-case t the cold stream; subscript 1 is the inlet and 2 the outlet. Equation (3) is the log-mean temperature difference for pure counter-current flow. Real shell-and-tube units are rarely pure counter-current, so the correction factor F (≤ 1) in equation (2) accounts for the mixed flow pattern. F is read from charts, or calculated, from two dimensionless ratios:</p>
+        <div class="eq"><span>P = (t<sub>2</sub> − t<sub>1</sub>) / (T<sub>1</sub> − t<sub>1</sub>)&nbsp;&nbsp;&nbsp; R = (T<sub>1</sub> − T<sub>2</sub>) / (t<sub>2</sub> − t<sub>1</sub>)</span><span class="no">(4)</span></div>
+        <p>P is the thermal effectiveness of the cold side and R is the ratio of heat-capacity rates (ṁc<sub>p</sub> cold over ṁc<sub>p</sub> hot). When one side condenses or boils at constant temperature, R or P goes to zero and F = 1 for every arrangement.</p>
+
+        <h3>The overall coefficient U</h3>
+        <p>U is a series of resistances: the two film coefficients, the two fouling layers and the tube wall. Referred to the outside area of a plain tube:</p>
+        <div class="eq"><span>1/U<sub>o</sub> = 1/h<sub>o</sub> + R<sub>f,o</sub> + D<sub>o</sub>·ln(D<sub>o</sub>/D<sub>i</sub>)/(2k<sub>w</sub>) + R<sub>f,i</sub>·D<sub>o</sub>/D<sub>i</sub> + D<sub>o</sub>/(D<sub>i</sub>·h<sub>i</sub>)</span><span class="no">(5)</span></div>
+        <p>The largest term controls the design. If the shell-side film is 60 % of the total resistance, a better tube-side correlation changes nothing; a different baffle arrangement might. Example 1 below works through the numbers.</p>
+
+        <h3>When the outlet temperatures are unknown: ε–NTU</h3>
+        <p>LMTD suits design, where you know all four temperatures and want the area. For rating an existing exchanger (known area, new flows), use the effectiveness–NTU form, which avoids iterating on outlet temperatures:</p>
+        <div class="eq"><span>ε = Q / [C<sub>min</sub>·(T<sub>1</sub> − t<sub>1</sub>)],&nbsp;&nbsp; NTU = U·A / C<sub>min</sub>,&nbsp;&nbsp; C<sub>r</sub> = C<sub>min</sub>/C<sub>max</sub></span><span class="no">(6)</span></div>
+        <p>For each flow arrangement there is a closed-form ε(NTU, C<sub>r</sub>). For counter-current flow ε = [1 − e<sup>−NTU(1−C<sub>r</sub>)</sup>] / [1 − C<sub>r</sub>·e<sup>−NTU(1−C<sub>r</sub>)</sup>]. The calculator on this page uses these relations to compute F exactly, rather than reading it off a chart.</p>
+      </div>
+      <aside class="side toc-side">
+        <div class="sticky">
+          <p class="marker">On this page</p>
+          <ul class="toc">
+            <li><a href="#basics">The governing equations</a></li>
+            <li><a href="#types">Exchanger types</a></li>
+            <li><a href="#method">Sizing a shell-and-tube unit</a></li>
+            <li><a href="#calculator">Calculator: LMTD, F and area</a></li>
+            <li><a href="#examples">Worked examples</a></li>
+            <li><a href="#pid">P&amp;ID and control system</a></li>
+            <li><a href="#standards">Codes and standards</a></li>
+            <li><a href="#uses">Where each type is used</a></li>
+            <li><a href="#practice">Practical rules</a></li>
+            <li><a href="#sources">Sources</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 2. Types ============ -->
+  <section id="types">
+    <div class="grid">
+      <div class="main-col">
+        <div class="sec-head"><h2>Exchanger types</h2></div>
+        <p>Choose the type from the service: pressure, temperature, fouling, how close the temperatures approach, whether a fluid changes phase, and whether you need to open it for cleaning. The shell-and-tube exchanger remains the default in refining and petrochemicals because it tolerates high pressure, dirty fluids and thermal cycling, and because every fabricator can build and repair it.</p>
+
+        <h3>Shell-and-tube and the TEMA designation</h3>
+        <p>TEMA names a shell-and-tube exchanger with three letters: front head, shell, rear head. An <strong>AES</strong> has a channel with a removable cover (A), a one-pass shell (E) and a split-ring floating head (S). The floating head lets the bundle expand freely and lets you pull it for cleaning both sides, which is why it is common in fouling hydrocarbon service. Other combinations you will see on datasheets:</p>
+        <ul class="plain">
+          <li><strong>BEM / AEL / NEN</strong>: fixed tubesheets. The cheapest construction, with no internal gasketed joint, but the shell side cannot be cleaned mechanically and the shell-to-tube temperature difference is limited unless an expansion joint is added.</li>
+          <li><strong>BEU / AEU</strong>: U-tubes. One tubesheet, free expansion, suited to high pressure and large temperature differences. The inside of the U-bends is hard to clean mechanically, so keep fouling fluids on the shell side.</li>
+          <li><strong>AES / AET / AEP / AEW</strong>: floating heads. Removable bundle and free expansion, at the cost of internal gaskets and a larger shell-to-bundle clearance.</li>
+          <li><strong>AKT / BKU</strong>: kettle (K shell) reboilers, with a large vapour space above the bundle for disengagement.</li>
+          <li><strong>F, G, H, J and X shells</strong>: two-pass shells, split flow, divided flow and cross flow. J and X shells give low shell-side pressure drop for condensers and gas coolers.</li>
+        </ul>
+        <p>TEMA also sets three mechanical classes. Class R is the most demanding, for petroleum and related processing; Class C is for general commercial service; Class B is for chemical process service. Class R asks for a larger corrosion allowance, heavier minimum shell and baffle thicknesses, and more and larger tie rods, so it costs more.</p>
+
+        <figure>
+          <figcaption class="title">Figure 1. An AES exchanger: removable channel, one-pass shell, pull-through floating head</figcaption>
+          <svg viewBox="0 0 680 300" role="img" aria-labelledby="f1t f1d">
+            <title id="f1t">Schematic of a TEMA AES shell-and-tube heat exchanger</title>
+            <desc id="f1d">A horizontal shell with a channel and cover on the left, a stationary tubesheet, tubes running the shell length through five segmental baffles, and a floating head inside a shell cover on the right. Shell-side fluid enters top left and leaves bottom right; tube-side fluid enters and leaves through the channel.</desc>
+            <defs>
+              <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ab6528"/></marker>
+              <marker id="aht" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#12647e"/></marker>
+            </defs>
+            <!-- channel -->
+            <rect x="60" y="90" width="70" height="120" fill="#fff" stroke="#000" stroke-width="1.5"/>
+            <rect x="48" y="84" width="12" height="132" fill="#e6e9eb" stroke="#000" stroke-width="1.2"/>
+            <line x1="60" y1="150" x2="130" y2="150" stroke="#000" stroke-width="1.2"/>
+            <!-- tube nozzles -->
+            <rect x="85" y="62" width="22" height="28" fill="#fff" stroke="#000" stroke-width="1.2"/>
+            <rect x="85" y="210" width="22" height="28" fill="#fff" stroke="#000" stroke-width="1.2"/>
+            <!-- tubesheet -->
+            <rect x="130" y="80" width="9" height="140" fill="#4c5157"/>
+            <!-- shell -->
+            <rect x="139" y="95" width="400" height="110" fill="#fff" stroke="#000" stroke-width="1.5"/>
+            <!-- rear cover -->
+            <path d="M539 88 H580 Q622 88 622 150 Q622 212 580 212 H539 Z" fill="#fff" stroke="#000" stroke-width="1.5"/>
+            <!-- floating tubesheet & head -->
+            <rect x="548" y="104" width="8" height="92" fill="#4c5157"/>
+            <path d="M556 106 H570 Q596 106 596 150 Q596 194 570 194 H556 Z" fill="#f5f7f8" stroke="#4c5157" stroke-width="1.2"/>
+            <!-- tubes -->
+            <g stroke="#12647e" stroke-width="1.1">
+              <line x1="139" y1="110" x2="548" y2="110"/><line x1="139" y1="122" x2="548" y2="122"/><line x1="139" y1="134" x2="548" y2="134"/><line x1="139" y1="146" x2="548" y2="146"/>
+              <line x1="139" y1="154" x2="548" y2="154"/><line x1="139" y1="166" x2="548" y2="166"/><line x1="139" y1="178" x2="548" y2="178"/><line x1="139" y1="190" x2="548" y2="190"/>
+            </g>
+            <!-- baffles -->
+            <g fill="#4c5157">
+              <rect x="205" y="95" width="4" height="80"/><rect x="275" y="125" width="4" height="80"/><rect x="345" y="95" width="4" height="80"/><rect x="415" y="125" width="4" height="80"/><rect x="485" y="95" width="4" height="80"/>
+            </g>
+            <!-- shell nozzles -->
+            <rect x="160" y="67" width="22" height="28" fill="#fff" stroke="#000" stroke-width="1.2"/>
+            <rect x="505" y="205" width="22" height="28" fill="#fff" stroke="#000" stroke-width="1.2"/>
+            <!-- shell-side path -->
+            <path d="M171 50 V112 Q171 182 240 182 Q262 182 262 150 Q262 112 312 112 Q332 112 332 150 Q332 186 382 186 Q402 186 402 150 Q402 112 452 112 Q472 112 472 150 Q472 186 516 186 V250" fill="none" stroke="#ab6528" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+            <!-- tube-side arrows -->
+            <line x1="96" y1="30" x2="96" y2="64" stroke="#12647e" stroke-width="2" marker-end="url(#aht)"/>
+            <line x1="96" y1="238" x2="96" y2="272" stroke="#12647e" stroke-width="2" marker-end="url(#aht)"/>
+            <!-- labels -->
+            <g font-family="Open Sans, sans-serif" font-size="12" fill="#000">
+              <text x="2" y="244">A: channel</text><text x="2" y="258">and removable</text><text x="2" y="272">cover</text>
+              <text x="108" y="26" fill="#12647e">Tube side in</text>
+              <text x="108" y="290" fill="#12647e">Tube side out</text>
+              <text x="182" y="44" fill="#8f5a39">Shell side in</text>
+              <text x="530" y="262" fill="#8f5a39">Shell side out</text>
+              <text x="300" y="80">E: one-pass shell, segmental baffles</text>
+              <text x="560" y="72">S: floating head</text>
+              <text x="560" y="236">Shell cover</text>
+              <text x="118" y="240" fill="#4c5157">Stationary</text><text x="118" y="254" fill="#4c5157">tubesheet</text>
+            </g>
+            <line x1="134" y1="220" x2="134" y2="228" stroke="#4c5157"/>
+          </svg>
+          <figcaption class="cap">Schematic, not to scale. The pass partition in the channel makes this a two-pass tube side; the floating head turns the tube-side flow. Shell-side flow (dashed) zig-zags across the bundle between baffles. Drawn by the author.</figcaption>
+        </figure>
+
+        <h3>The other families</h3>
+        <ul class="plain">
+          <li><strong>Double-pipe and multitube hairpin.</strong> One or a few tubes inside a pipe, bent into a hairpin. True counter-current flow, cheap in small duties, easy to add in series. Good for high-pressure, small-flow services and for temperature crosses that a 1–2 shell cannot handle.</li>
+          <li><strong>Gasketed plate-and-frame (PHE).</strong> Corrugated plates clamped in a frame. Very high film coefficients, close approach temperatures (a few °C), compact, expandable by adding plates. Limited by gasket pressure and temperature ratings and by its narrow channels, which do not suit fibrous or heavily fouling fluids.</li>
+          <li><strong>Welded and semi-welded plate, plate-and-shell.</strong> Plates welded in pairs or into a pack inside a shell, to remove some or all gaskets for aggressive fluids or higher pressure, at the cost of mechanical cleaning on the welded side.</li>
+          <li><strong>Brazed aluminium plate-fin (BAHX).</strong> Stacks of finned passages brazed into a block. Enormous surface per volume and many streams in one core. Used in cryogenic air separation and LNG cold boxes. Clean, dry, mercury-free fluids only.</li>
+          <li><strong>Spiral plate.</strong> Two long plates rolled into a spiral, giving a single curved channel per fluid. Tolerates slurries and fouling fluids because the high local velocity scours the channel.</li>
+          <li><strong>Air-cooled (fin-fan).</strong> Finned tube bundles with fans, forced or induced draught. No cooling water, so they are standard for refinery overhead condensers and product coolers where water is scarce or expensive. They need plot space, and the outlet temperature is limited by the summer design air temperature.</li>
+          <li><strong>Diffusion-bonded and printed-circuit (PCHE).</strong> Chemically etched channels in plates, diffusion-bonded into a solid block. Very high pressure in a compact block, used for gas processing, supercritical CO₂ cycles and hydrogen precooling. Fine channels need clean fluids and good filtration.</li>
+        </ul>
+
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Type</th><th>Strengths</th><th>Limits</th><th>Indicative U, W/m²·K</th></tr></thead>
+            <tbody>
+              <tr><td>Shell-and-tube</td><td>Any pressure, wide temperature range, cleanable, repairable</td><td>Large, F correction for multipass, shell-side bypassing</td><td class="num">800–1500 water/water; 350–900 light organics/water</td></tr>
+              <tr><td>Double-pipe / hairpin</td><td>True counter-current, modular, high pressure</td><td>Small surface per unit</td><td>Similar to shell-and-tube for the same fluids</td></tr>
+              <tr><td>Gasketed plate</td><td>High U, close approach, compact</td><td>Gasket limits, narrow gaps, fouling and particulates</td><td class="num">1000–4000 liquid/liquid</td></tr>
+              <tr><td>Brazed aluminium plate-fin</td><td>Multistream, very compact, cryogenic</td><td>Clean fluids only, thermal-stress sensitive</td><td>Not usually quoted as U; rated per stream</td></tr>
+              <tr><td>Spiral plate</td><td>Slurries, sludge, self-scouring</td><td>Size, repair difficulty</td><td class="num">700–2500 liquid/liquid</td></tr>
+              <tr><td>Air-cooled</td><td>No water, low operating cost</td><td>Plot area, fan power, ambient-limited outlet</td><td class="num">600–750 cooling water; 400–550 light hydrocarbon liquids</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tbl-cap">Table 1. Indicative ranges for preliminary sizing, including typical fouling. Shell-and-tube values from Coulson &amp; Richardson Vol. 6 (as compiled in the sources); plate, spiral and air-cooled values from the Engineering ToolBox table, which does not state the area basis for air coolers. Checked 15 November 2026. Use only for screening.</p>
+      </div>
+      <aside class="side">
+        <div class="sn"><strong>Reading a TEMA code.</strong> “AES 31-240” means an A-type channel, E shell, S rear head, 31 in shell inside diameter and 240 in (20 ft) straight tube length. TEMA uses nominal shell diameter and tube length in inches in the size designation.</div>
+        <div class="sn"><strong>Why R costs more.</strong> TEMA Class R calls for a 1/8 in (3.2 mm) corrosion allowance on carbon and low-alloy steel parts, against 1/16 in (1.6 mm) for Classes B and C.</div>
+        <div class="sn"><strong>TEMA editions.</strong> The 11th edition (July 2024) added an exchanger-type selection guide, design of Type D high-pressure channel closures, native metric dimensions, and appendices on repairs and alterations, clad and overlay construction, and installation, operation and maintenance. TEMA now publishes dated editions: the 2026 Edition was issued on 1 August 2026, with a six-month grace period for work already in progress to the 11th.</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 3. Method ============ -->
+  <section id="method">
+    <div class="grid">
+      <div class="main-col">
+        <div class="sec-head"><h2>Sizing a shell-and-tube unit</h2></div>
+        <p>Thermal design is iterative: you guess a geometry, rate it, and adjust until area, pressure drop and velocity are all acceptable. The steps below are the order I use when checking a vendor's offer or preparing a process datasheet.</p>
+        <ol class="plain">
+          <li><strong>Fix the duty</strong> from the heat and material balance with equation (1). For condensing or boiling streams, build a heat-release curve (temperature against enthalpy); a single LMTD over a curved profile can be badly wrong.</li>
+          <li><strong>Allocate the fluids.</strong> Put on the tube side whatever is corrosive, fouling, at high pressure, or is cooling water; tubes are cheaper to make from alloy, easier to clean and cheaper to design for pressure. Put viscous liquids and condensing vapours on the shell side, where baffles create turbulence at lower Reynolds numbers.</li>
+          <li><strong>Compute ΔT<sub>lm</sub>, P, R and F.</strong> If F for one 1–2 shell falls below about 0.75–0.8, the design sits on the steep part of the curve and a small change in temperatures causes a large change in area. Add shells in series or use a counter-current type.</li>
+          <li><strong>Estimate U</strong> from Table 1 or experience, and get a first area from equation (2).</li>
+          <li><strong>Choose geometry</strong>: tube OD (19.05 mm and 25.4 mm are standard), gauge, length (often 6.1 m), pitch and layout (30° triangular for clean shell side, 90° or 45° square for mechanical cleaning), passes to give the target tube velocity, baffle cut and spacing.</li>
+          <li><strong>Rate the geometry.</strong> Tube side: Dittus–Boelter, Sieder–Tate or Gnielinski correlations. Shell side: the Kern method for a first pass, then Bell–Delaware, which corrects an ideal tube-bank coefficient for baffle cut, leakage, bypass, unequal end spacing and laminar flow:
+            <div class="eq"><span>h<sub>s</sub> = h<sub>ideal</sub> · J<sub>c</sub> · J<sub>l</sub> · J<sub>b</sub> · J<sub>s</sub> · J<sub>r</sub></span><span class="no">(7)</span></div>
+            For a well-proportioned exchanger the product of the J factors is around 0.6, so the shell side delivers roughly 60 % of the ideal cross-flow coefficient.</li>
+          <li><strong>Check pressure drop</strong> on both sides against the allowable, and the tube-side velocity against erosion and fouling limits.</li>
+          <li><strong>Check flow-induced vibration</strong> (TEMA has a dedicated section), especially on the shell side of gas and vapour services and at the inlet nozzle.</li>
+          <li><strong>Hand over to mechanical design</strong>: design pressure and temperature for each side, corrosion allowance, materials, the tube-rupture case, and the code (ASME VIII, plus TEMA class and any API supplement).</li>
+        </ol>
+        <p>Report the result as clean U, design (fouled) U and the margin between them. A large gap between the two means the exchanger is mostly fouling allowance, which is worth questioning (see the practical rules below).</p>
+      </div>
+      <aside class="side">
+        <div class="sn"><strong>Kern against Bell–Delaware.</strong> In a textbook comparison for a water service, Kern predicted a shell-side coefficient of 3369 W/m²·K and a pressure drop of 16.4 kPa, while Bell–Delaware gave 3080 W/m²·K and 4.1 kPa, close to a commercial program. Kern is fine for screening heat transfer and poor for shell-side pressure drop.</div>
+        <div class="sn"><strong>Tube gauge.</strong> 14 BWG on 19.05 mm OD gives a 2.11 mm wall and a 14.83 mm inside diameter, the tube used in the examples below.</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 4. Calculator ============ -->
+  <section id="calculator">
+    <div class="grid">
+      <div class="main-col full">
+        <div class="sec-head"><h2>Calculator: LMTD, F and area</h2></div>
+        <p style="max-width:680px">Enter the four terminal temperatures, the duty and a design U. The calculator checks the energy balance, computes ΔT<sub>lm</sub>, the exact F for the shell arrangement you choose, the area, and how many 19.05 mm × 6.1 m tubes that area needs.</p>
+      </div>
+    </div>
+
+    <div class="calc">
+      <div class="card" id="inputs">
+        <p class="card-title">Inputs</p>
+        <div id="fields"></div>
+        <div class="field">
+          <label id="cfg-l">Flow arrangement</label>
+          <div class="seg" role="group" aria-labelledby="cfg-l" id="cfg">
+            <button type="button" data-n="0" aria-pressed="false">Counter-current</button>
+            <button type="button" data-n="1" aria-pressed="true">1 shell, 2+ tube passes</button>
+            <button type="button" data-n="2" aria-pressed="false">2 shells in series</button>
+            <button type="button" data-n="3" aria-pressed="false">3 shells in series</button>
+          </div>
+        </div>
+        <p class="presets-label">Presets from the worked examples</p>
+        <div class="seg" id="presets">
+          <button type="button" data-p="cooler">Hydrocarbon cooler</button>
+          <button type="button" data-p="steam">Steam heater</button>
+          <button type="button" data-p="amine">Amine cross-exchanger</button>
+        </div>
+        <ul class="assume">
+          <li>Constant specific heats and constant U along the exchanger.</li>
+          <li>F from the exact ε–NTU relation for TEMA E shells with an even number of tube passes.</li>
+          <li>Tube count uses outside area of 19.05 mm OD × 6.096 m tubes, 0.365 m² each.</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="tiles" aria-live="polite">
+          <div class="tile" id="t-lmtd"><div><span class="v num">–</span><span class="u">°C</span></div><div class="q">Log-mean temperature difference, ΔT<sub>lm</sub></div></div>
+          <div class="tile" id="t-f"><div><span class="v num">–</span></div><div class="q">Correction factor, F (dimensionless)</div></div>
+          <div class="tile" id="t-a"><div><span class="v num">–</span><span class="u">m²</span></div><div class="q">Required area, A = Q / (U·F·ΔT<sub>lm</sub>)</div></div>
+          <div class="tile" id="t-n"><div><span class="v num">–</span><span class="u">tubes</span></div><div class="q">19.05 mm × 6.1 m tubes for that area</div></div>
+        </div>
+        <p class="status" id="status" role="status"></p>
+        <div class="card working">
+          <button class="toggle" id="wk-btn" aria-expanded="false" aria-controls="wk"><span class="chev" aria-hidden="true">›</span> Show the working</button>
+          <ol id="wk" hidden></ol>
+        </div>
+        <div class="actions">
+          <button class="btn-pri" id="copy" type="button">Copy results</button>
+          <a class="btn-sec" href="#examples">Go to the worked examples</a>
+          <span class="copied" id="copied" aria-live="polite"></span>
+        </div>
+
+        <figure style="margin-top:28px">
+          <figcaption class="title" id="f2-title">Figure 2. Temperature profile along the exchanger</figcaption>
+          <svg id="profile" viewBox="0 0 640 300" role="img" aria-labelledby="f2-title"></svg>
+          <figcaption class="cap">Drawn for pure counter-current flow with the terminal temperatures above, so the gap between the lines is the local driving force. Multipass shells have the same end temperatures but a different internal profile. Hot stream in cider, cold stream in teal.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. Examples ============ -->
+  <section id="examples">
+    <div class="grid">
+      <div class="main-col">
+        <div class="sec-head"><h2>Worked examples</h2></div>
+        <p>All numbers here are illustrative and chosen to show the method. Real projects take properties from a simulator and fouling resistances from plant history or the owner's specification.</p>
+
+        <div class="example" id="ex1">
+          <p class="marker">Example 1</p>
+          <h3>Which resistance controls U?</h3>
+          <div class="given">A light hydrocarbon on the shell side is cooled by cooling water in the tubes. Carbon-steel tubes, 19.05 mm OD, 14 BWG (D<sub>i</sub> = 14.83 mm), k<sub>w</sub> = 45 W/m·K. Film coefficients h<sub>o</sub> = 800 W/m²·K (shell) and h<sub>i</sub> = 5000 W/m²·K (tube, inside area). Fouling R<sub>f,o</sub> = 0.000352 and R<sub>f,i</sub> = 0.000176 m²·K/W.</div>
+          <p>Apply equation (5) term by term, all referred to the outside area:</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Resistance</th><th class="r">Value, m²·K/W</th><th class="r">Share of total</th></tr></thead>
+              <tbody>
+                <tr><td>Shell-side film, 1/h<sub>o</sub></td><td class="r num">0.001250</td><td class="r num">58.5 %</td></tr>
+                <tr><td>Shell-side fouling, R<sub>f,o</sub></td><td class="r num">0.000352</td><td class="r num">16.5 %</td></tr>
+                <tr><td>Tube-side film, D<sub>o</sub>/(D<sub>i</sub>h<sub>i</sub>)</td><td class="r num">0.000257</td><td class="r num">12.0 %</td></tr>
+                <tr><td>Tube-side fouling, R<sub>f,i</sub>D<sub>o</sub>/D<sub>i</sub></td><td class="r num">0.000226</td><td class="r num">10.6 %</td></tr>
+                <tr><td>Wall, D<sub>o</sub>ln(D<sub>o</sub>/D<sub>i</sub>)/2k<sub>w</sub></td><td class="r num">0.000053</td><td class="r num">2.5 %</td></tr>
+                <tr><td>Total, 1/U<sub>o</sub></td><td class="r num">0.002138</td><td class="r num">100 %</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="answer"><strong>U<sub>o</sub> (fouled) = 468 W/m²·K; U<sub>o</sub> (clean) = 641 W/m²·K.</strong> The shell-side film is almost 60 % of the resistance, so effort belongs there: closer baffle spacing, a different baffle cut, or low-fin tubes. Doubling the tube-side coefficient would raise U by only about 6 %. The fouling allowances add 37 % to the area, which is a real cost and should be justified.</div>
+        </div>
+
+        <div class="example" id="ex2">
+          <p class="marker">Example 2</p>
+          <h3>Sizing a hydrocarbon cooler and checking F</h3>
+          <div class="given">20 kg/s of hydrocarbon (c<sub>p</sub> = 2.40 kJ/kg·K) is cooled from 120 °C to 50 °C with cooling water from 25 °C to 40 °C (c<sub>p</sub> = 4.18 kJ/kg·K). Use U = 450 W/m²·K, rounded down from Example 1.</div>
+          <ol class="steps">
+            <li>Q = 20 × 2.40 × (120 − 50) = 3360 kW</li>
+            <li>ṁ<sub>water</sub> = 3360 / (4.18 × 15) = 53.6 kg/s</li>
+            <li>ΔT<sub>a</sub> = 120 − 40 = 80 °C;  ΔT<sub>b</sub> = 50 − 25 = 25 °C;  ΔT<sub>lm</sub> = 55 / ln(3.2) = 47.3 °C</li>
+            <li>P = 15 / 95 = 0.158;  R = 70 / 15 = 4.67</li>
+            <li>F (one 1–2 shell) = 0.909;  F (two shells) = 0.980</li>
+            <li>A = 3 360 000 / (450 × 0.909 × 47.3) = 174 m²  →  about 476 tubes, 19.05 mm × 6.1 m</li>
+          </ol>
+          <div class="answer"><strong>One shell is acceptable here: F = 0.91, area 174 m².</strong> A second shell would save only 7 % of the area and add a shell, so it is not worth it. Check the water velocity: with 476 tubes in 2 passes the velocity is about 1.3 m/s, slightly below the 1.5–2.5 m/s usually targeted for cooling water; 4 passes gives about 2.6 m/s. A designer might pick 4 passes and check that the extra pressure drop is allowed, or fewer, longer tubes.</div>
+        </div>
+
+        <div class="example" id="ex3">
+          <p class="marker">Example 3</p>
+          <h3>A steam heater, where F does not matter</h3>
+          <div class="given">Heat 15 kg/s of water from 20 °C to 80 °C with saturated steam at 5 bar(a) (T<sub>sat</sub> = 151.8 °C, h<sub>fg</sub> = 2108 kJ/kg) condensing on the shell side. Assume U = 2000 W/m²·K.</div>
+          <ol class="steps">
+            <li>Q = 15 × 4.18 × 60 = 3762 kW</li>
+            <li>ṁ<sub>steam</sub> = 3762 / 2108 = 1.78 kg/s (6420 kg/h)</li>
+            <li>ΔT<sub>a</sub> = 151.8 − 80 = 71.8 °C;  ΔT<sub>b</sub> = 151.8 − 20 = 131.8 °C;  ΔT<sub>lm</sub> = 98.8 °C</li>
+            <li>R = 0, so F = 1 for any number of passes</li>
+            <li>A = 3 762 000 / (2000 × 98.8) = 19.0 m²</li>
+          </ol>
+          <div class="answer"><strong>About 19 m², with no F penalty.</strong> The isothermal hot side makes the flow arrangement irrelevant to ΔT. What matters instead is draining condensate (a flooded bundle loses area), venting non-condensables, and controlling the steam side; check whether a control valve on the steam inlet can pull the shell below atmospheric pressure at low load and stall condensate drainage.</div>
+        </div>
+
+        <div class="example" id="ex4">
+          <p class="marker">Example 4</p>
+          <h3>The lean/rich amine cross-exchanger in a CO₂ capture plant</h3>
+          <div class="given">Hot lean amine leaves the stripper at 120 °C; cold rich amine leaves the absorber at 45 °C. Both streams have a heat-capacity rate of about 380 kW/K (for example 100 kg/s at c<sub>p</sub> = 3.8 kJ/kg·K), so the exchanger is balanced (R = 1). Compare a minimum approach ΔT<sub>min</sub> of 10 °C and 5 °C. Plate exchanger with U ≈ 2400 W/m²·K.</div>
+          <p>With balanced flows in true counter-current, the temperature difference is the same at every point and equals ΔT<sub>min</sub>, so ΔT<sub>lm</sub> = ΔT<sub>min</sub> and the area follows directly:</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Case</th><th class="r">Rich out, °C</th><th class="r">Duty, MW</th><th class="r">Area, m²</th><th class="r">P</th></tr></thead>
+              <tbody>
+                <tr><td>ΔT<sub>min</sub> = 10 °C</td><td class="r num">110</td><td class="r num">24.7</td><td class="r num">1030</td><td class="r num">0.867</td></tr>
+                <tr><td>ΔT<sub>min</sub> = 5 °C</td><td class="r num">115</td><td class="r num">26.6</td><td class="r num">2220</td><td class="r num">0.933</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="answer"><strong>Halving the approach recovers 1.9 MW more heat but needs 2.2 times the area.</strong> That 1.9 MW would otherwise come from reboiler steam, every hour of operation. At P = 0.87 and R = 1 a single 1–2 shell is thermodynamically impossible; even six shells in series only reach F ≈ 0.76 at a 10 °C approach, and a 5 °C approach needs at least ten shells. This is why plate exchangers, with near-true counter-current flow, dominate this service. Published cost studies on amine plants found the lowest capture cost with gasketed plate exchangers at approaches of about 4–7 °C.</div>
+        </div>
+
+        <figure>
+          <figcaption class="title">Figure 3. In the balanced cross-exchanger, area rises steeply below a 5 °C approach</figcaption>
+          <svg id="dtmin" viewBox="0 0 680 300" role="img" aria-labelledby="f3d"><desc id="f3d">Line chart of required area against minimum approach temperature from 3 to 15 °C for the Example 4 cross-exchanger. Area falls from about 3800 m² at 3 °C to about 630 m² at 15 °C, with 2220 m² at 5 °C and 1030 m² at 10 °C marked.</desc></svg>
+          <figcaption class="cap">A = C·(T<sub>lean,in</sub> − T<sub>rich,in</sub> − ΔT<sub>min</sub>)/(U·ΔT<sub>min</sub>) with C = 380 kW/K, 120 °C and 45 °C inlets and U = 2400 W/m²·K. Illustrative. The economic optimum depends on the price of steam against the installed cost per m².</figcaption>
+        </figure>
+
+        <div class="example" id="ex5">
+          <p class="marker">Example 5</p>
+          <h3>Does the tube-rupture case need a relief valve?</h3>
+          <div class="given">A gas cooler has high-pressure gas in the tubes (design 45 barg) and cooling water on the shell (design 10 barg). The exchanger is built to ASME VIII Division 1, hydrotested at 1.3 × design pressure.</div>
+          <ol class="steps">
+            <li>API 521 treats tube rupture as unlikely to burst the low-pressure side if that side's test pressure is at least the high-pressure side's design pressure.</li>
+            <li>With a 1.3 test factor: P<sub>LP,design</sub> ≥ (10/13) × P<sub>HP,design</sub> = (10/13) × 45 = 34.6 barg</li>
+            <li>Actual shell design: 10 barg, below 34.6 barg</li>
+          </ol>
+          <div class="answer"><strong>Tube rupture is a credible case.</strong> The options are to raise the shell side (and the connected cooling-water piping up to a suitable break) to about 35 barg, or to size relief on the shell side for gas flowing through the two open ends of a guillotine-broken tube, often with a dynamic study, because a gas-into-liquid rupture creates a fast pressure spike that a relief valve may not catch. Meeting the 10/13 criterion does not stop high-pressure fluid from entering the low-pressure system; it only makes loss of containment unlikely, so downstream equipment still needs checking.</div>
+        </div>
+      </div>
+      <aside class="side">
+        <div class="sn"><strong>Where the 10/13 comes from.</strong> It is the inverse of the 1.3 hydrotest factor in current ASME VIII Division 1. Older vessels tested at 1.5 × design used a 2/3 rule. Check the test pressure actually stamped on the exchanger.</div>
+        <div class="sn"><strong>Steam tables.</strong> Saturation values at 5 bar(a) are rounded; take exact values from IAPWS-IF97 for design.</div>
+        <div class="sn"><strong>Amine U value.</strong> Industry modelling of plate-and-frame lean/rich exchangers has reported about 425 Btu/h·ft²·°F, roughly 2400 W/m²·K, the value used in Example 4.</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 5b. P&ID ============ -->
+  <section id="pid">
+    <div class="grid">
+      <div class="main-col">
+        <div class="sec-head"><h2>P&amp;ID and control system</h2></div>
+        <p>The process datasheet sizes the exchanger; the P&amp;ID decides how it is run, protected and maintained. Figure 4 is the cooler from Example 2 as it would appear on a P&amp;ID: the unit upstream sets the flow, a temperature loop on the exchanger sets the outlet temperature, and a drum downstream takes the product on level control. The symbol names and every instrument tag are listed below the drawing.</p>
+      </div>
+      <aside class="side">
+        <div class="sn"><strong>Symbols.</strong> Instrument bubbles and letter codes follow ISA 5.1. Many owners have their own legend sheet; it always overrides a generic one.</div>
+      </aside>
+    </div>
+
+    <figure id="fig4" style="max-width:1000px">
+      <figcaption class="title" id="fig4-t">Figure 4. Hydrocarbon cooler E-101: outlet temperature held by a bypass, cooling water left at full flow</figcaption>
+      <div class="svgwrap">
+        <svg class="pfd" viewBox="0 0 1000 470" role="img" aria-labelledby="fig4-t fig4-d" focusable="false">
+          <desc id="fig4-d">Pump P-101 sends hydrocarbon through flow element and transmitter FT-100 and flow control valve FV-100, controlled by FIC-100. At a tee the flow splits: most enters the shell of exchanger E-101 through a block valve at the bottom-left nozzle, the rest passes through bypass temperature control valve TV-101. The cooled shell outlet leaves the top nozzle through a block valve and rejoins the bypass. TT-101 measures the mixed temperature and TIC-101 with high alarm TAH-101 moves TV-101. Local gauges TI-102 and PI-102 sit on the inlet, TI-104 and PI-104 on the outlet. Cooling water enters the channel through a block valve with TI-105 and returns through relief valve branch PSV-101, TI-106 and a balancing globe valve. The product enters drum D-102, whose level LT-103 and LIC-103 control LV-103 on the outlet to storage.</desc>
+          <defs>
+            <marker id="pa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#000"/></marker>
+            <marker id="pb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4676bf"/></marker>
+          </defs>
+
+          <!-- zone labels -->
+          <text class="zone" x="6" y="16">Upstream: throughput</text>
+          <text class="zone" x="372" y="16">Exchanger: outlet temperature</text>
+          <text class="zone" x="840" y="16">Downstream: level</text>
+
+          <!-- ===== process lines (drawn first, symbols on top) ===== -->
+          <path class="pipe" d="M0 260 H73" marker-end="url(#pa)"/>
+          <path class="pipe" d="M95 240 V170 H360"/>
+          <path class="pipe" d="M360 170 V110 H700 V170"/>
+          <path class="pipe" d="M360 170 V370 H470 V332" marker-end="url(#pa)"/>
+          <path class="pipe" d="M590 270 V170 H700"/>
+          <path class="pipe" d="M700 170 H848" marker-end="url(#pa)"/>
+          <path class="pipe" d="M880 300 V335 H995" marker-end="url(#pa)"/>
+          <path class="pipe" d="M880 130 V100"/>
+          <circle cx="360" cy="170" r="3" fill="#000"/>
+          <circle cx="700" cy="170" r="3" fill="#000"/>
+
+          <!-- ===== cooling water ===== -->
+          <path class="cw" d="M995 445 H635 V333" marker-end="url(#pb)"/>
+          <path class="cw" d="M650 285 H680 V415 H995" marker-end="url(#pb)"/>
+          <path class="cw" d="M680 305 H724 V292"/>
+          <path class="cw" d="M736 280 H772" marker-end="url(#pb)"/>
+          <text x="995" y="406" text-anchor="end" style="fill:#4676bf">CWR, to cooling-water return</text>
+          <text x="995" y="462" text-anchor="end" style="fill:#4676bf">CWS, from cooling-water supply</text>
+
+          <!-- ===== upstream ===== -->
+          <circle class="eqp" cx="95" cy="260" r="20"/>
+          <path d="M83 270 L95 252 L107 270" fill="none" stroke="#000" stroke-width="1"/>
+          <path d="M80 280 L72 292 H118 L110 280" fill="none" stroke="#000" stroke-width="1.25"/>
+          <text x="124" y="292">P-101</text>
+          <text class="lbl-s" x="4" y="314">From upstream unit</text>
+          <!-- orifice -->
+          <path d="M147 160 V180 M153 160 V180" stroke="#000" stroke-width="1.75"/>
+          <path class="imp" d="M150 133 V160"/>
+          <circle class="inst" cx="150" cy="118" r="15"/>
+          <text class="inst-t" x="150" y="116" text-anchor="middle">FT</text><text class="inst-t" x="150" y="127" text-anchor="middle">100</text>
+          <!-- FIC-100 (DCS) -->
+          <rect class="inst" x="194" y="39" width="32" height="32"/><circle class="inst" cx="210" cy="55" r="16"/><path d="M194 55 H226" stroke="#12647e" stroke-width="1.25"/>
+          <text class="inst-t" x="210" y="52" text-anchor="middle">FIC</text><text class="inst-t" x="210" y="66" text-anchor="middle">100</text>
+          <path class="sig" d="M150 103 V55 H194"/>
+          <path class="sig" d="M226 55 H260 V140"/>
+          <!-- FV-100 -->
+          <path class="vlv" d="M248 160 L260 170 L248 180 Z M272 160 L260 170 L272 180 Z"/>
+          <path d="M260 170 V150" stroke="#000" stroke-width="1.25"/>
+          <path class="vlv" d="M248 150 A12 10 0 0 1 272 150 Z"/>
+          <text class="lbl-s" x="260" y="198" text-anchor="middle">FV-100</text>
+          <text class="fail" x="277" y="147">FC</text>
+
+          <!-- ===== exchanger E-101 ===== -->
+          <rect class="eqp" x="430" y="270" width="190" height="60"/>
+          <rect class="eqp" x="620" y="270" width="30" height="60"/>
+          <path d="M620 300 H650" stroke="#000" stroke-width="1.25"/>
+          <path d="M620 285 H462 Q446 285 446 300 Q446 315 462 315 H620" fill="none" stroke="#4676bf" stroke-width="1.2"/>
+          <text x="535" y="304" text-anchor="middle" style="font-weight:600">E-101</text>
+          <!-- inlet block valve (vertical) -->
+          <path class="vlv" d="M350 238 L360 250 L370 238 Z M350 262 L360 250 L370 262 Z"/>
+          <!-- outlet block valve (vertical) -->
+          <path class="vlv" d="M580 180 L590 192 L600 180 Z M580 204 L590 192 L600 204 Z"/>
+          <!-- vent and drain -->
+          <path class="imp" d="M465 270 V248 M460 248 H470"/>
+          <path class="vlv" d="M460 252 L465 258 L470 252 Z M460 264 L465 258 L470 264 Z"/>
+          <text class="lbl-s" x="473" y="252">Vent</text>
+          <path class="imp" d="M560 330 V352 M555 352 H565"/>
+          <path class="vlv" d="M555 335 L560 341 L565 335 Z M555 347 L560 341 L565 347 Z"/>
+          <text class="lbl-s" x="568" y="354">Drain</text>
+          <!-- inlet gauges -->
+          <path class="imp" d="M395 370 V397 M440 370 V397"/>
+          <circle class="inst" cx="395" cy="412" r="15"/><text class="inst-t" x="395" y="410" text-anchor="middle">TI</text><text class="inst-t" x="395" y="421" text-anchor="middle">102</text>
+          <circle class="inst" cx="440" cy="412" r="15"/><text class="inst-t" x="440" y="410" text-anchor="middle">PI</text><text class="inst-t" x="440" y="421" text-anchor="middle">102</text>
+          <!-- outlet gauges -->
+          <path class="imp" d="M590 218 H610 M590 252 H610"/>
+          <circle class="inst" cx="625" cy="218" r="15"/><text class="inst-t" x="625" y="216" text-anchor="middle">TI</text><text class="inst-t" x="625" y="227" text-anchor="middle">104</text>
+          <circle class="inst" cx="625" cy="252" r="15"/><text class="inst-t" x="625" y="250" text-anchor="middle">PI</text><text class="inst-t" x="625" y="261" text-anchor="middle">104</text>
+          <!-- TV-101 on bypass -->
+          <path class="vlv" d="M518 100 L530 110 L518 120 Z M542 100 L530 110 L542 120 Z"/>
+          <path d="M530 110 V90" stroke="#000" stroke-width="1.25"/>
+          <path class="vlv" d="M518 90 A12 10 0 0 1 542 90 Z"/>
+          <text class="lbl-s" x="530" y="136" text-anchor="middle">TV-101</text>
+          <text class="fail" x="547" y="86">FC</text>
+          <text class="lbl-s" x="420" y="102">Bypass</text>
+          <!-- TT-101 after the mixing point -->
+          <path class="imp" d="M760 140 V170"/>
+          <circle class="inst" cx="760" cy="125" r="15"/><text class="inst-t" x="760" y="123" text-anchor="middle">TT</text><text class="inst-t" x="760" y="134" text-anchor="middle">101</text>
+          <!-- TIC-101 (DCS) with TAH -->
+          <rect class="inst" x="624" y="34" width="32" height="32"/><circle class="inst" cx="640" cy="50" r="16"/><path d="M624 50 H656" stroke="#12647e" stroke-width="1.25"/>
+          <text class="inst-t" x="640" y="47" text-anchor="middle">TIC</text><text class="inst-t" x="640" y="61" text-anchor="middle">101</text>
+          <text class="inst-t" x="662" y="38">TAH</text>
+          <path class="sig" d="M760 110 V50 H656"/>
+          <path class="sig" d="M624 50 H530 V80"/>
+
+          <!-- ===== cooling-water instruments ===== -->
+          <path class="vlv-cw" d="M625 408 L635 420 L645 408 Z M625 432 L635 420 L645 432 Z"/>
+          <path class="imp" d="M615 380 H635"/>
+          <circle class="inst" cx="600" cy="380" r="15"/><text class="inst-t" x="600" y="378" text-anchor="middle">TI</text><text class="inst-t" x="600" y="389" text-anchor="middle">105</text>
+          <path class="imp" d="M680 345 H700"/>
+          <circle class="inst" cx="715" cy="345" r="15"/><text class="inst-t" x="715" y="343" text-anchor="middle">TI</text><text class="inst-t" x="715" y="354" text-anchor="middle">106</text>
+          <!-- balancing globe valve -->
+          <path class="vlv-cw" d="M670 373 L680 385 L690 373 Z M670 397 L680 385 L690 397 Z"/>
+          <circle cx="680" cy="385" r="3" fill="#4676bf"/>
+          <!-- PSV-101 -->
+          <path class="vlv-cw" d="M716 292 L724 280 L732 292 Z M736 272 L724 280 L736 288 Z"/>
+          <path d="M724 280 V276 L719 273 L729 269 L719 265 L729 261 L724 258 V254" fill="none" stroke="#4676bf" stroke-width="1.25"/>
+          <text class="lbl-s" x="734" y="262">PSV-101</text>
+          <text class="lbl-s" x="742" y="302">To safe location</text>
+
+          <!-- ===== downstream drum ===== -->
+          <rect class="eqp" x="850" y="130" width="60" height="170" rx="28"/>
+          <text x="880" y="220" text-anchor="middle" style="font-weight:600">D-102</text>
+          <text class="lbl-s" x="888" y="104">To vent</text>
+          <path class="imp" d="M910 250 H940"/>
+          <circle class="inst" cx="955" cy="250" r="15"/><text class="inst-t" x="955" y="248" text-anchor="middle">LT</text><text class="inst-t" x="955" y="259" text-anchor="middle">103</text>
+          <rect class="inst" x="939" y="154" width="32" height="32"/><circle class="inst" cx="955" cy="170" r="16"/><path d="M939 170 H971" stroke="#12647e" stroke-width="1.25"/>
+          <text class="inst-t" x="955" y="167" text-anchor="middle">LIC</text><text class="inst-t" x="955" y="181" text-anchor="middle">103</text>
+          <path class="sig" d="M955 235 V186"/>
+          <path class="sig" d="M971 170 H990 V295 H950 V305"/>
+          <path class="vlv" d="M938 325 L950 335 L938 345 Z M962 325 L950 335 L962 345 Z"/>
+          <path d="M950 335 V315" stroke="#000" stroke-width="1.25"/>
+          <path class="vlv" d="M938 315 A12 10 0 0 1 962 315 Z"/>
+          <text class="lbl-s" x="912" y="327" text-anchor="middle">LV-103</text>
+          <text class="fail" x="926" y="312">FC</text>
+          <text class="lbl-s" x="995" y="358" text-anchor="end">To storage</text>
+        </svg>
+      </div>
+      <figcaption class="cap">Simplified P&amp;ID for the Example 2 cooler: hydrocarbon on the shell side, cooling water in the tubes. Interlocks, spectacle blinds, sample points and the pump's minimum-flow line are left out to keep the control logic readable. Drawn by the author; illustrative tags.</figcaption>
+
+      <h3 style="margin-top:28px">Symbols used in Figure 4</h3>
+      <ul class="legend">
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M4 15 H52" stroke="#000" stroke-width="1.75"/></svg><span><b>Process line</b><span class="d">Main process piping</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M4 15 H52" stroke="#4676bf" stroke-width="1.75"/></svg><span><b>Utility line</b><span class="d">Cooling water supply and return</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M4 15 H52" stroke="#12647e" stroke-width="1.25" stroke-dasharray="4 3"/></svg><span><b>Electronic signal</b><span class="d">Transmitter to controller to valve</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M4 15 H52" stroke="#000" stroke-width="1"/></svg><span><b>Instrument connection</b><span class="d">Process tap or impulse line</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><circle cx="28" cy="15" r="12" fill="#fff" stroke="#12647e" stroke-width="1.25"/></svg><span><b>Field-mounted instrument</b><span class="d">Local gauge or transmitter</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><rect x="16" y="3" width="24" height="24" fill="#fff" stroke="#12647e" stroke-width="1.25"/><circle cx="28" cy="15" r="12" fill="none" stroke="#12647e" stroke-width="1.25"/><path d="M16 15 H40" stroke="#12647e" stroke-width="1.25"/></svg><span><b>DCS function</b><span class="d">Shared display and control, operator-accessible</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M16 15 H40" stroke="#000" stroke-width="1.75"/><path d="M16 6 L28 15 L16 24 Z M40 6 L28 15 L40 24 Z" fill="#fff" stroke="#000" stroke-width="1.25"/></svg><span><b>Gate valve</b><span class="d">Isolation, fully open or shut</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M16 15 H40" stroke="#4676bf" stroke-width="1.75"/><path d="M16 6 L28 15 L16 24 Z M40 6 L28 15 L40 24 Z" fill="#fff" stroke="#4676bf" stroke-width="1.25"/><circle cx="28" cy="15" r="3" fill="#4676bf"/></svg><span><b>Globe valve</b><span class="d">Manual throttling or balancing</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M16 14 L28 22 L16 30 Z M40 14 L28 22 L40 30 Z" fill="#fff" stroke="#000" stroke-width="1.25"/><path d="M28 22 V10" stroke="#000" stroke-width="1.25"/><path d="M18 10 A10 8 0 0 1 38 10 Z" fill="#fff" stroke="#000" stroke-width="1.25"/></svg><span><b>Control valve</b><span class="d">Diaphragm-actuated; FC = fails closed on loss of air</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M20 27 L28 17 L36 27 Z M40 10 L28 17 L40 24 Z" fill="#fff" stroke="#4676bf" stroke-width="1.25"/><path d="M28 17 V14 L24 12 L32 9 L24 6 L28 4" fill="none" stroke="#4676bf" stroke-width="1.25"/></svg><span><b>Pressure safety valve</b><span class="d">Spring-loaded relief valve, PSV</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M4 15 H52" stroke="#000" stroke-width="1.75"/><path d="M25 5 V25 M31 5 V25" stroke="#000" stroke-width="1.75"/></svg><span><b>Orifice plate</b><span class="d">Flow element for FT-100</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M22 4 V18 M17 4 H27" stroke="#000" stroke-width="1"/><path d="M18 8 L22 12 L26 8 Z M18 16 L22 12 L26 16 Z" fill="#fff" stroke="#000" stroke-width="1"/><text x="31" y="15" style="font-size:9px;fill:#5f646a">V / D</text></svg><span><b>Vent or drain valve</b><span class="d">High-point vent, low-point drain</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><circle cx="28" cy="14" r="11" fill="#fff" stroke="#000" stroke-width="1.5"/><path d="M21 19 L28 9 L35 19" fill="none" stroke="#000"/><path d="M19 23 L15 29 H41 L37 23" fill="none" stroke="#000"/></svg><span><b>Centrifugal pump</b><span class="d">P-101</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><rect x="3" y="6" width="38" height="18" fill="#fff" stroke="#000" stroke-width="1.25"/><rect x="41" y="6" width="10" height="18" fill="#fff" stroke="#000" stroke-width="1.25"/><path d="M41 10 H12 Q8 10 8 15 Q8 20 12 20 H41" fill="none" stroke="#4676bf"/></svg><span><b>Shell-and-tube exchanger</b><span class="d">E-101; channel at right, tubes in blue</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><rect x="19" y="1" width="18" height="28" rx="9" fill="#fff" stroke="#000" stroke-width="1.25"/></svg><span><b>Vertical drum</b><span class="d">D-102, product receiver</span></span></li>
+        <li><svg viewBox="0 0 56 30" aria-hidden="true"><path d="M4 15 H48" stroke="#000" stroke-width="1.75"/><path d="M44 10 L52 15 L44 20 Z"/><circle cx="20" cy="15" r="3"/></svg><span><b>Flow arrow and tee</b><span class="d">Direction of flow; dot marks a branch</span></span></li>
+      </ul>
+
+      <h3 style="margin-top:28px">Instrument tags in Figure 4</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tag</th><th style="min-width:200px">Name</th><th style="min-width:300px">What it does here</th></tr></thead>
+          <tbody>
+            <tr><td>FT-100</td><td>Flow transmitter (with orifice plate)</td><td>Measures the hydrocarbon flow leaving P-101.</td></tr>
+            <tr><td>FIC-100</td><td>Flow indicating controller, DCS</td><td>Holds throughput at the setpoint the upstream unit needs. To the exchanger it is a disturbance.</td></tr>
+            <tr><td>FV-100</td><td>Flow control valve, fails closed</td><td>Throttles the pump discharge.</td></tr>
+            <tr><td>TT-101</td><td>Temperature transmitter</td><td>Measures the product temperature after the bypass rejoins, so it sees the mixed stream the drum receives.</td></tr>
+            <tr><td>TIC-101 / TAH-101</td><td>Temperature indicating controller with high alarm, DCS</td><td>Moves the bypass valve to hold the outlet temperature. The high alarm warns of lost cooling water or a fouled bundle.</td></tr>
+            <tr><td>TV-101</td><td>Temperature control valve on the bypass, fails closed</td><td>Opens to send more hot fluid around the exchanger. On air failure it shuts and every drop goes through the cooler, the safe direction.</td></tr>
+            <tr><td>TI-102, PI-102</td><td>Local temperature and pressure gauges, process inlet</td><td rowspan="2">Inlet minus outlet gives the shell-side temperature drop and pressure drop: the two numbers you trend to see fouling.</td></tr>
+            <tr><td>TI-104, PI-104</td><td>Local temperature and pressure gauges, process outlet</td></tr>
+            <tr><td>TI-105, TI-106</td><td>Cooling water supply and return temperature</td><td>With the CW flow, gives the duty on the water side as a check on the process side.</td></tr>
+            <tr><td>PSV-101</td><td>Pressure safety valve on the cooling-water side</td><td>Protects the tube side against thermal expansion when the water is blocked in with hot oil flowing, and against tube rupture if the process side is above 10/13 of its design pressure (Example 5).</td></tr>
+            <tr><td>LT-103</td><td>Level transmitter</td><td>Measures liquid level in D-102.</td></tr>
+            <tr><td>LIC-103</td><td>Level indicating controller, DCS</td><td>Holds the drum level by moving LV-103.</td></tr>
+            <tr><td>LV-103</td><td>Level control valve, fails closed</td><td>Sends product to storage.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tbl-cap">Letter codes follow ISA 5.1: the first letter is the measured variable, the following letters are the functions.</p>
+      <div class="lettercodes">
+        <span><b>F</b> flow</span><span><b>L</b> level</span><span><b>P</b> pressure</span><span><b>T</b> temperature</span>
+        <span><b>I</b> indicate</span><span><b>T</b> transmit</span><span><b>C</b> control</span><span><b>V</b> valve</span>
+        <span><b>A</b> alarm</span><span><b>H</b> high</span><span><b>S</b> safety (PSV)</span><span><b>E</b> element</span>
+      </div>
+    </figure>
+
+    <div class="grid">
+      <div class="main-col">
+        <h3>Why the control system looks like this</h3>
+        <ul class="plain">
+          <li><strong>Control the outlet with a process bypass, not by throttling the water.</strong> Pinching the cooling-water valve is cheaper, but it lowers the tube velocity and raises the return temperature, which are the two conditions that grow scale and silt. The bypass keeps water at full flow and responds fast, because the valve moves the outlet temperature directly instead of waiting for the exchanger's thermal lag.</li>
+          <li><strong>The bypass only works if the exchanger leg has more pressure drop than the open valve.</strong> If it does not, add a manual balancing valve in the exchanger leg, or use a three-way valve.</li>
+          <li><strong>Measure after the mixing point.</strong> TT-101 sits a few pipe diameters downstream of the tee so the stream is mixed. A thermowell right at the tee reads whichever stream hugs it.</li>
+          <li><strong>Choose fail positions from the hazard.</strong> TV-101 fails closed, so an air failure gives full cooling. If over-cooling were the hazard (a waxy or freezing product), it would fail open instead.</li>
+          <li><strong>Upstream flow is a disturbance.</strong> When FIC-100 changes throughput, TIC-101 sees it only after the outlet temperature moves. Where the swings are large, a feedforward signal from FT-100 to TIC-101 corrects the bypass before the temperature drifts.</li>
+          <li><strong>Protect the side that can be blocked in.</strong> Closing both cooling-water valves while hot oil flows heats trapped water, so the tube side needs thermal relief. In this layout PSV-101 is also the tube-rupture device when the process side is far above the water-side design pressure.</li>
+          <li><strong>Give operators what they need to judge fouling.</strong> Inlet and outlet temperature and pressure on both sides, plus block valves and a bypass, let the unit run while the bundle is pulled for cleaning.</li>
+        </ul>
+
+        <h3>Control schemes for other exchanger services</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th style="min-width:140px">Service</th><th style="min-width:230px">Usual scheme</th><th style="min-width:230px">Watch for</th></tr></thead>
+            <tbody>
+              <tr><td>Steam heater</td><td>Outlet TIC on a steam inlet valve, steam trap or condensate pot on the outlet; or a condensate level valve that floods part of the tube surface</td><td>Stall at low load when shell pressure falls below the condensate header; vacuum breaker and pumped return may be needed</td></tr>
+              <tr><td>Thermosiphon or kettle reboiler</td><td>Column tray TIC cascaded to a steam FIC; kettle level on the bottoms draw</td><td>Steam flow is a better inner loop than valve position: it rejects header pressure swings</td></tr>
+              <tr><td>Feed/effluent exchanger</td><td>Bypass on one side only, set by the downstream temperature, often the reactor inlet</td><td>Never throttle both sides; a heater after the exchanger takes the trim</td></tr>
+              <tr><td>Air cooler</td><td>Outlet TIC on fan speed (VFD), auto-variable pitch, louvres, or a process bypass</td><td>Winter overcooling, freezing and wax; louvres and recirculation per API 661 winterization</td></tr>
+              <tr><td>Cooling-water cooler, small or clean</td><td>TIC on a valve in the cooling-water return</td><td>Low velocity and high return temperature promote scaling; keep a minimum-flow stop</td></tr>
+              <tr><td>Plate exchanger</td><td>Bypass on the process side, or TIC on the utility side</td><td>Small hold-up gives fast response but little damping; mind strainer ΔP on narrow channels</td></tr>
+              <tr><td>Condenser on a column</td><td>Column pressure control by coolant, bypass of hot vapour to the drum, or inert blanketing</td><td>Each method suits a different column; this is a design decision of its own</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tbl-cap">Table 2. Common practice for regulatory control. Safety instrumented functions and interlocks are set separately by HAZOP and LOPA.</p>
+      </div>
+      <aside class="side">
+        <div class="sn"><strong>Reading a tag.</strong> TIC-101 is a temperature (T) indicating (I) controller (C) in loop 101. Every device in one loop shares the number: TT-101, TIC-101, TV-101.</div>
+        <div class="sn"><strong>Compare with the compressor P&amp;ID.</strong> There the anti-surge recycle is the protective loop; here the bypass is the control loop and the PSV is the protection.</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 6. Standards ============ -->
+  <section id="standards">
+    <div class="grid">
+      <div class="main-col full">
+        <div class="sec-head"><h2>Codes and standards</h2></div>
+        <div style="max-width:680px">
+          <p>Three layers of documents apply to most process exchangers. A <strong>pressure code</strong> (ASME VIII, EN 13445) makes the vessel legal and safe to operate. A <strong>manufacturer standard</strong> (TEMA, HEI) fixes construction details, tolerances and nomenclature. An <strong>owner's specification</strong> (API, ISO, PIP, IPS or a company standard) adds the oil-and-gas lessons learned on top. Process engineers rarely design to these clauses, but they write the datasheets that select them, so they need to know what each one controls.</p>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th style="min-width:170px">Document</th><th style="min-width:260px">What it covers</th><th style="min-width:170px">Edition (checked 15 Nov 2026)</th><th style="min-width:240px">Why it matters for process design</th></tr></thead>
+            <tbody>
+              <tr><td>ASME BPVC Section VIII, Division 1, Part UHX</td><td>Pressure-vessel construction; Part UHX covers shell-and-tube design, fabrication and inspection. Since the 2023 edition, UHX points to Division 2, Part 4.18 for tubesheet design rules. The 2025 edition moved UHX into a new Subsection D for specific vessel types.</td><td>2025 edition</td><td>Design pressure and temperature you specify become the MAWP; the hydrotest factor drives the tube-rupture check.</td></tr>
+              <tr><td>ASME BPVC Section VIII, Division 2, Part 4.18</td><td>Tubesheet rules for U-tube, fixed and floating-head exchangers, now referenced from Division 1.</td><td>2025 edition</td><td>Large fixed-tubesheet units with high shell/tube ΔT may need an expansion joint; this is where it is decided.</td></tr>
+              <tr><td>TEMA Standards</td><td>Nomenclature, classes R, C and B, tolerances, mechanical standards, flow-induced vibration, thermal relations, fluid properties, specification sheet.</td><td>2026 Edition, issued 1 August 2026; online subscription only (11th edition, July 2024, accepted for work in progress during a six-month grace period)</td><td>The TEMA datasheet and type code are the common language between the process designer and the vendor.</td></tr>
+              <tr><td>API Std 660</td><td>Shell-and-tube exchangers for petroleum, petrochemical and natural gas: heaters, condensers, coolers and reboilers. Excludes vacuum steam surface condensers and feedwater heaters.</td><td>9th edition, 2015, with Addendum 1 (2020); reaffirmed 2025</td><td>Usually invoked with TEMA R in refineries; adds requirements on materials, joints, testing.</td></tr>
+              <tr><td>ISO 16812</td><td>Supplements API 660 9th edition, including carbon steel in sour or wet H₂S service.</td><td>3rd edition, 2019</td><td>Used on projects that specify ISO rather than API.</td></tr>
+              <tr><td>API Std 661 / ISO 13706</td><td>Air-cooled exchangers: design, materials, fans and drives, structure, winterization, noise and airflow measurement.</td><td>API 661 7th edition, 2013, reaffirmed 2024; ISO 13706:2011</td><td>Winterization and design air temperature are process inputs you own.</td></tr>
+              <tr><td>API Std 667 / ISO 15547-1</td><td>Gasketed, semi-welded and welded plate-and-frame exchangers. API 667 replaced API 662 Part 1; API 662 was withdrawn in February 2025.</td><td>API 667 1st edition, March 2022; ISO 15547-1:2005, confirmed 2023</td><td>Sets the extra requirements when a plate exchanger goes into hydrocarbon service. Older specifications that still call up API 662 need updating.</td></tr>
+              <tr><td>API Std 668 / ISO 15547-2</td><td>Brazed aluminium plate-fin exchangers (formerly API 662 Part 2). ALPEMA Standards cover the same equipment from the manufacturers' side.</td><td>API 668 2nd edition, December 2025; ISO 15547-2:2005, confirmed 2023</td><td>LNG and air-separation cold boxes.</td></tr>
+              <tr><td>API Std 664 / ISO 12211</td><td>Spiral plate exchangers, stand-alone or integral with a vessel.</td><td>API 664 1st edition, 2014, with errata (2021), reaffirmed 2024; ISO 12211:2012</td><td>Slurry and fouling services.</td></tr>
+              <tr><td>ISO 12212</td><td>Hairpin exchangers, double-pipe and multitube.</td><td>2012</td><td>Small high-pressure duties and temperature-cross services.</td></tr>
+              <tr><td>HEI standards</td><td>Heat Exchange Institute standards for power-plant and utility equipment: shell-and-tube exchangers, closed feedwater heaters, steam surface condensers, air-cooled condensers.</td><td>Shell-and-tube 5th ed. (2013); feedwater heaters 9th ed. (2015); surface condensers 12th ed. (2018)</td><td>Applies where API 660 stops: surface condensers and feedwater heaters.</td></tr>
+              <tr><td>API Std 521</td><td>Pressure-relieving and depressuring systems, including heat-exchanger tube failure.</td><td>Current edition per owner specification</td><td>The 10/13 rule and tube-rupture relief rates (Example 5).</td></tr>
+              <tr><td>CSA B51 and CRN</td><td>Canadian boiler, pressure vessel and pressure piping code. Heat exchanger designs need a Canadian Registration Number in each province of use; in BC, Technical Safety BC reviews and registers designs.</td><td>Current edition adopted by the BC regulation</td><td>Allow time in the schedule: an ASME stamp alone is not enough to install in BC.</td></tr>
+              <tr><td>EN 13445 and the PED</td><td>European unfired pressure vessel standard and the Pressure Equipment Directive (CE marking).</td><td>Current edition per project</td><td>Equivalent role to ASME VIII for equipment installed in Europe.</td></tr>
+              <tr><td>PIP VESST002 and VEDST003</td><td>Process Industry Practices supplemental design and fabrication specification for shell-and-tube exchangers to ASME VIII, with the matching data sheets and documentation requirements.</td><td>VESST002: 2012, reaffirmed 2018. VEDST003: 2012, reaffirmed 2024</td><td>A ready-made owner specification many US projects adopt.</td></tr>
+              <tr><td>IPS-E-PR-771</td><td>Iranian Petroleum Standard: process requirements of heat-exchanging equipment, including thermal design.</td><td>Original edition July 1997; check for later revisions</td><td>Mandatory on projects for the Iranian Ministry of Petroleum and its companies.</td></tr>
+              <tr><td>IPS-E-PR-775 and IPS-E-PR-785</td><td>Process design of double-pipe exchangers, and of air-cooled exchangers.</td><td>Check current revision</td><td>Companion process standards to IPS-E-PR-771.</td></tr>
+              <tr><td>IPS-G-ME-245</td><td>Amendments and supplements to API 661 (6th edition) for air-cooled exchangers. Other IPS-G-ME documents supplement API equipment standards in the same way.</td><td>1st edition, March 2003</td><td>IPS states the latest edition of referenced documents applies, so confirm which API edition it now modifies.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tbl-cap" style="max-width:680px">Table 3. Edition information is from publisher and reseller listings checked on 15 November 2026. Your project's owner specification decides which edition governs; always confirm against the contract.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. Uses ============ -->
+  <section id="uses">
+    <div class="grid">
+      <div class="main-col full">
+        <div class="sec-head"><h2>Where each type is used</h2></div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th style="min-width:150px">Industry</th><th style="min-width:280px">Service</th><th style="min-width:260px">Usual choice</th></tr></thead>
+            <tbody>
+              <tr><td>Oil refining</td><td>Crude preheat train against product and pumparound streams</td><td>Floating-head shell-and-tube (AES, AET), TEMA R, API 660</td></tr>
+              <tr><td></td><td>Column overhead condensers, product run-down coolers</td><td>Air coolers to API 661, with a trim water cooler where needed</td></tr>
+              <tr><td></td><td>Reboilers</td><td>Kettle (AKT) or horizontal and vertical thermosiphons</td></tr>
+              <tr><td></td><td>Hydrotreater and hydrocracker feed/effluent</td><td>High-pressure shell-and-tube, often U-tube or special closures</td></tr>
+              <tr><td>Gas processing and LNG</td><td>Cryogenic multistream cooling and liquefaction</td><td>Brazed aluminium plate-fin (API 668) or coil-wound exchangers</td></tr>
+              <tr><td></td><td>Amine and glycol lean/rich exchange</td><td>Plate-and-frame or plate-and-shell</td></tr>
+              <tr><td>Chemicals and petrochemicals</td><td>Reactor feed preheat, effluent cooling, waste-heat steam generation</td><td>Shell-and-tube; process gas boilers for high-temperature gas</td></tr>
+              <tr><td></td><td>Corrosive acids and chlorides</td><td>Alloy, graphite or PTFE-lined construction; titanium or nickel-alloy plates</td></tr>
+              <tr><td>Power and utilities</td><td>Turbine exhaust condensing, feedwater heating</td><td>Surface condensers and closed feedwater heaters to HEI</td></tr>
+              <tr><td></td><td>Closed-loop cooling water against open-loop water</td><td>Gasketed plate exchangers</td></tr>
+              <tr><td>Carbon capture</td><td>Lean/rich solvent cross-exchanger, lean amine cooler, direct-contact cooler water</td><td>Plate exchangers at 4–7 °C approach (Example 4)</td></tr>
+              <tr><td></td><td>Solid-sorbent and TSA processes</td><td>Heating and cooling of the sorbent, often in contactors with embedded tubes or plates; the solid side usually limits U</td></tr>
+              <tr><td>Hydrogen</td><td>Reformer process gas cooling and steam raising</td><td>Process gas boilers, shell-and-tube feed/effluent exchangers</td></tr>
+              <tr><td></td><td>Precooling hydrogen at fuelling stations; high-pressure gas service</td><td>Diffusion-bonded and printed-circuit exchangers</td></tr>
+              <tr><td>Food, pharma, HVAC</td><td>Pasteurizing, CIP, chilled and hot water</td><td>Sanitary gasketed plate, tubular and brazed plate</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tbl-cap" style="max-width:680px">Table 4. Typical practice; individual projects differ with pressure, fouling, plot space and owner preference.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8. Practice ============ -->
+  <section id="practice">
+    <div class="grid">
+      <div class="main-col">
+        <div class="sec-head"><h2>Practical rules for students and engineers</h2></div>
+        <h4>Don't stack your margins</h4>
+        <p>Fouling resistance, a conservative U and a percentage overdesign are three margins on the same uncertainty. Stacked, they give an exchanger with low velocities, which fouls faster and proves the margins were needed. One practical guide suggests not exceeding about 0.00035 m²·K/W of total fouling resistance unless plant history shows it is needed. Pick one margin, state it, and stick to it.</p>
+        <h4>Respect the F curve</h4>
+        <p>F below about 0.8 in a 1–2 shell is a warning, not a number to divide by. It usually means a temperature cross is close. Add shells in series, use a true counter-current type, or relax a terminal temperature.</p>
+        <h4>Velocity is a design variable</h4>
+        <p>Cooling water on the tube side is typically kept at 1.5–2.5 m/s, with 0.5–1.0 bar allowed for pressure drop. Below the range it fouls and silts; above it, tubes and inlets erode. Example 2 shows that the choice of tube passes, not just area, settles this.</p>
+        <h4>Think about thermal expansion early</h4>
+        <p>A fixed-tubesheet exchanger is the cheapest until the shell and tubes run at very different temperatures, or the start-up case does. Give the mechanical engineer the metal temperatures for start-up, shutdown, steam-out and upset, not only the design point.</p>
+        <h4>Write the tube-rupture case on the datasheet</h4>
+        <p>When the two sides have very different design pressures, decide at the process stage whether you will meet the 10/13 rule or provide relief. Raising a design pressure later is expensive.</p>
+        <h4>Check vibration on the shell side</h4>
+        <p>Gas and vapour on the shell side, long unsupported spans and high nozzle velocities cause tube failures by vibration. Ask for the vibration analysis with the thermal rating.</p>
+        <h4>Use software, but check it by hand</h4>
+        <p>HTRI and Aspen EDR model leakage and bypass streams far better than any hand method. The hand checks on this page catch the common input errors: wrong phase, wrong units on fouling, the wrong side for a fluid, or a duty that does not match the energy balance.</p>
+        <h4>In Canada, plan for registration</h4>
+        <p>An exchanger built and stamped to ASME still needs a CRN for the province where it is installed. Ask the vendor whether the design is already registered in your province.</p>
+      </div>
+      <aside class="side">
+        <div class="sn"><strong>A habit worth forming.</strong> Write down which resistance controls U before you change anything. Most improvements that do not touch the controlling resistance do nothing.</div>
+        <div class="sn"><strong>Datasheets to learn.</strong> The TEMA specification sheet (free from TEMA in SI and US units), the API 660 and API 661 data sheets, and the PIP electronic data sheets.</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 9. Sources ============ -->
+  <section id="sources">
+    <div class="grid">
+      <div class="main-col">
+        <div class="sec-head"><h2>Sources</h2></div>
+        <ol class="plain" style="font-size:14px;line-height:1.55">
+          <li><a href="https://support.tema.org/">TEMA support page</a>: 2026 Edition issued 1 August 2026 with a six-month grace period; 11th edition published 1 July 2024; subscription only.</li>
+          <li><a href="https://tema.org/standards/">TEMA standards page</a> and <a href="https://wardvesselandexchanger.com/the-tema-11th-edition-is-now-available/">Ward Vessel and Exchanger: the TEMA 11th edition</a>: what the 11th edition added.</li>
+          <li><a href="https://en.wikipedia.org/wiki/Tubular_Exchanger_Manufacturers_Association">Tubular Exchanger Manufacturers Association</a> (Wikipedia): classes R, C and B and standard sections.</li>
+          <li><a href="https://heatexchan.blogspot.com/2017/02/heat-exchanger-standards-for-shell-tube.html">Heat exchanger standards for shell-and-tube equipment</a>: TEMA class differences, corrosion allowances.</li>
+          <li><a href="https://nextgen.sant-ambrogio.it/en/docs/KB519131">Sant'Ambrogio: heat exchanger changes in ASME BPVC 2023</a>: UHX design moved to Division 2 Part 4.18.</li>
+          <li><a href="https://info.thinkcei.com/think-tank/asme-viii-2025-code-updates-methods-materials-organization">What's new in ASME Section VIII 2025</a> and <a href="https://wardvesselandexchanger.com/2484-2/">Ward Vessel and Exchanger: 2025 ASME Code</a>: Subsection D and 4.18 corrections.</li>
+          <li><a href="https://webstore.ansi.org/Standards/ASME/ASMEPTB2014-1517385">ASME PTB-7-2014</a>: criteria for Part UHX tubesheet rules.</li>
+          <li><a href="https://www.mystandards.biz/standard/apistd-660_r2025-2.3.2015.html">API Std 660 (R2025)</a> and <a href="https://standards.globalspec.com/std/14317110/api-std-660">API 660 scope</a>.</li>
+          <li><a href="https://store.accuristech.com/ashrae/products/preview/2034897">ISO 16812:2019 preview</a>: supplements API 660, wet H₂S requirements.</li>
+          <li><a href="https://eshop.normservis.sk/norma/apistd-661_r2024-1.7.2013.html">API Std 661 7th edition (R2024)</a>.</li>
+          <li><a href="https://standards.globalspec.com/topics/plate-heat-exchanger-standards">Plate heat exchanger standards (GlobalSpec)</a>: ISO 12211, HEI 3092 and the former API 662 parts.</li>
+          <li><a href="https://shop.standards.ie/en-ie/standards/api-662-2006-97084_saig_api_api_203494">API 662:2006, withdrawn 15 February 2025</a> and <a href="https://www.skybearstandards.com/?p=7680">API Std 667, 1st edition (March 2022), formerly API 662 Part 1</a>.</li>
+          <li><a href="https://shop.standards.ie/en-ie/standards/api-std-668-2025-1136136_saig_api_api_3775162">API Std 668:2025</a> and <a href="https://alpema.org/">ALPEMA</a>: 2nd edition of API 668, December 2025.</li>
+          <li><a href="https://www.mystandards.biz/standard/apistd-664_r2024-1.3.2014.html">API Std 664 (R2024)</a>: 1st edition 2014 with errata, reaffirmed 2024.</li>
+          <li><a href="https://shop.standards.ie/en-ie/standards/pip-vedst003-2012-r2024--919830_saig_pip_pip_3438930">PIP VEDST003:2012 (R2024)</a>, listing VESST002:2012 (R2018).</li>
+          <li><a href="https://www.iso.org/standard/37294.html">ISO 15547-2:2005</a>: confirmed 2023.</li>
+          <li><a href="https://iteh.es/catalog/ics/71.120.30">ISO catalogue 71.120.30</a>: ISO 12211 and ISO 12212 scopes.</li>
+          <li><a href="https://store.accuristech.com/hei/subgroups/54260">HEI standards list</a> and <a href="https://www.turbomachinerymag.com/view/standards-for-steam-surface-condensers">HEI surface condensers 12th edition</a>.</li>
+          <li><a href="https://www.technicalsafetybc.ca/registration-buried-pressure-vessel-designs">Technical Safety BC: boilers and pressure vessels design registration</a>: CSA B51 and CRN.</li>
+          <li><a href="https://www.scribd.com/document/525200862/Standard-List">Project standards list</a> naming IPS-E-PR-771, 775 and 785; <a href="https://www.scribd.com/document/511521644/g-me-245">IPS-G-ME-245</a>.</li>
+          <li><a href="https://www.eng-tips.com/threads/heat-exchangers-tube-rupture-two-thirds-rule-and-location.299307">Eng-Tips discussion of the 2/3 and 10/13 rules</a> and <a href="https://checalc.com/tube_rupture_article.html">tube-rupture relief article</a>.</li>
+          <li><a href="https://psecommunity.org/wp-content/plugins/wpor/includes/file/2303/LAPSE-2023.16117-1v1.pdf">Aromada, Eldrup and Øi, Energies 2022, 15, 425</a>: cross-exchanger type and optimum approach in CO₂ capture.</li>
+          <li><a href="https://proceedings.aiche.org/conferences/aiche-spring-meeting-and-global-congress-on-process-safety/2011/proceeding/paper/70g-role-heat-exchangers-post-combustion-co2-capture-0">Ziegler, The role of heat exchangers in post-combustion CO₂ capture, AIChE 2011</a>.</li>
+          <li><a href="https://processconvert.pages.dev/engineering-references/heat-exchanger-typical-u-values-reference">Typical U-values reference</a> (shell-and-tube values from Coulson &amp; Richardson) and <a href="https://engineeringtoolbox.com/heat-transfer-coefficients-exchangers-d_450.html">Engineering ToolBox, overall heat transfer coefficients</a> (plate, spiral and air-cooled).</li>
+          <li><a href="https://chem-casts.com/knowledge/overall-heat-transfer-coefficient-u-practical-design-guide">Overall U practical design guide</a>: fouling limits and recommended velocities.</li>
+          <li><a href="https://www.scribd.com/document/366794821/ch14excerpt-pdf">Peters, Timmerhaus and West, Chapter 14 excerpt</a>: Kern, Bell–Delaware and program comparison.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div>
+      <div class="foot-name">Chemical Process Engineering</div>
+      <p>Lessons, calculators and tools for chemical engineering students and engineers.</p>
+    </div>
+    <ul class="foot-links">
+      <li><a href="/calculators/">Calculators</a></li>
+      <li><a href="/lessons/">Lessons</a></li>
+      <li><a href="/data/">Data</a></li>
+      <li><a href="/analysis/">Analysis</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="https://github.com/alotfi73">GitHub</a></li>
+    </ul>
+    <p class="foot-note">Run by Alireza Lotfollahzade, EIT, in Metro Vancouver. Educational content: numbers are illustrative unless stated, and codes, standards and your company's specifications govern any real design.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  // ---------- maths ----------
+  function lmtd(T1,T2,t1,t2){
+    var a=T1-t2, b=T2-t1;
+    if(a<=0||b<=0) return NaN;
+    if(Math.abs(a-b)<1e-9) return a;
+    return (a-b)/Math.log(a/b);
+  }
+  function ntuCF(P,R){ return Math.abs(R-1)<1e-9 ? P/(1-P) : Math.log((1-P*R)/(1-P))/(1-R); }
+  function ntu12(P,R){
+    var s=Math.sqrt(1+R*R), a=2-P*(1+R-s), b=2-P*(1+R+s);
+    if(a<=0||b<=0) return NaN;
+    return Math.log(a/b)/s;
+  }
+  function pShell(P,R,N){
+    if(N===1) return P;
+    if(Math.abs(R-1)<1e-9) return P/(N-N*P+P);
+    var X=Math.pow((1-P*R)/(1-P),1/N);
+    return (X-1)/(X-R);
+  }
+  // F for N shells (TEMA E, even tube passes); N=0 means counter-current
+  function Ffac(P,R,N){
+    if(N===0) return 1;
+    if(P<=1e-12||R<=1e-12) return 1;
+    var n=ntu12(pShell(P,R,N),R);
+    if(!isFinite(n)||n<=0) return NaN;
+    return ntuCF(P,R)/(N*n);
+  }
+
+  // ---------- inputs ----------
+  var defs=[
+    {id:"T1",label:"Hot stream inlet, T₁",unit:"°C",min:-50,max:400,step:1,v:120},
+    {id:"T2",label:"Hot stream outlet, T₂",unit:"°C",min:-50,max:400,step:1,v:50},
+    {id:"t1",label:"Cold stream inlet, t₁",unit:"°C",min:-50,max:400,step:1,v:25},
+    {id:"t2",label:"Cold stream outlet, t₂",unit:"°C",min:-50,max:400,step:1,v:40},
+    {id:"Q",label:"Duty, Q",unit:"kW",min:10,max:30000,step:10,v:3360},
+    {id:"U",label:"Overall coefficient, U",unit:"W/m²·K",min:20,max:5000,step:10,v:450}
+  ];
+  var presets={
+    cooler:{T1:120,T2:50,t1:25,t2:40,Q:3360,U:450,N:1},
+    steam:{T1:151.8,T2:151.8,t1:20,t2:80,Q:3762,U:2000,N:1},
+    amine:{T1:120,T2:55,t1:45,t2:110,Q:24700,U:2400,N:0}
+  };
+  var box=document.getElementById("fields"), el={};
+  defs.forEach(function(d){
+    var f=document.createElement("div"); f.className="field";
+    f.innerHTML='<label for="n-'+d.id+'">'+d.label+'</label><div class="row">'+
+      '<input type="range" id="r-'+d.id+'" min="'+d.min+'" max="'+d.max+'" step="'+d.step+'" value="'+d.v+'" aria-label="'+d.label+' slider">'+
+      '<div class="numbox"><input type="number" id="n-'+d.id+'" inputmode="decimal" step="any" value="'+d.v+'"><span>'+d.unit+'</span></div></div>';
+    box.appendChild(f);
+    var r=f.querySelector("#r-"+d.id), n=f.querySelector("#n-"+d.id);
+    r.addEventListener("input",function(){ n.value=r.value; update(); });
+    n.addEventListener("input",function(){ var x=parseFloat(n.value); if(isFinite(x)) r.value=x; update(); });
+    el[d.id]=n; el["r"+d.id]=r;
+  });
+  var N=1;
+  var cfgBtns=document.querySelectorAll("#cfg button");
+  function setN(k){ N=k; cfgBtns.forEach(function(b){ b.setAttribute("aria-pressed", String(+b.dataset.n===k)); }); }
+  cfgBtns.forEach(function(b){ b.addEventListener("click",function(){ setN(+b.dataset.n); update(); }); });
+  document.querySelectorAll("#presets button").forEach(function(b){
+    b.addEventListener("click",function(){
+      var p=presets[b.dataset.p];
+      ["T1","T2","t1","t2","Q","U"].forEach(function(k){ el[k].value=p[k]; el["r"+k].value=p[k]; });
+      setN(p.N); update();
+    });
+  });
+
+  // ---------- output ----------
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var last={};
+  function setTile(id,text){
+    var t=document.getElementById(id), v=t.querySelector(".v");
+    if(v.textContent!==text){
+      v.textContent=text;
+      if(last[id]!==undefined){
+        t.classList.add("flash"); void t.offsetWidth;
+        requestAnimationFrame(function(){ t.classList.remove("flash"); });
+      }
+      last[id]=text;
+    }
+  }
+  function fmt(x,d){ return isFinite(x)? x.toLocaleString("en-CA",{minimumFractionDigits:d,maximumFractionDigits:d}) : "–"; }
+  var cfgName=["counter-current","1 shell (1–2)","2 shells in series","3 shells in series"];
+  var TUBE=Math.PI*0.01905*6.096;
+  var state={};
+
+  function update(){
+    var T1=+el.T1.value, T2=+el.T2.value, t1=+el.t1.value, t2=+el.t2.value, Q=+el.Q.value, U=+el.U.value;
+    var st=document.getElementById("status"), msg="", cls="ok";
+    var L=NaN,F=NaN,A=NaN,n=NaN,P=NaN,R=NaN;
+    if(!(T1>=T2)) {msg="Check inputs: the hot outlet must not be above the hot inlet."; cls="err";}
+    else if(!(t2>=t1)) {msg="Check inputs: the cold outlet must not be below the cold inlet."; cls="err";}
+    else if(T1===T2 && t1===t2) {msg="Check inputs: at least one stream must change temperature."; cls="err";}
+    else if(T1-t2<=0 || T2-t1<=0) {msg="Temperature cross at the exchanger ends: raise the hot temperatures or lower the cold ones."; cls="err";}
+    else if(!(Q>0&&U>0)) {msg="Check inputs: duty and U must be positive."; cls="err";}
+    else{
+      L=lmtd(T1,T2,t1,t2);
+      // work with the stream that changes temperature as the reference for P
+      if(t2>t1){ P=(t2-t1)/(T1-t1); R=(T1-T2)/(t2-t1); }
+      else { P=(T1-T2)/(T1-t1); R=0; }
+      // use the symmetric form with R ≤ 1 for numerical stability
+      var Pc=P,Rc=R; if(R>1){ Pc=P*R; Rc=1/R; }
+      F=Ffac(Pc,Rc,N);
+      if(!isFinite(F)){ msg="No solution for "+cfgName[N]+": the temperature cross inside the shell is too large. Add shells in series or choose counter-current."; cls="err"; }
+      else{
+        A=Q*1000/(U*F*L); n=Math.ceil(A/TUBE);
+        if(N>0 && F<0.75){ msg="Check: F = "+fmt(F,2)+" is below 0.75. The design is sensitive to small temperature changes; add a shell in series."; cls="warn"; }
+        else if(N>0 && F<0.8){ msg="Check: F = "+fmt(F,2)+" is acceptable but close to the 0.75–0.8 limit."; cls="warn"; }
+        else msg="F = "+fmt(F,3)+" for "+cfgName[N]+". Heat-capacity rates from the energy balance: hot "+(T1>T2?fmt(Q/(T1-T2),1)+" kW/K":"isothermal (condensing)")+", cold "+(t2>t1?fmt(Q/(t2-t1),1)+" kW/K.":"isothermal (boiling).");
+      }
+    }
+    st.className="status "+cls; st.textContent=msg;
+    setTile("t-lmtd",fmt(L,1)); setTile("t-f",fmt(F,3));
+    setTile("t-a",isFinite(A)?fmt(A,A<100?1:0):"–"); setTile("t-n",isFinite(n)?fmt(n,0):"–");
+
+    var w=document.getElementById("wk"), rows=[];
+    if(isFinite(L)){
+      rows.push("ΔT_a = T₁ − t₂ = "+fmt(T1,1)+" − "+fmt(t2,1)+" = "+fmt(T1-t2,1)+" °C");
+      rows.push("ΔT_b = T₂ − t₁ = "+fmt(T2,1)+" − "+fmt(t1,1)+" = "+fmt(T2-t1,1)+" °C");
+      rows.push("ΔT_lm = (ΔT_a − ΔT_b) / ln(ΔT_a/ΔT_b) = "+fmt(L,2)+" °C");
+      rows.push("P = "+(t2>t1?"(t₂ − t₁)/(T₁ − t₁)":"(T₁ − T₂)/(T₁ − t₁)")+" = "+fmt(P,4)+";  R = "+fmt(R,4));
+      rows.push(N===0?"Counter-current: F = 1":"F ("+cfgName[N]+", from ε–NTU) = "+fmt(F,4));
+      if(isFinite(A)){
+        rows.push("A = Q/(U·F·ΔT_lm) = "+fmt(Q*1000,0)+" / ("+fmt(U,0)+" × "+fmt(F,3)+" × "+fmt(L,2)+") = "+fmt(A,1)+" m²");
+        rows.push("Tubes = A / (π × 0.01905 × 6.096) = "+fmt(A,1)+" / "+fmt(TUBE,4)+" → "+fmt(n,0));
+      }
+    }
+    w.innerHTML=rows.map(function(r){ return "<li>"+r+"</li>"; }).join("");
+    state={T1:T1,T2:T2,t1:t1,t2:t2,Q:Q,U:U,L:L,F:F,A:A,n:n};
+    drawProfile(T1,T2,t1,t2,isFinite(L));
+  }
+
+  // ---------- Figure 2 ----------
+  var NS="http://www.w3.org/2000/svg";
+  function mk(tag,attrs,parent,text){ var e=document.createElementNS(NS,tag); for(var k in attrs) e.setAttribute(k,attrs[k]); if(text!==undefined) e.textContent=text; if(parent) parent.appendChild(e); return e; }
+  function niceStep(span){ var raw=span/5, p=Math.pow(10,Math.floor(Math.log10(raw))), m=raw/p; return (m<1.5?1:m<3?2:m<7?5:10)*p; }
+  function drawProfile(T1,T2,t1,t2,ok){
+    var s=document.getElementById("profile"); while(s.firstChild) s.removeChild(s.firstChild);
+    var W=640,H=300,ml=46,mr=110,mt=16,mb=40, pw=W-ml-mr, ph=H-mt-mb;
+    var font={"font-family":"Open Sans, sans-serif","font-size":"12"};
+    if(!ok){ mk("text",Object.assign({x:ml,y:H/2,fill:"#5f646a"},font),s,"Enter feasible temperatures to draw the profile."); return; }
+    var lo=Math.min(t1,T2), hi=Math.max(T1,t2), st=niceStep(hi-lo||10);
+    var y0=Math.floor(lo/st)*st, y1=Math.ceil(hi/st)*st; if(y1===y0) y1=y0+st;
+    function X(x){ return ml+x*pw; } function Y(v){ return mt+ph*(1-(v-y0)/(y1-y0)); }
+    for(var v=y0; v<=y1+1e-9; v+=st){
+      mk("line",{x1:ml,x2:ml+pw,y1:Y(v),y2:Y(v),stroke:"#e6e9eb"},s);
+      mk("text",Object.assign({x:ml-8,y:Y(v)+4,"text-anchor":"end",fill:"#5f646a"},font),s,String(Math.round(v*10)/10));
+    }
+    mk("line",{x1:ml,x2:ml+pw,y1:mt+ph,y2:mt+ph,stroke:"#000"},s);
+    [0,0.25,0.5,0.75,1].forEach(function(x){ mk("text",Object.assign({x:X(x),y:mt+ph+18,"text-anchor":"middle",fill:"#5f646a"},font),s,String(x)); });
+    mk("text",Object.assign({x:ml+pw/2,y:H-4,"text-anchor":"middle",fill:"#5f646a"},font),s,"Fraction of heat-transfer area from hot inlet end");
+    mk("text",Object.assign({x:12,y:mt+ph/2,"text-anchor":"middle",fill:"#5f646a",transform:"rotate(-90 12 "+(mt+ph/2)+")"},font),s,"°C");
+    var a=T1-t2, b=T2-t1, r=b/a, ph_="", pc="";
+    for(var i=0;i<=60;i++){
+      var x=i/60, q=Math.abs(r-1)<1e-6? x : (Math.pow(r,x)-1)/(r-1);
+      var th=T1-(T1-T2)*q, tc=t2-(t2-t1)*q;
+      ph_+=(i?"L":"M")+X(x).toFixed(1)+","+Y(th).toFixed(1);
+      pc+=(i?"L":"M")+X(x).toFixed(1)+","+Y(tc).toFixed(1);
+    }
+    mk("path",{d:ph_,fill:"none",stroke:"#ab6528","stroke-width":"2.5"},s);
+    mk("path",{d:pc,fill:"none",stroke:"#12647e","stroke-width":"2.5"},s);
+    // end markers and direct labels
+    mk("circle",{cx:X(0),cy:Y(T1),r:3.5,fill:"#ab6528"},s); mk("circle",{cx:X(1),cy:Y(T2),r:3.5,fill:"#ab6528"},s);
+    mk("circle",{cx:X(0),cy:Y(t2),r:3.5,fill:"#12647e"},s); mk("circle",{cx:X(1),cy:Y(t1),r:3.5,fill:"#12647e"},s);
+    var yh=Y(T2), yc=Y(t1); if(Math.abs(yh-yc)<30){ var m=(yh+yc)/2; yh=m-15; yc=m+15; }
+    mk("text",Object.assign({x:X(1)+10,y:yh-2,fill:"#ab6528","font-weight":"600"},font),s,"Hot "+fmt(T2,1)+" °C out");
+    mk("text",Object.assign({x:X(1)+10,y:yc+12,fill:"#12647e","font-weight":"600"},font),s,"Cold "+fmt(t1,1)+" °C in");
+  }
+
+  // ---------- Figure 3 ----------
+  (function(){
+    var s=document.getElementById("dtmin"), W=680,H=300,ml=58,mr=24,mt=16,mb=42,pw=W-ml-mr,ph=H-mt-mb;
+    var font={"font-family":"Open Sans, sans-serif","font-size":"12"};
+    function A(d){ return 380*(75-d)*1000/(2400*d); }
+    function X(d){ return ml+(d-3)/12*pw; } function Y(a){ return mt+ph*(1-a/4000); }
+    for(var a=0;a<=4000;a+=1000){
+      mk("line",{x1:ml,x2:ml+pw,y1:Y(a),y2:Y(a),stroke:"#e6e9eb"},s);
+      mk("text",Object.assign({x:ml-8,y:Y(a)+4,"text-anchor":"end",fill:"#5f646a"},font),s,a.toLocaleString("en-CA"));
+    }
+    mk("line",{x1:ml,x2:ml+pw,y1:Y(0),y2:Y(0),stroke:"#000"},s);
+    for(var d=3; d<=15; d+=2) mk("text",Object.assign({x:X(d),y:mt+ph+18,"text-anchor":"middle",fill:"#5f646a"},font),s,String(d));
+    mk("text",Object.assign({x:ml+pw/2,y:H-4,"text-anchor":"middle",fill:"#5f646a"},font),s,"Minimum approach temperature, ΔT_min (°C)");
+    mk("text",Object.assign({x:14,y:mt+ph/2,"text-anchor":"middle",fill:"#5f646a",transform:"rotate(-90 14 "+(mt+ph/2)+")"},font),s,"Area, m²");
+    var p=""; for(var i=0;i<=120;i++){ var dd=3+12*i/120; p+=(i?"L":"M")+X(dd).toFixed(1)+","+Y(A(dd)).toFixed(1); }
+    mk("path",{d:p,fill:"none",stroke:"#12647e","stroke-width":"2.5"},s);
+    [[5,"5 °C: 2220 m²"],[10,"10 °C: 1030 m²"]].forEach(function(k){
+      mk("circle",{cx:X(k[0]),cy:Y(A(k[0])),r:4.5,fill:"#000"},s);
+      mk("text",Object.assign({x:X(k[0])+10,y:Y(A(k[0]))-8,fill:"#000","font-weight":"600"},font),s,k[1]);
+    });
+  })();
+
+  // ---------- working toggle & copy ----------
+  var wb=document.getElementById("wk-btn"), wk=document.getElementById("wk");
+  wb.addEventListener("click",function(){ var o=wb.getAttribute("aria-expanded")==="true"; wb.setAttribute("aria-expanded",String(!o)); wk.hidden=o; });
+  document.getElementById("copy").addEventListener("click",function(){
+    var s=state, txt="Heat exchanger check ("+cfgName[N]+")\n"+
+      "Hot "+s.T1+" → "+s.T2+" °C; cold "+s.t1+" → "+s.t2+" °C; Q = "+s.Q+" kW; U = "+s.U+" W/m²K\n"+
+      "LMTD = "+fmt(s.L,2)+" °C; F = "+fmt(s.F,3)+"; A = "+fmt(s.A,1)+" m²; tubes (19.05 mm × 6.1 m) = "+fmt(s.n,0);
+    var c=document.getElementById("copied");
+    try{ navigator.clipboard.writeText(txt).then(function(){ c.textContent="Copied to clipboard."; },function(){ c.textContent="Copy was blocked by the browser; select the working text instead."; }); }
+    catch(e){ c.textContent="Copy was blocked by the browser; select the working text instead."; }
+    setTimeout(function(){ c.textContent=""; },4000);
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>

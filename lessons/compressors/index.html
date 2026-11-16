@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compressors for process engineers · Chemical Process Engineering</title>
+<meta name="description" content="Compressor types and how they work, pressure ratio ranges, polytropic and isentropic calculations, staging, reciprocating capacity, centrifugal maps and surge control, reading vendor data, API 617, 618, 619, 672 and ASME PTC 10, safety practice, worked examples and practice problems for chemical and process engineers.">
+
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/assets/icons/site.webmanifest">
+<meta name="theme-color" content="#4c5157">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Chemical Process Engineering">
+<meta property="og:title" content="Compressors for process engineers">
+<meta property="og:description" content="Compressor types, polytropic and isentropic head, staging, centrifugal maps and surge control, vendor data, API and ASME standards, safety, worked examples and practice problems.">
+<meta property="og:url" content="https://chemprocesseng.com/lessons/compressors/">
+<meta property="og:image" content="https://chemprocesseng.com/assets/brand/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://chemprocesseng.com/lessons/compressors/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Newsreader:opsz,wght@6..72,300;6..72,400&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Editorial engineering lesson: stone canvas, white raised layer, a 680 px text column with a 240 px sidenote column; charts carry the colour. */
+  --primary:#a6d7f0; --primary-hover:#8fcbe9; --secondary:#8f5a39;
+  --ink:#000000; --ink-muted:#4d5459; --ink-subtle:#5f646a;
+  --interactive:#12647e; --brand-deep:#3a2206;
+  --canvas:#f5f7f8; --surface:#ffffff; --surface-sunken:#e6e9eb;
+  --border:#e5e7eb; --border-strong:#b1b5b9; --rule:#000000;
+  --success:#006b48; --warning:#9e4200; --error:#b42318; --info:#005ea6;
+  --c1:#12647e; --c2:#ab6528; --c3:#4676bf; --c4:#2a8285; --c-muted:#b1b5b9; --c-grid:#e6e9eb;
+  --seq1:#e9f4fa; --seq2:#c9e6f5;
+  --f-display:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-body:"Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --f-card:system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease:cubic-bezier(0.4,0.14,0.3,1); --ease-enter:cubic-bezier(0,0,0.3,1); --ease-exit:cubic-bezier(0.4,0.14,1,1);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--ink);font:400 16px/1.65 var(--f-body);letter-spacing:-0.01em}
+a{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--interactive);outline-offset:2px}
+p{margin:0 0 16px}
+sub,sup{line-height:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+.num,td.num,th.num{font-variant-numeric:tabular-nums;text-align:right}
+.mono{font-family:var(--f-mono);font-size:14px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--surface);padding:8px 12px}
+.skip:focus{left:12px;top:12px;z-index:10}
+
+/* Page */
+.page{max-width:1200px;margin:0 auto;padding:0 40px 40px}
+.crumb{font-size:14px;color:var(--ink-subtle);margin:40px 0 20px}
+.crumb a{color:var(--ink-subtle)}
+h1{font:300 44px/1.15 var(--f-display);letter-spacing:-0.005em;max-width:984px}
+.stand{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);max-width:680px;margin:20px 0 20px}
+.byline{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--ink-subtle);padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:984px}
+
+.row{display:grid;grid-template-columns:minmax(0,680px) 240px;column-gap:64px;align-items:start}
+.row > .main{min-width:0}
+.sn{grid-column:2;font-size:14px;line-height:1.55;color:var(--ink-muted);padding-top:4px}
+.sn p{margin:0 0 10px}
+.sn b{color:var(--ink);font-weight:600}
+.wide{max-width:984px}
+
+.sec{margin-top:84px;scroll-margin-top:16px}
+.sec-head{border-top:1px solid var(--rule);padding-top:16px;margin-bottom:24px;max-width:984px}
+.marker{font:400 15px/1.3 var(--f-display);letter-spacing:0.02em;color:var(--secondary);margin:0 0 8px}
+h2{font:400 30px/1.25 var(--f-display)}
+h3{font:600 19px/1.35 var(--f-body);margin:40px 0 12px;letter-spacing:0}
+h4{font:600 16px/1.4 var(--f-body);margin:24px 0 8px}
+.lede{font:300 19px/1.6 var(--f-body);color:var(--ink-muted)}
+ul.plain,ol.plain{margin:0 0 16px;padding-left:22px}
+ul.plain li,ol.plain li{margin-bottom:6px}
+
+/* On this page */
+.toc{columns:2;column-gap:40px;list-style:none;padding:0;margin:0}
+.toc li{break-inside:avoid;padding:7px 0;border-bottom:1px solid var(--border);display:flex;gap:12px}
+.toc li span{font-variant-numeric:tabular-nums;color:var(--ink-subtle);min-width:22px}
+.toc a{text-decoration:none}
+.toc a:hover{text-decoration:underline}
+
+/* Equations */
+.eq{font-family:var(--f-mono);font-size:14px;line-height:1.7;background:var(--surface);border-radius:4px;padding:14px 18px;margin:8px 0 20px;overflow-x:auto;display:flex;justify-content:space-between;align-items:center;gap:24px;white-space:nowrap}
+.eq .n{color:var(--ink-subtle)}
+.where{font-size:14px;color:var(--ink-muted);margin:-8px 0 20px}
+
+/* Tables */
+.tbl{overflow-x:auto;margin:8px 0 24px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.5}
+th{font:600 13px/1.4 var(--f-body);letter-spacing:0.01em;color:var(--ink-subtle);text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:bottom}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td code,.mono-inline{font-family:var(--f-mono);font-size:13px}
+.tbl caption{caption-side:bottom;text-align:left;font-size:13px;color:var(--ink-subtle);padding:10px 12px}
+td.lead{font-weight:600;white-space:nowrap}
+.tbl-wide table{min-width:860px}
+.tbl-mid table{min-width:640px}
+
+/* Figures */
+figure{margin:40px 0;padding-top:14px;border-top:1px solid var(--rule);max-width:984px}
+.fig-title{font:600 17px/1.4 var(--f-body);margin:0 0 6px;letter-spacing:0}
+.fig-title .fn{font-weight:400;color:var(--ink-subtle)}
+figcaption,.cap{font-size:13px;line-height:1.5;color:var(--ink-subtle);margin-top:10px;max-width:760px}
+.chart{width:100%;min-height:200px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+svg .grid{stroke:var(--c-grid);stroke-width:1}
+svg .axis{stroke:var(--ink);stroke-width:1}
+svg .tick{fill:var(--ink-subtle);font:400 12px var(--f-body);font-variant-numeric:tabular-nums}
+svg .alab{fill:var(--ink-subtle);font:600 12px var(--f-body)}
+svg .lab{font:600 12px var(--f-body);paint-order:stroke;stroke:var(--canvas);stroke-width:4px;stroke-linejoin:round}
+svg .lab-s{font:400 12px var(--f-body);fill:var(--ink-subtle);paint-order:stroke;stroke:var(--canvas);stroke-width:4px;stroke-linejoin:round}
+svg .l1{fill:none;stroke:var(--c1);stroke-width:2.25}
+svg .l2{fill:none;stroke:var(--c2);stroke-width:2.25}
+svg .l3{fill:none;stroke:var(--c3);stroke-width:2}
+svg .l4{fill:none;stroke:var(--c4);stroke-width:2}
+svg .lk{fill:none;stroke:var(--ink);stroke-width:1.5}
+svg .lm{fill:none;stroke:var(--c-muted);stroke-width:1.5}
+svg .dash{stroke-dasharray:5 4}
+svg .dot2{stroke-dasharray:2 3}
+svg .t1{fill:var(--c1)} svg .t2{fill:var(--c2)} svg .t3{fill:var(--c3)} svg .t4{fill:var(--c4)} svg .tk{fill:var(--ink)} svg .tm{fill:var(--ink-subtle)}
+svg .band{fill:var(--seq2);opacity:0.55}
+svg .nohalo{stroke:none}
+svg .bad{fill:#f3d9d6;opacity:0.7}
+svg .callout circle{fill:var(--surface);stroke:var(--ink);stroke-width:1}
+svg .callout text{font:600 11px var(--f-body);fill:var(--ink)}
+.fig-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.copy-note{font-size:13px;color:var(--ink-subtle)}
+.copy-fallback{width:100%;min-height:120px;font-family:var(--f-mono);font-size:12px;margin-top:8px;border:1px solid var(--border-strong);border-radius:8px;padding:8px}
+.two-charts{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.panel-title{font:600 13px/1.4 var(--f-body);color:var(--ink-subtle);margin:10px 0 2px;letter-spacing:0.01em}
+.svgwrap{overflow-x:auto;background:var(--surface);border-radius:8px;padding:12px 8px}
+.svgwrap svg{display:block;width:100%;min-width:760px;height:auto}
+
+/* Schematic */
+.pfd text{font:400 12px var(--f-body);fill:var(--ink)}
+.pfd .lbl-s{font-size:11px;fill:var(--ink-subtle)}
+.pfd .pipe{fill:none;stroke:var(--ink);stroke-width:1.75}
+.pfd .rec{fill:none;stroke:var(--c2);stroke-width:2}
+.pfd .sig{fill:none;stroke:var(--c1);stroke-width:1.25;stroke-dasharray:4 3}
+.pfd .eqp{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.pfd .inst{fill:var(--surface);stroke:var(--c1);stroke-width:1.25}
+.pfd .inst-t{font:600 10px var(--f-body);fill:var(--c1)}
+
+/* Controls */
+.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 24px;margin:14px 0 18px}
+.ctl label,.lbl{display:block;font:600 14px/1.4 var(--f-body);margin-bottom:6px;letter-spacing:0}
+.ctl .val{float:right;font-weight:400;color:var(--ink-muted);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--interactive);height:24px;margin:0}
+.seg{display:inline-flex;border:1px solid var(--ink);border-radius:20px;overflow:hidden;background:var(--surface);flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:6px 14px;min-height:34px;font:600 13px/1.4 var(--f-body);color:var(--ink);cursor:pointer;letter-spacing:0.01em}
+.seg button + button{border-left:1px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--primary)}
+.seg button:hover{background:var(--seq2)}
+.seg button[aria-pressed="true"]:hover{background:var(--primary-hover)}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font:600 16px/1.4 var(--f-body);letter-spacing:0;text-decoration:none;transition:transform 200ms var(--ease),background-color 200ms var(--ease)}
+.btn:active{transform:scale(0.98)}
+.btn-primary{background:var(--primary);color:var(--ink);border:0;border-radius:100px;min-height:44px;padding:10px 48px 10px 24px;position:relative}
+.btn-primary::after{content:"\2192";position:absolute;right:22px;top:50%;transform:translateY(-52%);transition:transform 200ms var(--ease)}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-primary:hover::after{transform:translate(3px,-52%)}
+.btn-secondary{background:transparent;color:var(--secondary);border:1px solid var(--ink);border-radius:20px;min-height:44px;padding:10px 24px}
+.btn-secondary:hover{background:var(--surface)}
+.btn-sm{min-height:34px;padding:6px 14px;font-size:13px;letter-spacing:0.01em}
+
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.tiles.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tile{background:var(--surface);border-radius:8px;padding:16px}
+.tile .v{font:300 30px/1.1 var(--f-display);letter-spacing:-0.01em;font-variant-numeric:tabular-nums}
+.tile .u{font:400 14px var(--f-body);color:var(--ink-muted);margin-left:4px}
+.tile .k{font-size:13px;color:var(--ink-subtle);margin-top:6px;line-height:1.4}
+.status{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline;font-size:14px;margin:12px 0 4px;color:var(--ink-muted)}
+.tag{display:inline-block;border:1px solid currentColor;border-radius:4px;padding:1px 8px;font:600 13px/1.5 var(--f-body);letter-spacing:0.01em;white-space:nowrap}
+.ok{color:var(--success)} .warn{color:var(--warning)} .err{color:var(--error)} .inf{color:var(--info)}
+
+/* Calculator */
+.calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin:24px 0 8px;max-width:984px}
+.card{background:var(--surface);border-radius:8px;padding:24px}
+.card-title{font:300 23px/1.25 var(--f-card);margin:0 0 18px;letter-spacing:0}
+.field-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.field-row label{font:600 14px/1.35 var(--f-body);letter-spacing:0;flex:1}
+.field{display:flex;align-items:center;border:1px solid var(--border-strong);border-radius:8px;height:44px;background:var(--surface);width:150px;flex:none}
+.field:focus-within{border-color:var(--interactive);outline:2px solid var(--interactive);outline-offset:0}
+.field input{border:0;outline:0;width:100%;min-width:0;height:100%;padding:0 8px 0 12px;font:400 16px var(--f-body);font-variant-numeric:tabular-nums;text-align:right;background:transparent;color:var(--ink)}
+.field .unit{padding-right:12px;color:var(--ink-subtle);font-size:13px;white-space:nowrap}
+.assume{font-size:13px;color:var(--ink-subtle);margin:16px 0 0;padding-left:18px}
+.assume li{margin-bottom:4px}
+.toggle{background:none;border:0;padding:0;font:600 15px var(--f-body);cursor:pointer;color:var(--ink);display:inline-flex;gap:8px;align-items:center;letter-spacing:0}
+.toggle .chev{display:inline-block;transition:transform 200ms var(--ease);font-size:18px;line-height:1}
+.toggle[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.working{font-family:var(--f-mono);font-size:13.5px;line-height:1.7;margin:14px 0 0;padding-left:26px;overflow-x:auto}
+.working li{margin-bottom:6px;padding-left:4px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+.stage-list{font-size:13px;color:var(--ink-muted);margin:10px 0 0;font-variant-numeric:tabular-nums}
+
+/* Type tree */
+.tree{display:grid;grid-template-columns:1fr 1fr;gap:24px 40px;margin:14px 0 4px}
+.tree h4{font:400 21px/1.3 var(--f-display);margin:0 0 6px}
+.tree .def{font-size:14px;color:var(--ink-muted);margin:0 0 12px}
+.tree ul{list-style:none;margin:0;padding:0 0 0 18px;border-left:1px solid var(--ink)}
+.tree > div > ul{margin-left:4px}
+.tree li{position:relative;padding:5px 0 5px 4px;font-size:14px}
+.tree li::before{content:"";position:absolute;left:-18px;top:16px;width:14px;border-top:1px solid var(--ink)}
+.tree li > b{font-weight:600}
+.tree li ul{margin-top:4px;border-left-color:var(--border-strong)}
+.tree li ul li::before{border-top-color:var(--border-strong)}
+.tree .eg{color:var(--ink-subtle)}
+.tree .extra{grid-column:1 / -1;font-size:14px;color:var(--ink-muted);border-top:1px solid var(--border);padding-top:10px}
+
+/* Examples and problems */
+.ex{margin-top:48px;padding-top:20px;border-top:1px solid var(--border-strong);scroll-margin-top:16px}
+.ex h3{margin-top:0}
+.given{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;font-size:15px;margin:0 0 16px}
+.given dt{font-weight:600}
+.given dd{margin:0}
+.steps{margin:0 0 16px;padding-left:24px}
+.steps li{margin-bottom:10px}
+.calcline{display:block;font-family:var(--f-mono);font-size:13.5px;background:var(--surface);border-radius:4px;padding:6px 10px;margin-top:4px;overflow-x:auto;white-space:pre}
+.takeaway{font-size:15px;border-left:2px solid var(--secondary);padding-left:14px;margin:18px 0 0}
+.check{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 4px}
+.check .lbl{margin:0 4px 0 0}
+.fb{font-size:14px;min-height:21px}
+.sol{margin-top:12px}
+.sol[hidden]{display:none}
+.sol p{margin-top:10px}
+
+.checklist{columns:2;column-gap:40px;margin:0;padding:0;list-style:none}
+.checklist li{break-inside:avoid;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
+.checklist li b{font-weight:600}
+
+.sources{list-style:none;padding:0;margin:0;font-size:14px}
+.sources li{display:grid;grid-template-columns:36px 1fr;gap:4px;padding:8px 0;border-bottom:1px solid var(--border);scroll-margin-top:16px}
+.sources li > b{font-weight:400;color:var(--ink-subtle);font-variant-numeric:tabular-nums}
+.ref{font-size:12px;vertical-align:super;line-height:0;text-decoration:none;color:var(--interactive);font-variant-numeric:tabular-nums;margin-left:1px}
+.ref:hover{text-decoration:underline}
+.ref + .ref::before{content:",";margin-right:1px}
+
+@media (max-width:1000px){
+  .row{grid-template-columns:minmax(0,1fr)}
+  .sn{grid-column:1;border-left:2px solid var(--secondary);padding:2px 0 2px 14px;margin:0 0 18px}
+  .calc{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+  .controls{grid-template-columns:minmax(0,1fr)}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tree{grid-template-columns:minmax(0,1fr)}
+  .two-charts{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:700px){
+  .page{padding-left:20px;padding-right:20px}
+  h1{font-size:32px}
+  h2{font-size:26px}
+  .sec{margin-top:46px}
+  .toc,.checklist{columns:1}
+  .given{grid-template-columns:minmax(0,1fr)}
+  .given dt{margin-top:6px}
+  .field{width:130px}
+}
+@media (max-width:520px){
+  .tile .v{font-size:26px}
+  .field-row{flex-wrap:wrap}
+  .field{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:120ms !important}
+}
+
+/* Site chrome (nav, search, footer, back-to-top) lives in /assets/css/site.css */
+.byline a.author{color:var(--ink);font-weight:600;text-decoration:none}
+.byline a.author:hover{text-decoration:underline}
+</style>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script src="/assets/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the lesson</a>
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/"><img src="/assets/brand/logo.svg" width="52" height="52" alt=""><span class="brand-name">Chemical Process Engineering</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="/calculators/">Calculators</a></li>
+        <li><a href="/lessons/" aria-current="page">Lessons</a></li>
+        <li><a href="/data/">Data</a></li>
+        <li><a href="/analysis/">Analysis</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+    <form class="site-search" action="/search/" method="get" role="search">
+      <label class="sr-only" for="site-q">Search the site</label>
+      <input type="search" id="site-q" name="q" placeholder="Search" autocomplete="off" enterkeyhint="search">
+      <button type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle cx="7.5" cy="7.5" r="5.25" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="m11.5 11.5 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></button>
+    </form>
+    <a class="search-link" href="/search/" aria-label="Search the site"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle cx="7.5" cy="7.5" r="5.25" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="m11.5 11.5 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></a>
+  </div>
+</header>
+
+<main class="page" id="content">
+  <p class="crumb"><a href="/lessons/">Lessons</a> / Fluid handling / Compressors</p>
+  <h1>Compressors for process engineers</h1>
+  <p class="stand">How each type works and where it fits, how to calculate head, power and discharge temperature, how to read a compressor map and a vendor datasheet, which API, ASME and ISO standards apply, and how to keep a compressor from hurting anyone. Nine worked examples and eighteen problems to solve.</p>
+  <div class="byline">
+    <span><a class="author" href="/about/#authors">Alireza Lotfollahzade</a>, EIT</span>
+    <span>Updated 11 November 2026</span>
+    <span>About 100 minutes to read, longer with the problems</span>
+    <span>SI units, absolute pressures (bara); compressor maps on this page are illustrative</span>
+  </div>
+
+  <!-- Opening figure -->
+  <figure id="fig1" aria-labelledby="fig1-t">
+    <p class="fig-title" id="fig1-t"><span class="fn">Figure 1.</span> A centrifugal compressor runs where its speed line crosses the process curve, until the surge line stops it</p>
+    <div class="toolbar">
+      <div class="presets" role="group" aria-label="Operating cases">
+        <button type="button" class="btn btn-secondary btn-sm" data-m1="design">Design case</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-m1="light">Light gas, M = 17</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-m1="slow">Turndown, 80 % speed</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-m1="back">High back-pressure</button>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="ctl"><label for="m1-speed">Speed <span class="val" id="m1-speed-v">100 % · 10,000 rpm</span></label><input type="range" id="m1-speed" min="70" max="105" step="1" value="100"></div>
+      <div class="ctl"><label for="m1-mw">Gas molar mass <span class="val" id="m1-mw-v">20.0 kg/kmol</span></label><input type="range" id="m1-mw" min="16" max="26" step="0.5" value="20"></div>
+      <div class="ctl"><label for="m1-pb">Downstream pressure at zero flow <span class="val" id="m1-pb-v">26.0 bara</span></label><input type="range" id="m1-pb" min="22" max="30" step="0.1" value="26"></div>
+    </div>
+    <div class="tiles" id="m1-tiles">
+      <div class="tile" id="t1-flow"><div><span class="v">6,000</span><span class="u">m³/h</span></div><div class="k">Actual inlet flow through the compressor</div></div>
+      <div class="tile" id="t1-head"><div><span class="v">60.0</span><span class="u">kJ/kg</span></div><div class="k">Polytropic head</div></div>
+      <div class="tile" id="t1-p2"><div><span class="v">31.6</span><span class="u">bara</span></div><div class="k">Discharge pressure</div></div>
+      <div class="tile" id="t1-pow"><div><span class="v">2,073</span><span class="u">kW</span></div><div class="k">Shaft power</div></div>
+    </div>
+    <div class="status" id="m1-status" aria-live="polite"></div>
+    <div class="chart" id="m1-chart" role="img" aria-label="Compressor map: polytropic head against actual inlet flow, with speed lines from 70 to 105 percent, the surge limit line, the surge control line, the stonewall line, the process curve and the operating point."></div>
+    <figcaption>Illustrative three-impeller compressor on a gas booster: suction 20 bara and 35 °C, rated 6,000 m³/h actual inlet flow at 60 kJ/kg and 80 % polytropic efficiency at 10,000 rpm. Speed lines follow the fan laws; Z = 0.96 and k = 1.30 are held constant. The surge control line sits 10 % in flow to the right of the surge line, a common setting.<a class="ref" href="#src-1">1</a> The process curve is a fixed downstream pressure plus friction that grows with flow and gas density. Try the light-gas case, then slow the machine to 80 %.</figcaption>
+    <div class="fig-actions">
+      <button type="button" class="btn btn-secondary btn-sm" id="m1-copy">Copy map data as CSV</button>
+      <span class="copy-note" id="m1-copy-note" aria-live="polite"></span>
+    </div>
+  </figure>
+
+  <div class="row">
+    <div class="main">
+      <p class="lede">A compressor is a pump for a fluid that shrinks as you push it. That one difference makes it heat the gas, makes its performance depend on what the gas is, and gives every centrifugal machine a minimum flow below which it surges and can wreck itself in seconds.</p>
+      <p>This page is for chemical and process engineers who size compressors, fill in datasheets, check vendor proposals and sit in HAZOPs. It starts with the thermodynamics, works through the types, staging, reciprocating and centrifugal performance, surge control and vendor data, and ends with standards, safety and a set of problems. If you can solve the problems without opening the solutions, you can specify, check and troubleshoot most process compressors.</p>
+    </div>
+    <aside class="sn" aria-label="What you will be able to do">
+      <p><b>After this page you can</b></p>
+      <p>Convert standard flow to actual flow, pick a type for a duty, calculate polytropic and isentropic head, discharge temperature and power, choose the number of stages, estimate the capacity of a reciprocating cylinder, read a compressor map and a vendor datasheet, predict what a change in gas does to a centrifugal machine, size an anti-surge recycle and a settle-out pressure, and name the safeguards a HAZOP will ask for.</p>
+    </aside>
+  </div>
+
+  <nav class="sec" aria-labelledby="toc-h">
+    <div class="sec-head"><p class="marker">On this page</p><h2 id="toc-h">Contents</h2></div>
+    <ol class="toc wide">
+      <li><span>1</span><a href="#gas">Gas is not a liquid: flow, ratio and head</a></li>
+      <li><span>2</span><a href="#types">Types of compressors and how they work</a></li>
+      <li><span>3</span><a href="#choose">Choosing a type: flow, pressure and ratio</a></li>
+      <li><span>4</span><a href="#thermo">Thermodynamics and the core equations</a></li>
+      <li><span>5</span><a href="#staging">Staging, intercooling and the calculator</a></li>
+      <li><span>6</span><a href="#recip">Reciprocating compressors</a></li>
+      <li><span>7</span><a href="#centrifugal">Centrifugal compressors and the map</a></li>
+      <li><span>8</span><a href="#surge">Surge and anti-surge control</a></li>
+      <li><span>9</span><a href="#vendor">Reading vendor data</a></li>
+      <li><span>10</span><a href="#drivers">Drivers, seals and auxiliaries</a></li>
+      <li><span>11</span><a href="#standards">Standards</a></li>
+      <li><span>12</span><a href="#safety">Safety: hazards and safeguards</a></li>
+      <li><span>13</span><a href="#examples">Worked examples</a></li>
+      <li><span>14</span><a href="#problems">Practice problems</a></li>
+      <li><span>15</span><a href="#datasheet">What goes on the datasheet</a></li>
+      <li><span>16</span><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 Gas -->
+  <section class="sec" id="gas" aria-labelledby="h-gas">
+    <div class="sec-head"><p class="marker">01</p><h2 id="h-gas">Gas is not a liquid: flow, ratio and head</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>A pump moves a liquid whose density hardly changes. A compressor works on a gas whose density changes with every bar and every kelvin:</p>
+        <div class="eq"><span>ρ = P M / (Z R T)</span><span class="n">(1)</span></div>
+        <p class="where">P absolute pressure (Pa), M molar mass (kg/kmol), Z compressibility factor (–), R = 8,314 J/kmol·K, T absolute temperature (K).</p>
+        <p>That gives you three different flows for the same stream, and mixing them up is the most common error in compressor work:</p>
+        <ul class="plain">
+          <li><b>Mass flow</b> (kg/h) is conserved. It comes out of your heat and material balance.</li>
+          <li><b>Standard flow</b> (Sm³/h, MMSCFD) is a molar flow in disguise: the volume the gas would fill at a reference temperature and pressure.</li>
+          <li><b>Actual flow</b> (m³/h at flange conditions) is the volume the machine physically swallows. Cylinders are sized on it and centrifugal maps are drawn against it.</li>
+        </ul>
+        <div class="eq"><span>Q<sub>1</sub> = ṅ Z<sub>1</sub> R T<sub>1</sub> / P<sub>1</sub> = Q<sub>std</sub> × (P<sub>std</sub>/P<sub>1</sub>) × (T<sub>1</sub>/T<sub>std</sub>) × (Z<sub>1</sub>/Z<sub>std</sub>)</span><span class="n">(2)</span></div>
+        <p>Example 1 turns 1.2 million Sm³/d at 30 bara into 1,650 m³/h at the compressor inlet, a factor of 30. Give a vendor a standard flow without composition and suction conditions and you have told them nothing.</p>
+        <p>The <b>pressure ratio</b> r = P<sub>2</sub>/P<sub>1</sub> uses absolute pressures. A ratio of gauge pressures is meaningless.</p>
+        <p>The <b>head</b> is the work done on each kilogram of gas, in kJ/kg. It plays the same role as pump head: a given centrifugal impeller at a given speed and flow puts roughly the same head into any gas. A heavy gas turns that head into a large pressure ratio and a light gas into a small one, which is why hydrogen-rich recycle compressors need so many impellers and why a change in gas composition moves a centrifugal compressor around its map.</p>
+        <p>Finally, compression <b>heats</b> the gas. Almost all the work ends up as enthalpy, and the discharge temperature, not the pressure, is usually what limits how much ratio one stage can take.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Standard conditions are not standard.</b> 15 °C and 1.01325 bar (ISO, used on this page), 60 °F and 14.696 psia (US gas industry, 1 MMSCFD ≈ 1,177 Sm³/h at 15 °C), and 0 °C for "normal" Nm³. Sm³ and Nm³ differ by 5.5 %. Write the reference on every datasheet.</p>
+        <p><b>Head in metres.</b> 60 kJ/kg is 60,000 m²/s², or 6.1 km of "gas column". Older US literature quotes ft·lbf/lbm; 1 kJ/kg = 334.6 ft·lbf/lbm.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 2 Types -->
+  <section class="sec" id="types" aria-labelledby="h-types">
+    <div class="sec-head"><p class="marker">02</p><h2 id="h-types">Types of compressors and how they work</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>There are two families, and almost everything on this page follows from the difference between them.</p>
+        <p><b>Positive displacement</b> machines trap a volume of gas and make it smaller. Their flow is set by speed and geometry and barely changes with discharge pressure: block the outlet and they keep compressing until something gives, so each needs a relief valve. They have no surge.</p>
+        <p><b>Dynamic</b> machines give the gas velocity with rotating blades and turn that velocity into pressure in a diffuser. The head they can make is set by blade tip speed, so their flow is decided by the system they push against. Below a minimum flow they surge, and above a maximum flow they choke.</p>
+        <p>Ejectors sit outside both families: a high-pressure motive fluid entrains and compresses the suction gas with no moving parts.</p>
+      </div>
+    </div>
+
+    <figure id="fig2" aria-labelledby="fig2-t">
+      <p class="fig-title" id="fig2-t"><span class="fn">Figure 2.</span> Compressors divide into positive displacement and dynamic families</p>
+      <div class="tree" role="img" aria-label="Classification tree. Positive displacement: reciprocating (crosshead piston, packaged high-speed separable, diaphragm, hyper) and rotary (screw, lobe, sliding vane, liquid ring, scroll). Dynamic: centrifugal (between-bearing horizontally split or barrel, integrally geared, single-stage overhung), axial and mixed flow. Ejectors have no moving parts.">
+        <div>
+          <h4>Positive displacement</h4>
+          <p class="def">A trapped volume is reduced. Flow is set by the machine; pressure is set by the system.</p>
+          <ul>
+            <li><b>Reciprocating</b>
+              <ul>
+                <li><b>Crosshead piston</b>, lubricated or non-lubricated, single- or double-acting <span class="eg">· refinery H₂, process gas · API 618</span></li>
+                <li><b>Packaged high-speed separable</b> <span class="eg">· gas gathering, gas lift · ISO 13631</span></li>
+                <li><b>Diaphragm</b> <span class="eg">· pure, toxic and H₂ refuelling duties</span></li>
+                <li><b>Hyper</b> <span class="eg">· LDPE and EVA, up to 3,500 bar</span></li>
+              </ul>
+            </li>
+            <li><b>Rotary</b>
+              <ul>
+                <li><b>Screw</b>, oil-flooded or dry <span class="eg">· refrigeration, fuel gas, plant air · API 619</span></li>
+                <li><b>Lobe (Roots)</b> <span class="eg">· blowers, pneumatic conveying</span></li>
+                <li><b>Sliding vane</b> <span class="eg">· vapour recovery, small duties</span></li>
+                <li><b>Liquid ring</b> <span class="eg">· wet or dirty gas, vacuum, flare gas recovery</span></li>
+                <li><b>Scroll</b> <span class="eg">· small air and refrigeration units</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4>Dynamic</h4>
+          <p class="def">Blades add velocity; diffusers recover pressure. Head is set by tip speed; flow is set by the system.</p>
+          <ul>
+            <li><b>Centrifugal (radial)</b>
+              <ul>
+                <li><b>Between-bearing</b>, horizontally split or barrel <span class="eg">· process and recycle gas, refrigeration, syngas · API 617 Part 2</span></li>
+                <li><b>Integrally geared</b> <span class="eg">· plant air, air separation, CO₂ · API 617 Part 3, API 672</span></li>
+                <li><b>Single-stage overhung</b> <span class="eg">· blowers, pipeline boosters</span></li>
+              </ul>
+            </li>
+            <li><b>Axial</b> <span class="eg">· air separation main air, FCC air, gas turbines · API 617 Part 2</span></li>
+            <li><b>Mixed flow</b> <span class="eg">· between radial and axial; large flows at moderate head</span></li>
+          </ul>
+        </div>
+        <p class="extra"><b>Ejectors (thermocompressors)</b> use steam or gas as the motive fluid: vacuum systems on crude and lube units, flare and off-gas recovery. Cheap and rugged, but efficiencies are low.</p>
+      </div>
+    </figure>
+
+    <div class="row">
+      <div class="main">
+        <h3>How each one works</h3>
+        <p><b>Reciprocating.</b> A crankshaft drives a crosshead, piston rod and piston in a cylinder. Self-acting suction and discharge valves (plate, ring or poppet) open on pressure difference alone. Double-acting cylinders compress on both sides of the piston. A distance piece and packing keep process gas out of the crankcase. A small clearance volume is left at the end of each stroke; its gas re-expands and costs capacity (section 6). Recips cover the widest range of gases, from hydrogen (M = 2) to chlorine (M = 70), at about 3 per stage, with up to six stages and overall ratios above 300.<a class="ref" href="#src-2">2</a> Process machines to API 618 run slowly, typically 275–600 rpm.<a class="ref" href="#src-2">2</a></p>
+        <p><b>Screw.</b> Two meshing helical rotors trap gas in the grooves and carry it along the axis while the pocket shrinks. In an oil-flooded screw the injected oil seals the clearances, lubricates and absorbs heat, so one stage can take a large ratio; the oil must be separated from the gas downstream and must not be diluted by it. A dry screw uses timing gears to keep the rotors apart and is limited by discharge temperature. Screws have no surge, a wide turndown, and dry screws tolerate dirty gas.<a class="ref" href="#src-2">2</a> Mechanical limits on differential pressure are about 12 bar for oil-free and 20 bar for oil-flooded machines.<a class="ref" href="#src-3">3</a></p>
+        <p><b>Lobe, vane and liquid ring.</b> Lobe blowers move pockets of gas without internal compression and stop at ratios near 2. Sliding-vane machines have vanes riding in slots of an eccentric rotor. In a liquid-ring machine a rotating ring of seal liquid forms the pistons; compression is nearly isothermal and the machine swallows condensate and dirt, but its efficiency is low.</p>
+        <p><b>Diaphragm.</b> A hydraulically flexed metal diaphragm compresses the gas, which never touches oil or a sliding seal: the choice for very pure, toxic or high-pressure hydrogen duties at small flows.</p>
+        <p><b>Centrifugal.</b> Each impeller flings gas outward, adding velocity and pressure; a diffuser turns the velocity into more pressure, and a return channel guides the gas to the next impeller. A balance piston offsets axial thrust and shaft seals (today mostly dry gas seals) contain the gas. Tip speed and Mach number cap the head per impeller, so a casing holds several impellers. Horizontally split casings are used below about 60 bar operating pressure; barrel (radially split) casings above that, and whenever hydrogen partial pressure at maximum allowable working pressure exceeds 13.8 bar.<a class="ref" href="#src-2">2</a></p>
+        <p><b>Integrally geared.</b> A bull gear drives one or more pinions with an impeller on each end. Each pinion runs at the speed that suits its impellers, and the gas can be cooled after every stage, which makes these machines efficient for air and CO₂.<a class="ref" href="#src-4">4</a> API 617 has covered them in a dedicated part since the 7th edition of 2002.<a class="ref" href="#src-5">5</a></p>
+        <p><b>Axial.</b> Rows of rotating and stationary blades add a little pressure each. They handle the largest flows at high efficiency, with a narrower stable range than centrifugal machines.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Stage, section, casing.</b> In a centrifugal machine a stage is one impeller. A section is a group of impellers between an inlet and an outlet nozzle, for example between intercoolers. A casing is the pressure-containing body. In a recip, a stage is one cylinder (or set of parallel cylinders) between coolers.</p>
+        <p><b>Oil-free</b> gas comes from dry screws, centrifugals, non-lubricated recips and diaphragm machines. Specify it when oil would poison a catalyst, foul a cold box or contaminate a product.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 3 Choose -->
+  <section class="sec" id="choose" aria-labelledby="h-choose">
+    <div class="sec-head"><p class="marker">03</p><h2 id="h-choose">Choosing a type: flow, pressure and ratio</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Two numbers do most of the screening: the actual inlet flow and the discharge pressure (or the overall ratio). Figure 3 places each type on those two axes, and Table 1 adds ratio per stage, efficiency and typical services.</p>
+      </div>
+    </div>
+
+    <figure id="fig3" aria-labelledby="fig3-t">
+      <p class="fig-title" id="fig3-t"><span class="fn">Figure 3.</span> Each type covers its own band of inlet flow and discharge pressure, with wide overlaps</p>
+      <div class="chart" id="f3-chart" role="img" aria-label="Log-log chart of discharge pressure against actual inlet flow. Reciprocating covers low flows up to about 800 bar, with hyper compressors to 3,500 bar. Diaphragm covers very small flows to about 1,000 bar. Screw covers about 50 to 60,000 cubic metres per hour below about 40 bar. Centrifugal covers about 200 to 300,000 cubic metres per hour up to several hundred bar. Axial covers the largest flows below about 20 bar."></div>
+      <figcaption>Approximate envelopes for process gas, drawn from vendor ranges and selection charts such as GPSA Figure 13-3 and PIP REEC001. Boundaries overlap and move with each vendor's product line. Illustrative; use it to decide which vendors to call, not which machine to buy.</figcaption>
+    </figure>
+
+    <div class="tbl tbl-wide wide">
+      <table>
+        <caption>Table 1. Typical screening ranges. Flows are actual inlet m³/h; efficiencies are isentropic for positive displacement machines and polytropic for dynamic ones. Approximate values that overlap and move with each vendor's range; sources are cited in the text.</caption>
+        <thead><tr><th>Type</th><th class="num">Inlet flow, m³/h</th><th>Ratio per stage</th><th>Highest discharge, bara</th><th>Efficiency</th><th>Typical services</th></tr></thead>
+        <tbody>
+          <tr><td class="lead">Reciprocating</td><td class="num">1–30,000</td><td>1.5–4, about 3 typical</td><td>≈ 800 for API 618 process machines;<a class="ref" href="#src-6">6</a> 3,500 for LDPE hypers<a class="ref" href="#src-7">7</a></td><td>80–90 %</td><td>H₂ make-up and recycle, NGL, CNG, syngas boosters, LDPE</td></tr>
+          <tr><td class="lead">Diaphragm</td><td class="num">&lt; 1–100</td><td>Moderate to high</td><td>≈ 1,000</td><td>Lower</td><td>Hydrogen refuelling, pure and toxic gases</td></tr>
+          <tr><td class="lead">Oil-flooded screw</td><td class="num">50–15,000</td><td>Up to about 10–15</td><td>≈ 25–40</td><td>70–80 %</td><td>Refrigeration, fuel gas, flare gas, plant air</td></tr>
+          <tr><td class="lead">Dry screw</td><td class="num">300–60,000</td><td>About 2–4, temperature-limited</td><td>≈ 15–25</td><td>65–80 %</td><td>Dirty or polymerizing gas, tail gas, vacuum</td></tr>
+          <tr><td class="lead">Lobe, vane, liquid ring</td><td class="num">10–50,000</td><td>Up to about 2–4</td><td>≈ 2–10</td><td>30–70 %</td><td>Blowers, vapour recovery, wet gas, vacuum</td></tr>
+          <tr><td class="lead">Centrifugal, between-bearing</td><td class="num">200–300,000</td><td>About 25–35 kJ/kg per impeller, up to 8–10 impellers per casing</td><td>≈ 700 (barrel reinjection machines)</td><td>75–85 %</td><td>Process and recycle gas, refrigeration, LNG, syngas, pipelines</td></tr>
+          <tr><td class="lead">Integrally geared centrifugal</td><td class="num">1,000–300,000</td><td>About 1.5–3, intercooled after each stage</td><td>≈ 200</td><td>80–88 %</td><td>Plant air, air separation, CO₂ compression</td></tr>
+          <tr><td class="lead">Axial</td><td class="num">50,000–1,500,000</td><td>1.1–1.3; overall up to about 15–20</td><td>≈ 20</td><td>85–90 %</td><td>Air separation main air, FCC air blowers, gas turbines</td></tr>
+          <tr><td class="lead">Ejector</td><td class="num">Any</td><td>Up to about 10 in vacuum service</td><td>Low</td><td>10–30 %</td><td>Vacuum columns, off-gas recovery</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="main">
+        <p>Inside the overlaps, the gas and the operation decide. A few rules from a contractor's selection guide are worth keeping:<a class="ref" href="#src-2">2</a></p>
+        <ul class="plain">
+          <li>A centrifugal compressor is the default wherever the conditions allow, despite its higher capital cost, because it runs for years between overhauls.</li>
+          <li>Below about 170 m³/h of inlet flow, check with vendors before assuming a centrifugal; few build that small.</li>
+          <li>Avoid more than three casings in one drive train.</li>
+          <li>For plant air, an oil-flooded screw with oil-removal filters suits flows up to about 3,800 Nm³/h, a dry screw about 3,500 Nm³/h, and integrally geared centrifugals above that. The latter need blow-off below about 70–80 % capacity, which wastes power at turndown.</li>
+        </ul>
+        <h3>A selection sequence</h3>
+        <ol class="plain">
+          <li>Fix mass flow, composition, suction pressure and temperature for every case: normal, rated, minimum, start-up, regeneration and each credible alternative gas.</li>
+          <li>Convert to actual inlet flow with equation (2) and calculate the overall ratio and head (section 4).</li>
+          <li>Screen with Figure 3 and Table 1.</li>
+          <li>Set the number of stages from the discharge temperature limit (section 5).</li>
+          <li>Check turndown and control: centrifugals need recycle near surge, recips unload in steps, screws use slide valves or speed.</li>
+          <li>Check the gas: liquids need scrubbers, dirty or polymerizing gas points to dry screws or liquid rings, and an oil-free requirement removes lubricated machines.</li>
+          <li>Decide sparing. Centrifugals are often unspared because they run for years; recips are often installed as 2 × 100 % or 3 × 50 % because valves and packing need regular maintenance.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 Thermo -->
+  <section class="sec" id="thermo" aria-labelledby="h-thermo">
+    <div class="sec-head"><p class="marker">04</p><h2 id="h-thermo">Thermodynamics and the core equations</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Three idealized paths bracket every real compression.</p>
+        <p><b>Isothermal</b> compression, with perfect cooling, needs the least work. No machine achieves it, but it is the yardstick for intercooling:</p>
+        <div class="eq"><span>W<sub>iso</sub> = (Z R T<sub>1</sub>/M) ln r</span><span class="n">(3)</span></div>
+        <p><b>Isentropic</b> (reversible adiabatic) compression is the reference used for reciprocating and screw machines:</p>
+        <div class="eq"><span>H<sub>s</sub> = Z<sub>avg</sub> (R T<sub>1</sub>/M) · k/(k − 1) · [r<sup>(k−1)/k</sup> − 1]</span><span class="n">(4)</span></div>
+        <p><b>Polytropic</b> compression follows P v<sup>n</sup> = constant with a fixed small-step efficiency η<sub>p</sub>. It is the reference for centrifugal and axial machines:</p>
+        <div class="eq"><span>H<sub>p</sub> = Z<sub>avg</sub> (R T<sub>1</sub>/M) · n/(n − 1) · [r<sup>(n−1)/n</sup> − 1]</span><span class="n">(5)</span></div>
+        <div class="eq"><span>(n − 1)/n = (k − 1) / (k η<sub>p</sub>)</span><span class="n">(6)</span></div>
+        <p>The discharge temperature follows from either definition:</p>
+        <div class="eq"><span>T<sub>2</sub> = T<sub>1</sub> r<sup>(n−1)/n</sup> &nbsp;&nbsp;or&nbsp;&nbsp; T<sub>2</sub> = T<sub>1</sub> [1 + (r<sup>(k−1)/k</sup> − 1)/η<sub>s</sub>]</span><span class="n">(7)</span></div>
+        <p>and both routes give the same gas power and shaft power:</p>
+        <div class="eq"><span>P<sub>gas</sub> = ṁ H<sub>p</sub>/η<sub>p</sub> = ṁ H<sub>s</sub>/η<sub>s</sub> &nbsp;&nbsp; P<sub>shaft</sub> = P<sub>gas</sub> + mechanical losses</span><span class="n">(8)</span></div>
+        <p>The two efficiencies describe the same machine, but they are not equal. For r &gt; 1 the isentropic efficiency is always the lower one, and the gap grows with ratio:</p>
+        <div class="eq"><span>η<sub>s</sub> = [r<sup>(k−1)/k</sup> − 1] / [r<sup>(k−1)/(k η<sub>p</sub>)</sup> − 1]</span><span class="n">(9)</span></div>
+        <p>Example 2 shows 80 % polytropic is 78.9 % isentropic at a ratio of 1.58. At a ratio of 8, the same 80 % polytropic is only about 74–75 % isentropic. Quote efficiencies without saying which kind and you are a few percent wrong on power before you start.</p>
+        <p>Why do centrifugal people prefer polytropic? Because the polytropic efficiency of a well-designed impeller hardly depends on its ratio, so stages can be stacked and compared. Isentropic efficiency falls as stages are added, even if every stage is equally good.</p>
+        <h3>Real gases</h3>
+        <p>Equations (4) and (5) assume an ideal gas corrected with an average Z. With Z<sub>avg</sub> = (Z<sub>1</sub> + Z<sub>2</sub>)/2 and k at average conditions, they stay within about 1 % of a rigorous calculation for most hydrocarbon and air duties; Example 9 compares them for CO₂ up to 30 bara and finds 0.5 % on head. Near the critical point, in the dense phase or at very high ratios, use an equation of state (Peng–Robinson, BWRS or GERG-2008) in your simulator.</p>
+        <p>ASME PTC 10 and ISO 5389 define polytropic work using the methods John Schultz published in 1962, with compressibility functions X and Y.<a class="ref" href="#src-8">8</a> Those methods lose accuracy near the critical point and in the dense phase.<a class="ref" href="#src-9">9</a> The 2022 revision of PTC 10, its first since 1997, moved to real-gas relations, a polytropic process throughout, and new methods for polytropic head and efficiency.<a class="ref" href="#src-10">10</a> If a vendor's head disagrees with yours by more than 1–2 %, ask which method and equation of state they used before you argue about efficiency.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Units.</b> With R = 8.314 kJ/kmol·K and M in kg/kmol, R/M is in kJ/kg·K and every head on this page comes out in kJ/kg.</p>
+        <p><b>Which k?</b> Use k = c<sub>p</sub>/c<sub>v</sub> at suction for a first estimate, and the average of suction and discharge when the ratio is large. Typical values: H₂ 1.41, air 1.40, methane 1.30, natural gas 1.25–1.30, CO₂ 1.29, propane 1.13.</p>
+        <p><b>Mechanical losses</b> (bearings, seals, gears) are a few percent of gas power. The examples here assume 2 %.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 5 Staging -->
+  <section class="sec" id="staging" aria-labelledby="h-staging">
+    <div class="sec-head"><p class="marker">05</p><h2 id="h-staging">Staging, intercooling and the compression calculator</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Three things limit how much ratio one stage can take.</p>
+        <p><b>Discharge temperature.</b> API 618 limits the predicted discharge temperature of reciprocating cylinders to 150 °C unless otherwise specified, and to 135 °C for hydrogen-rich gas (M ≤ 12), with lower limits for high-pressure hydrogen and non-lubricated cylinders.<a class="ref" href="#src-2">2</a> Above those values lubricating oil cokes, valves and rings wear fast and, in air service, carbon deposits can ignite (section 12). Olefins, dienes and some sulfur compounds foul or polymerize at lower temperatures still.</p>
+        <p><b>Mechanics.</b> Rod load in a recip, rotor deflection and differential pressure in a screw, and tip speed and Mach number in a centrifugal impeller.</p>
+        <p><b>Power.</b> Cooling the gas between stages brings the path closer to isothermal. For an ideal gas cooled back to the same temperature, total power is lowest when every stage has the same ratio:</p>
+        <div class="eq"><span>r<sub>stage</sub> = r<sub>overall</sub><sup>1/N</sup></span><span class="n">(10)</span></div>
+        <p>In practice the designer shifts a little ratio away from the last stages to allow for intercooler and scrubber pressure drops and for the rise in Z, but equation (10) is the right starting point. The calculator below applies it; Figure 4 shows what each extra stage buys.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Diminishing returns.</b> Going from one to two stages on 1 → 8 bar air saves 18 % of the power; the third stage saves another 6 %; the sixth stage saves almost nothing (Example 3 and Figure 4). Every stage adds a cooler, a scrubber, piping and pressure drop.</p>
+      </aside>
+    </div>
+
+    <div class="calc" id="calc">
+      <div class="card" aria-labelledby="c-title">
+        <h3 class="card-title" id="c-title">Inputs</h3>
+        <div class="presets" role="group" aria-label="Duty presets" style="margin-bottom:16px">
+          <button type="button" class="btn btn-secondary btn-sm" data-cp="air">Plant air · 1 → 8 bar</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-cp="booster">Gas booster · 20 → 31.6 bar</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-cp="h2">H₂ make-up · 20 → 160 bar</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-cp="co2">CO₂ capture · 1.2 → 30 bar</button>
+        </div>
+        <div class="field-row"><label for="c-mw">Molar mass</label><div class="field"><input id="c-mw" inputmode="decimal" value="28.96"><span class="unit">kg/kmol</span></div></div>
+        <div class="field-row"><label for="c-k">Ratio of specific heats, k</label><div class="field"><input id="c-k" inputmode="decimal" value="1.40"><span class="unit">–</span></div></div>
+        <div class="field-row"><label for="c-z">Average compressibility, Z</label><div class="field"><input id="c-z" inputmode="decimal" value="1.00"><span class="unit">–</span></div></div>
+        <div class="field-row"><label for="c-m">Mass flow</label><div class="field"><input id="c-m" inputmode="decimal" value="3,600"><span class="unit">kg/h</span></div></div>
+        <div class="field-row"><label for="c-p1">Suction pressure</label><div class="field"><input id="c-p1" inputmode="decimal" value="1.0"><span class="unit">bara</span></div></div>
+        <div class="field-row"><label for="c-t1">Suction temperature</label><div class="field"><input id="c-t1" inputmode="decimal" value="25"><span class="unit">°C</span></div></div>
+        <div class="field-row"><label for="c-p2">Discharge pressure</label><div class="field"><input id="c-p2" inputmode="decimal" value="8.0"><span class="unit">bara</span></div></div>
+        <div class="field-row"><label for="c-eff">Efficiency per stage</label><div class="field"><input id="c-eff" inputmode="decimal" value="80"><span class="unit">%</span></div></div>
+        <div class="field-row"><span class="lbl" style="flex:1;margin:0" id="c-basis-l">Efficiency basis</span><div class="seg" role="group" aria-labelledby="c-basis-l"><button type="button" data-basis="p" aria-pressed="true">Polytropic</button><button type="button" data-basis="s" aria-pressed="false">Isentropic</button></div></div>
+        <div class="field-row"><label for="c-n">Number of stages</label><div class="field"><input id="c-n" inputmode="numeric" value="3"><span class="unit">1–6</span></div></div>
+        <ul class="assume">
+          <li>Ideal gas with an average Z and constant k (section 4).</li>
+          <li>Equal ratio per stage, equation (10); intercooled back to suction temperature; no interstage pressure drop.</li>
+          <li>Mechanical losses 2 % of gas power.</li>
+          <li>Temperature limit: 150 °C, or 135 °C when M ≤ 12, as API 618 sets for reciprocating cylinders.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tiles two" id="c-tiles">
+          <div class="tile" id="c-t-r"><div><span class="v">2.00</span><span class="u">–</span></div><div class="k">Pressure ratio per stage</div></div>
+          <div class="tile" id="c-t-t2"><div><span class="v">108.7</span><span class="u">°C</span></div><div class="k">Discharge temperature of each stage</div></div>
+          <div class="tile" id="c-t-h"><div><span class="v">202.0</span><span class="u">kJ/kg</span></div><div class="k">Head, all stages</div></div>
+          <div class="tile" id="c-t-p"><div><span class="v">257.5</span><span class="u">kW</span></div><div class="k">Shaft power</div></div>
+        </div>
+        <div class="status" id="c-status" aria-live="polite"></div>
+        <p class="stage-list" id="c-stages"></p>
+        <div class="card" style="margin-top:16px">
+          <button type="button" class="toggle" aria-expanded="false" aria-controls="c-work"><span class="chev" aria-hidden="true">›</span> Show the working</button>
+          <ol class="working" id="c-work" hidden></ol>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="c-copy">Copy results</button>
+          <a class="btn btn-secondary" href="#ex3">Open Example 3</a>
+          <span class="copy-note" id="c-copy-note" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <figure id="fig4" aria-labelledby="fig4-t">
+      <p class="fig-title" id="fig4-t"><span class="fn">Figure 4.</span> Each added stage lowers the discharge temperature, but the power saving shrinks after the second or third</p>
+      <div class="two-charts">
+        <div><p class="panel-title">Shaft power, kW</p><div class="chart" id="f4a" role="img" aria-label="Shaft power for one to six stages with the isothermal minimum as a dashed line."></div></div>
+        <div><p class="panel-title">Discharge temperature of each stage, °C</p><div class="chart" id="f4b" role="img" aria-label="Discharge temperature of each stage for one to six stages with the temperature limit as a dashed line."></div></div>
+      </div>
+      <figcaption>Same inputs as the calculator above; the bar for the selected number of stages is highlighted. Equal ratios and perfect intercooling to suction temperature. The dashed line on the right is the API 618 limit for reciprocating cylinders; a centrifugal machine's limit comes from its seals, materials and the process. Illustrative.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 6 Recip -->
+  <section class="sec" id="recip" aria-labelledby="h-recip">
+    <div class="sec-head"><p class="marker">06</p><h2 id="h-recip">Reciprocating compressors</h2></div>
+    <div class="row">
+      <div class="main">
+        <h3 style="margin-top:0">Displacement, clearance and volumetric efficiency</h3>
+        <p>The piston sweeps a fixed volume every stroke. For a double-acting cylinder of bore area A, rod area a, stroke L and speed N:</p>
+        <div class="eq"><span>PD = (2A − a) · L · N &nbsp;&nbsp;(single-acting head end: A · L · N)</span><span class="n">(11)</span></div>
+        <p>Not all of that volume fills with fresh gas. At the end of the discharge stroke the clearance volume (valve pockets and the gap between piston and head) stays full of gas at discharge pressure. On the return stroke that gas re-expands, and the suction valves open only when the cylinder pressure falls below suction pressure. Figure 5 shows the cycle. The usual estimate of volumetric efficiency, in percent, is:<a class="ref" href="#src-11">11</a></p>
+        <div class="eq"><span>VE = 100 − r − C [ (Z<sub>s</sub>/Z<sub>d</sub>) r<sup>1/k</sup> − 1 ]</span><span class="n">(12)</span></div>
+        <p class="where">C is the clearance as a percent of displacement. The "− r" term is an allowance for valve losses, leakage and heating; some vendors use 96 in place of 100.<a class="ref" href="#src-11">11</a> Capacity at suction conditions = PD × VE.<a class="ref" href="#src-12">12</a></p>
+        <p>Two consequences matter in practice. Clearance hurts more at high ratio and with low-k gases, and at a high enough ratio the cylinder delivers nothing at all. And adding clearance is a cheap way to cut capacity: that is what a clearance pocket does.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Typical clearance</b> is 10–20 % for process cylinders. High-pressure cylinders with small bores have more, because valve pockets do not shrink with the bore.</p>
+        <p><b>Ratio where delivery stops:</b> setting the ideal VE to zero gives r<sub>max</sub> = (1 + 100/C)<sup>k</sup>.</p>
+      </aside>
+    </div>
+
+    <figure id="fig5" aria-labelledby="fig5-t">
+      <p class="fig-title" id="fig5-t"><span class="fn">Figure 5.</span> Gas left in the clearance re-expands and takes part of every suction stroke</p>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Gas">
+          <button type="button" data-pvk="1.41" aria-pressed="false">Hydrogen, k 1.41</button>
+          <button type="button" data-pvk="1.40" aria-pressed="false">Air, k 1.40</button>
+          <button type="button" data-pvk="1.27" aria-pressed="true">Natural gas, k 1.27</button>
+          <button type="button" data-pvk="1.13" aria-pressed="false">Propane, k 1.13</button>
+        </div>
+      </div>
+      <div class="controls" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+        <div class="ctl"><label for="pv-c">Clearance <span class="val" id="pv-c-v">15 %</span></label><input type="range" id="pv-c" min="4" max="40" step="1" value="15"></div>
+        <div class="ctl"><label for="pv-r">Pressure ratio <span class="val" id="pv-r-v">3.0</span></label><input type="range" id="pv-r" min="1.5" max="6" step="0.1" value="3"></div>
+      </div>
+      <div class="tiles" id="pv-tiles">
+        <div class="tile" id="pv-t-ve"><div><span class="v">81.9</span><span class="u">%</span></div><div class="k">Volumetric efficiency, ideal cycle</div></div>
+        <div class="tile" id="pv-t-ve2"><div><span class="v">78.9</span><span class="u">%</span></div><div class="k">Volumetric efficiency, equation (12)</div></div>
+        <div class="tile" id="pv-t-t2"><div><span class="v">114</span><span class="u">°C</span></div><div class="k">Isentropic discharge temperature from 40 °C</div></div>
+        <div class="tile" id="pv-t-rmax"><div><span class="v">25.9</span><span class="u">–</span></div><div class="k">Ratio at which delivery stops</div></div>
+      </div>
+      <div class="chart" id="pv-chart" role="img" aria-label="Pressure against cylinder volume for an ideal reciprocating cycle: compression from point 1 to 2, discharge to 3, re-expansion of clearance gas to 4, and suction back to 1."></div>
+      <figcaption>Ideal indicator diagram for one end of a cylinder, volume as a fraction of swept volume and pressure as a multiple of suction pressure. 1 → 2 compression; 2 → 3 discharge; 3 → 4 re-expansion of the clearance gas; 4 → 1 suction. Only the stroke from 4 to 1 draws in fresh gas. Real diagrams add valve losses: the discharge line sits above, and the suction line below, the ideal ones.</figcaption>
+    </figure>
+
+    <div class="row">
+      <div class="main">
+        <h3>Capacity control</h3>
+        <ul class="plain">
+          <li><b>Suction valve unloaders</b> hold the suction valves of one cylinder end open, so that end pushes gas back and forth without compressing it. Load steps of 100, 75, 50, 25 and 0 % are typical on a two-cylinder stage.</li>
+          <li><b>Clearance pockets</b>, fixed or variable, add volume to the head end and lower VE through equation (12).</li>
+          <li><b>Speed</b> through a variable-frequency drive or an engine governor.</li>
+          <li><b>Stepless systems</b> hold the suction valves open for part of each stroke, giving smooth control with little wasted work.</li>
+          <li><b>Recycle</b> from discharge, after the cooler, back to suction. Always available, always wasteful.</li>
+        </ul>
+        <p>Unloading one end of a cylinder changes the interstage pressures of a multistage machine, which shifts ratio, temperature and rod load onto other stages. Ask the vendor for a load-step table that shows all of them.</p>
+
+        <h3>Rod load and rod reversal</h3>
+        <p>The gas pushes on both sides of a double-acting piston. With gauge pressures, the gas load on the rod when the head end is compressing is approximately:</p>
+        <div class="eq"><span>F<sub>gas</sub> = P<sub>d</sub> A − P<sub>s</sub> (A − a)</span><span class="n">(13)</span></div>
+        <p>The frame, crosshead and rod are rated for a maximum allowable load, and the vendor checks it at every load step and at relief-valve set pressure. The combined load (gas plus inertia) must also <i>reverse</i> once per revolution so that oil can flow into the crosshead pin bushing. API 618 asks for the reversal to last at least 15° of crank angle with a peak at least 3 % of the load in the opposite direction.<a class="ref" href="#src-13">13</a> Unloading the head end of a cylinder can remove the reversal; that is a common cause of wiped crosshead bushings.</p>
+
+        <h3>Pulsation and vibration</h3>
+        <p>Every valve opening sends a pressure pulse into the piping. Unchecked, pulsations shake piping and fatigue small-bore connections, and they cost capacity and power. API 618 sets three levels of pulsation and vibration design: Design Approach 1 relies on empirical bottle sizing, Design Approach 2 adds an acoustic simulation of the piping, and Design Approach 3 adds a mechanical response analysis.<a class="ref" href="#src-14">14</a> The level is chosen from discharge pressure and power per cylinder.<a class="ref" href="#src-15">15</a> Design Approach 1 was removed in the 6th edition of 2024.<a class="ref" href="#src-16">16</a> The process engineer's part is to give the analyst every operating case, including start-up and every load step, because a system that is quiet at full load can resonate at 50 %.</p>
+      </div>
+      <aside class="sn">
+        <p><b>Distance pieces.</b> The space between the crankcase and the cylinder packing. For toxic or flammable gas, specify a two-compartment distance piece, purged and vented to a safe location, so packing leakage cannot reach the crankcase or the operator.</p>
+        <p><b>Non-lubricated cylinders</b> use PTFE-based rings for oil-free gas, at lower piston speeds and discharge temperatures.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 7 Centrifugal -->
+  <section class="sec" id="centrifugal" aria-labelledby="h-cent">
+    <div class="sec-head"><p class="marker">07</p><h2 id="h-cent">Centrifugal compressors and the compressor map</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>A centrifugal impeller with backward-leaning blades makes the most head at low flow and less as flow rises. Plot polytropic head against actual inlet flow for several speeds and you have the compressor map of Figure 1. Each speed line ends on the left at the <b>surge line</b> and on the right at the <b>stonewall</b> (choke), where the gas reaches sonic velocity in the narrowest passage and head and efficiency collapse.</p>
+        <p>API 617 and vendors use a few defined terms that you will meet on every proposal:<a class="ref" href="#src-17">17</a><a class="ref" href="#src-18">18</a></p>
+        <ul class="plain">
+          <li><b>Rated point:</b> the point on the 100 % speed curve at the highest flow of any specified operating point. It is usually derived, not an actual operating case.</li>
+          <li><b>Normal point:</b> where the machine is expected to run most of the time and where the best efficiency is wanted.</li>
+          <li><b>Stability:</b> the flow range from the rated point to surge at rated speed, as a percent of rated flow.</li>
+          <li><b>Turndown:</b> the flow range from rated to surge at rated head (by changing speed), as a percent of rated flow.</li>
+          <li><b>Rise to surge:</b> the increase in head from the rated point to surge at rated speed. A steeper curve controls better and resists surge.</li>
+        </ul>
+        <p>For the illustrative machine in Figure 1 the stability is 35 %, the turndown 37 % and the rise to surge 8 %.</p>
+
+        <h3>Fan laws</h3>
+        <p>For the same gas and suction conditions, moving to a new speed shifts each point along a parabola through the origin:</p>
+        <div class="eq"><span>Q<sub>2</sub>/Q<sub>1</sub> = N<sub>2</sub>/N<sub>1</sub> &nbsp;&nbsp; H<sub>2</sub>/H<sub>1</sub> = (N<sub>2</sub>/N<sub>1</sub>)² &nbsp;&nbsp; P<sub>2</sub>/P<sub>1</sub> = (N<sub>2</sub>/N<sub>1</sub>)³</span><span class="n">(14)</span></div>
+        <p>They hold well for modest speed changes. Over large changes, Mach number effects and the shifting volume ratio between the first and last impellers make them approximate.</p>
+
+        <h3>What the gas does to the machine</h3>
+        <p>To a first approximation, the head-flow curve in kJ/kg against actual inlet flow does not depend on the gas. The pressure ratio does: equation (5) turns a fixed head into a larger ratio for a heavier, colder or more compressible gas. Most centrifugal operating problems come from forgetting this.<a class="ref" href="#src-19">19</a><a class="ref" href="#src-20">20</a></p>
+      </div>
+      <aside class="sn">
+        <p><b>Why "actual inlet flow"?</b> Because the impeller sees volume, not mass. Plotting head against actual inlet flow keeps the map nearly the same for different gases, which is why vendors draw it that way.</p>
+        <p><b>Maximum continuous speed</b> is normally at least 105 % of the highest speed any specified case needs; the driver trip speed sits above it.</p>
+      </aside>
+    </div>
+
+    <div class="tbl tbl-mid wide">
+      <table>
+        <caption>Table 2. What changes in the gas or suction conditions do to a fixed-speed centrifugal compressor that must hold its discharge pressure.</caption>
+        <thead><tr><th>Change</th><th>Effect on the pressure ratio from the same head</th><th>Where the operating point moves</th><th>Watch for</th></tr></thead>
+        <tbody>
+          <tr><td class="lead">Lighter gas (lower M)</td><td>Falls</td><td>Needs more head, so left along the speed line, toward surge</td><td>Recycle, lost throughput (Example 6)</td></tr>
+          <tr><td class="lead">Heavier gas (higher M)</td><td>Rises</td><td>Right, toward more mass flow</td><td>Driver overload, high discharge pressure</td></tr>
+          <tr><td class="lead">Hotter suction</td><td>Falls (head ∝ T<sub>1</sub> for a given ratio)</td><td>Left, toward surge; mass flow falls</td><td>Summer afternoons, fouled coolers (Problem 16)</td></tr>
+          <tr><td class="lead">Lower suction pressure</td><td>The required ratio rises</td><td>Left, and actual flow per kg rises</td><td>Surge on low suction; air ingress below atmospheric</td></tr>
+          <tr><td class="lead">Lower Z (denser gas)</td><td>Rises</td><td>Like a heavier gas</td><td>Power, discharge pressure</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="main">
+        <h3>Capacity control, from best to worst</h3>
+        <ol class="plain">
+          <li><b>Variable speed</b> (steam or gas turbine, VFD motor) moves the whole speed line and wastes little power.</li>
+          <li><b>Adjustable inlet guide vanes</b> pre-swirl the gas to lower the head at constant speed; common on air machines, with a turndown of about 30 %.<a class="ref" href="#src-18">18</a></li>
+          <li><b>Suction throttling</b> lowers the inlet density, so the machine handles less mass at the same actual flow. Simple and less wasteful than discharge throttling.</li>
+          <li><b>Discharge throttling</b> pushes the machine up its curve toward surge. Avoid it.</li>
+          <li><b>Recycle or blow-off</b> keeps the compressor's own flow up while the process takes less. It is surge protection, not a control strategy for long-term turndown.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 Surge -->
+  <section class="sec" id="surge" aria-labelledby="h-surge">
+    <div class="sec-head"><p class="marker">08</p><h2 id="h-surge">Surge and anti-surge control</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Reduce the flow through a centrifugal compressor far enough and the impellers and diffusers stall. The machine can no longer hold the head that the downstream system holds against it, so the flow reverses for a moment, the discharge pressure falls, forward flow resumes, and the cycle repeats. Each cycle reverses the axial thrust and heats the gas, and repeated surge damages thrust bearings, seals and impellers.<a class="ref" href="#src-21">21</a> A compressor can be destroyed in a few cycles, which is why anti-surge protection is a safety function, not a refinement.</p>
+        <p>An anti-surge system measures inlet flow, suction and discharge pressure and temperature, calculates how far the operating point is from the surge line, and opens a fast recycle valve when the point reaches a <b>surge control line</b> set a margin to the right of the surge line, typically 10 % in flow.<a class="ref" href="#src-1">1</a> Some designs use 3–10 %, trading a smaller margin for less recycle.<a class="ref" href="#src-21">21</a> The margin covers measurement error, valve stroke time and how fast the process can move.</p>
+        <div class="eq"><span>Surge margin = Q<sub>1</sub>/Q<sub>surge</sub> − 1 &nbsp;&nbsp; (at the same speed)</span><span class="n">(15)</span></div>
+        <div class="eq"><span>Q<sub>recycle</sub> = Q<sub>control line</sub> − Q<sub>process</sub></span><span class="n">(16)</span></div>
+      </div>
+      <aside class="sn">
+        <p><b>Signs of surge:</b> a loud periodic thump or roar, oscillating flow and discharge pressure, rising suction temperature, axial position and vibration excursions. Operators who have heard it never forget it.</p>
+        <p><b>The surge line moves</b> with gas composition and inlet conditions, so controllers use coordinates (such as reduced head against reduced flow) in which it stays put.</p>
+      </aside>
+    </div>
+
+    <figure id="fig7" aria-labelledby="fig7-t">
+      <p class="fig-title" id="fig7-t"><span class="fn">Figure 7.</span> Recycle cooled gas from after the aftercooler, and put the check valve close to the compressor</p>
+      <div class="svgwrap">
+        <svg class="pfd" viewBox="0 0 960 330" role="img" aria-labelledby="fig7-t" focusable="false">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#000"/></marker>
+            <marker id="arc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ab6528"/></marker>
+          </defs>
+          <!-- suction line -->
+          <path class="pipe" d="M18 220 H200" marker-end="url(#ar)"/>
+          <text x="18" y="244">From process</text>
+          <!-- scrubber -->
+          <rect class="eqp" x="200" y="110" width="60" height="170" rx="30"/>
+          <path d="M206 150 H254" stroke="#000" stroke-width="1" stroke-dasharray="3 2"/>
+          <text x="230" y="302" text-anchor="middle">Suction scrubber</text>
+          <path class="pipe" d="M230 280 V290"/>
+          <circle class="inst" cx="166" cy="270" r="18"/><text class="inst-t" x="166" y="274" text-anchor="middle">LAHH</text>
+          <path class="sig" d="M184 270 H208"/>
+          <!-- to compressor -->
+          <path class="pipe" d="M260 140 H404" marker-end="url(#ar)"/>
+          <!-- suction instruments -->
+          <path d="M286 133 V147 M290 133 V147" stroke="#000" stroke-width="1.5"/>
+          <circle class="inst" cx="288" cy="100" r="14"/><text class="inst-t" x="288" y="104" text-anchor="middle">FT</text><path class="pipe" style="stroke-width:1" d="M288 114 V133"/>
+          <circle class="inst" cx="325" cy="100" r="14"/><text class="inst-t" x="325" y="104" text-anchor="middle">PT</text><path class="pipe" style="stroke-width:1" d="M325 114 V140"/>
+          <circle class="inst" cx="362" cy="100" r="14"/><text class="inst-t" x="362" y="104" text-anchor="middle">TT</text><path class="pipe" style="stroke-width:1" d="M362 114 V140"/>
+          <!-- compressor -->
+          <path class="eqp" d="M406 96 L496 120 L496 160 L406 184 Z"/>
+          <text x="451" y="144" text-anchor="middle">K-101</text>
+          <path class="pipe" d="M451 172 V222"/>
+          <circle class="eqp" cx="451" cy="244" r="22"/><text x="451" y="249" text-anchor="middle">M</text>
+          <text x="482" y="248" class="lbl-s">Motor or turbine</text>
+          <!-- discharge -->
+          <path class="pipe" d="M496 140 H582"/>
+          <circle class="inst" cx="520" cy="100" r="14"/><text class="inst-t" x="520" y="104" text-anchor="middle">PT</text><path class="pipe" style="stroke-width:1" d="M520 114 V140"/>
+          <circle class="inst" cx="556" cy="100" r="14"/><text class="inst-t" x="556" y="104" text-anchor="middle">TT</text><path class="pipe" style="stroke-width:1" d="M556 114 V140"/>
+          <!-- aftercooler -->
+          <circle class="eqp" cx="608" cy="140" r="26"/>
+          <path d="M588 152 L598 128 L608 152 L618 128 L628 152" fill="none" stroke="#000" stroke-width="1.25"/>
+          <text x="608" y="190" text-anchor="middle">Aftercooler</text>
+          <path class="pipe" d="M634 140 H736"/>
+          <!-- check valve -->
+          <path class="eqp" d="M736 128 L760 140 L736 152 Z M784 128 L760 140 L784 152 Z"/>
+          <circle cx="760" cy="140" r="3" fill="#000"/>
+          <text x="760" y="176" text-anchor="middle">Check valve</text>
+          <path class="pipe" d="M784 140 H940" marker-end="url(#ar)"/>
+          <text x="940" y="164" text-anchor="end">To process</text>
+          <!-- recycle line -->
+          <path class="rec" d="M686 140 V44 H458"/>
+          <path class="rec" d="M422 44 H150 V220" marker-end="url(#arc)"/>
+          <circle cx="686" cy="140" r="3.5" fill="#ab6528"/>
+          <circle cx="150" cy="220" r="3.5" fill="#ab6528"/>
+          <!-- anti-surge valve -->
+          <path class="eqp" style="stroke:#ab6528" d="M422 32 L440 44 L422 56 Z M458 32 L440 44 L458 56 Z"/>
+          <path d="M440 44 V26 M428 26 H452 V16 H428 Z" fill="#fff" stroke="#ab6528" stroke-width="1.5"/>
+          <text x="470" y="30" class="lbl-s">Anti-surge valve, fast opening</text>
+          <text x="560" y="62" class="lbl-s">Recycle, cooled gas</text>
+          <!-- controller -->
+          <circle class="inst" cx="440" cy="76" r="16"/><text class="inst-t" x="440" y="80" text-anchor="middle">UIC</text>
+          <path class="sig" d="M440 60 V56"/>
+          <path class="sig" d="M288 86 V76 H424"/>
+          <path class="sig" d="M325 86 V76 M362 86 V76"/>
+          <path class="sig" d="M556 86 V76 H456 M520 86 V76"/>
+          <text x="300" y="66" class="lbl-s">Anti-surge controller</text>
+        </svg>
+      </div>
+      <figcaption>Simplified scheme for one compressor section. The controller (UIC) reads suction flow, pressures and temperatures and opens the anti-surge valve when the operating point reaches the surge control line. The recycle is taken after the aftercooler, so it does not heat the suction, and returned upstream of the scrubber, so any condensate is knocked out. Trip, seal, lube and ESD systems are omitted.</figcaption>
+    </figure>
+
+    <div class="row">
+      <div class="main">
+        <h3>Five things a surge protection system needs</h3>
+        <p>A widely cited list from the turbomachinery literature:<a class="ref" href="#src-1">1</a></p>
+        <ol class="plain">
+          <li>An accurate model of the surge limit over the full range of gas conditions.</li>
+          <li>A control algorithm that prevents surge without upsetting the process more than necessary.</li>
+          <li>Instruments fast, accurate and wide-ranging enough.</li>
+          <li>A recycle valve that handles both large, rapid changes and small, slow ones.</li>
+          <li>A recycle valve and loop matched to the system volumes: a large volume between the compressor and the check valve can make a single-valve system unable to prevent surge on shutdown.</li>
+        </ol>
+        <h3>Layout rules I check on every P&amp;ID</h3>
+        <ul class="plain">
+          <li>The anti-surge valve must be able to stroke fully open quickly, in less than about 2 seconds.<a class="ref" href="#src-21">21</a></li>
+          <li>Take the recycle off downstream of the aftercooler and upstream of the discharge check valve; return it upstream of the suction scrubber.</li>
+          <li>Put the check valve as close to the compressor as the recycle take-off allows. Every cubic metre of gas trapped between the compressor and the check valve must blow back through the machine on a trip.</li>
+          <li>Open the anti-surge valve on every trip. Undersized recycle piping or a slow valve is the usual cause of reverse rotation after a trip.<a class="ref" href="#src-22">22</a></li>
+          <li>Size the valve for the whole map, not just the normal point, and check its capacity at the lowest suction pressure.</li>
+          <li>Give each section of a multisection machine its own loop.</li>
+        </ul>
+      </div>
+      <aside class="sn">
+        <p><b>Hot-gas bypass.</b> Some machines add a small, very fast valve from discharge directly to suction, upstream of the cooler, used only on a trip. It reacts faster because the loop volume is small, but it must close quickly or it will overheat the suction.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 9 Vendor -->
+  <section class="sec" id="vendor" aria-labelledby="h-vendor">
+    <div class="sec-head"><p class="marker">09</p><h2 id="h-vendor">Reading vendor data</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>A centrifugal compressor proposal arrives with a datasheet (for API machines, the API 617 datasheet), predicted performance curves for each case you specified, a speed range, surge and choke limits, auxiliary system descriptions, utility consumptions and a test plan. Figure 6 is the kind of curve set you receive for a variable-speed machine, drawn for the design gas. Table 3 is the matching datasheet extract.</p>
+      </div>
+    </div>
+
+    <figure id="fig6" aria-labelledby="fig6-t">
+      <p class="fig-title" id="fig6-t"><span class="fn">Figure 6.</span> A vendor's predicted curves: discharge pressure, efficiency and power against inlet flow at two speeds</p>
+      <div class="chart" id="f6-chart" role="img" aria-label="Three stacked panels against actual inlet flow for 100 percent and 95 percent speed: discharge pressure with the rated point, normal point, surge line, surge control line and stonewall; polytropic efficiency with its peak; and shaft power with its highest value at the end of the 100 percent curve."></div>
+      <figcaption>The illustrative machine of Figure 1 on the design gas (M = 20, 20 bara, 35 °C). The numbered callouts are explained in Table 4. Vendors draw the same information in different ways: head and efficiency against flow, or pressure ratio against flow, sometimes with power as a separate sheet. Illustrative.</figcaption>
+    </figure>
+
+    <div class="tbl tbl-mid wide">
+      <table>
+        <caption>Table 3. Datasheet extract for the illustrative machine (illustrative values). The maximum-flow case sets the rated point on the 100 % speed curve.</caption>
+        <thead><tr><th>Quantity</th><th class="num">Normal</th><th class="num">Rated (maximum flow)</th><th class="num">Low molar mass</th></tr></thead>
+        <tbody>
+          <tr><td>Gas molar mass, kg/kmol</td><td class="num">20.0</td><td class="num">20.0</td><td class="num">18.0</td></tr>
+          <tr><td>k (c<sub>p</sub>/c<sub>v</sub>) / Z<sub>avg</sub></td><td class="num">1.30 / 0.960</td><td class="num">1.30 / 0.960</td><td class="num">1.30 / 0.965</td></tr>
+          <tr><td>Suction pressure, bara / temperature, °C</td><td class="num">20.0 / 35</td><td class="num">20.0 / 35</td><td class="num">20.0 / 35</td></tr>
+          <tr><td>Mass flow, kg/h</td><td class="num">87,820</td><td class="num">97,580</td><td class="num">84,450</td></tr>
+          <tr><td>Actual inlet flow, m³/h</td><td class="num">5,400</td><td class="num">6,000</td><td class="num">5,800</td></tr>
+          <tr><td>Discharge pressure, bara</td><td class="num">30.54</td><td class="num">31.57</td><td class="num">30.71</td></tr>
+          <tr><td>Discharge temperature, °C</td><td class="num">75.1</td><td class="num">78.4</td><td class="num">75.6</td></tr>
+          <tr><td>Polytropic head, kJ/kg</td><td class="num">55.4</td><td class="num">60.0</td><td class="num">62.7</td></tr>
+          <tr><td>Polytropic efficiency, %</td><td class="num">79.9</td><td class="num">80.0</td><td class="num">79.9</td></tr>
+          <tr><td>Speed, rpm</td><td class="num">9,490</td><td class="num">10,000</td><td class="num">10,120</td></tr>
+          <tr><td>Gas power / shaft power, kW</td><td class="num">1,690 / 1,723</td><td class="num">2,033 / 2,074</td><td class="num">1,840 / 1,877</td></tr>
+          <tr><td>Surge flow at this speed, m³/h</td><td class="num">3,700</td><td class="num">3,900</td><td class="num">3,950</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tbl tbl-mid wide">
+      <table>
+        <caption>Table 4. The callouts in Figure 6 and what to do with each.</caption>
+        <thead><tr><th class="num">#</th><th>What it is</th><th>How I use it</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>Rated point, 100 % speed, 6,000 m³/h, 31.6 bara</td><td>Defines the impeller selection. Check that it covers every case at or below 100 % speed with some margin for gas uncertainty.</td></tr>
+          <tr><td class="num">2</td><td>Normal point, 95 % speed, 5,400 m³/h</td><td>Should sit near peak efficiency, because that is where the energy bill is made.</td></tr>
+          <tr><td class="num">3</td><td>Surge point at 100 % speed, 3,900 m³/h</td><td>Stability (6,000 − 3,900)/6,000 = 35 %; rise to surge 8 %. Compare surge flows between vendors.</td></tr>
+          <tr><td class="num">4</td><td>Surge control line, 10 % to the right</td><td>Below this flow the recycle valve opens. Check every case's distance from it at its own speed.</td></tr>
+          <tr><td class="num">5</td><td>Stonewall, about 135 % of rated flow</td><td>The machine cannot pass more. Near it, efficiency and head fall quickly.</td></tr>
+          <tr><td class="num">6</td><td>Peak efficiency</td><td>Efficiency guarantees and evaluated power costs refer to specific points; know which.</td></tr>
+          <tr><td class="num">7</td><td>Highest power on the 100 % curve</td><td>Sizes the driver together with the 105 % speed curve and the heaviest gas: API 617 asks for a driver of at least 110 % of the maximum power at any specified condition.<a class="ref" href="#src-17">17</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="main">
+        <h3>Checks I make on every proposal</h3>
+        <ol class="plain">
+          <li><b>Recompute head</b> from the ratio, Z, k and efficiency with equation (5). Within 1–2 % is normal; more than that means a different equation of state or method.</li>
+          <li><b>Recompute power</b> with equation (8) and add mechanical losses. Check the driver rating against the largest power over all cases.</li>
+          <li><b>Surge margin</b> for each case at its own speed, with equation (15). A case that needs recycle at normal conditions is a design error.</li>
+          <li><b>Speed range:</b> every case should fall between minimum and maximum continuous speed, with room for heavier and lighter gas than specified.</li>
+          <li><b>Discharge temperatures</b> against seal, material and process limits.</li>
+          <li><b>Test basis and tolerances.</b> An ASME PTC 10 Type 1 test uses the specified gas at conditions close to site; a Type 2 test uses a substitute gas, often nitrogen or CO₂, at conditions chosen for aerodynamic similarity, with limits on Mach number, Reynolds number and volume ratio.<a class="ref" href="#src-23">23</a><a class="ref" href="#src-24">24</a> API 617's acceptance tolerances have changed between editions (the 7th edition, for example, required head within 100–105 % of normal and power no more than 107 %), so quote the edition in your purchase order.<a class="ref" href="#src-25">25</a></li>
+        </ol>
+        <h3>Moving a map to another gas</h3>
+        <p>At a given speed, a point on the map keeps its actual inlet flow and its head when the gas changes, as long as the Mach number does not change much. To find what the machine does on a new gas, read Q<sub>1</sub> and H<sub>p</sub> off the vendor's curve, then use equation (5) with the new M, T<sub>1</sub>, Z and k to get the new ratio. Example 6 works through it. For large changes in molar mass, ask the vendor to rerun the prediction; the equivalent-speed corrections they use are beyond a hand check.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 Drivers -->
+  <section class="sec" id="drivers" aria-labelledby="h-drivers">
+    <div class="sec-head"><p class="marker">10</p><h2 id="h-drivers">Drivers, seals and auxiliaries</h2></div>
+    <div class="row">
+      <div class="main">
+        <p><b>Drivers.</b> Induction or synchronous motors at fixed speed, with a gearbox for most centrifugals; motors on variable-frequency drives for variable speed; steam turbines (API 611 for general purpose, API 612 for special purpose); gas turbines (API 616); and gas engines on field recips. Gears follow API 613 or API 677 and couplings API 671. Size the driver for at least 110 % of the maximum power at any specified condition.<a class="ref" href="#src-17">17</a></p>
+        <p><b>Shaft seals.</b> Labyrinths for air and non-hazardous gas; oil-film seals on older machines; and dry gas seals on most modern process centrifugals and screws. A dry gas seal runs on a film of filtered seal gas a few micrometres thick. Tandem seals with an intermediate labyrinth vent the primary leakage to flare and keep the outer seal as a backup, the normal choice for flammable or toxic gas. API 692 (2018) covers dry gas seals and their support systems in four parts: general requirements, seals, support systems, and installation and commissioning.<a class="ref" href="#src-26">26</a> Seal gas must be clean and kept above its dew point; a booster may be needed at start-up and during settle-out, when no differential pressure is available.</p>
+        <p><b>Lube and seal oil.</b> API 614 covers lubrication, oil-type shaft-sealing and oil-control systems, but not dry gas seal systems.<a class="ref" href="#src-27">27</a> Expect a main and a standby pump with auto-start, coolers, twin filters, a rundown tank or accumulator, and low-pressure alarm and trip.</p>
+        <p><b>Machinery protection.</b> API 670 covers radial shaft vibration, casing vibration, axial position, speed and overspeed, piston rod drop and critical temperatures such as bearing metal and motor windings.<a class="ref" href="#src-28">28</a> Where a trip is a safety instrumented function, it also falls under the IEC 61511 lifecycle.<a class="ref" href="#src-29">29</a></p>
+        <p><b>Scrubbers, coolers and bottles.</b> Suction scrubbers with mist eliminators, intercoolers, aftercoolers and pulsation bottles are pressure vessels: ASME Section VIII in North America, and in Canada each design also needs a Canadian Registration Number under CSA B51, issued in British Columbia by Technical Safety BC.<a class="ref" href="#src-30">30</a></p>
+      </div>
+      <aside class="sn">
+        <p><b>Starting torque.</b> A compressor restarted at settle-out pressure needs more torque than one started from low pressure. Check that the motor and VFD can start it, or depressure first.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 11 Standards -->
+  <section class="sec" id="standards" aria-labelledby="h-std">
+    <div class="sec-head"><p class="marker">11</p><h2 id="h-std">Standards</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>API standards are purchasing specifications: they apply only when your requisition says so, and they leave many choices to the purchaser through the datasheet. Most have an ISO counterpart. The editions below were current when I checked in November 2026; confirm before you write a specification.</p>
+      </div>
+    </div>
+    <div class="tbl tbl-wide wide">
+      <table>
+        <caption>Table 5. Standards a process engineer meets on compressor work.</caption>
+        <thead><tr><th>Standard</th><th>Edition</th><th>Covers</th><th>Where you meet it</th></tr></thead>
+        <tbody>
+          <tr><td class="lead">API 617</td><td>9th, April 2022</td><td>Axial compressors, single-shaft and integrally geared process centrifugals, and expander-compressors, in four parts.<a class="ref" href="#src-31">31</a> Not packaged integrally geared plant and instrument air compressors.<a class="ref" href="#src-32">32</a></td><td>Process gas centrifugals: datasheet, performance, testing, driver sizing</td></tr>
+          <tr><td class="lead">API 672</td><td>5th, August 2019, reaffirmed 2024</td><td>Constant-speed, packaged, integrally geared centrifugal air compressors.<a class="ref" href="#src-33">33</a></td><td>Plant and instrument air, where API 617 would be too costly a specification<a class="ref" href="#src-34">34</a></td></tr>
+          <tr><td class="lead">API 618</td><td>6th, May 2024</td><td>Low- to moderate-speed reciprocating compressors, lubricated or not, with their lubrication, controls, coolers and pulsation suppression devices.<a class="ref" href="#src-35">35</a></td><td>Refinery and petrochemical recips: discharge temperature, rod load, pulsation studies</td></tr>
+          <tr><td class="lead">ISO 13631</td><td>2002</td><td>Packaged, skid-mounted separable reciprocating compressors with lubricated cylinders for hydrocarbon gas; it replaced API 11P.<a class="ref" href="#src-36">36</a></td><td>Gas gathering, gas lift and field compression</td></tr>
+          <tr><td class="lead">API 619</td><td>5th, 2010, reaffirmed 2024 (identical to ISO 10440-1)</td><td>Dry and oil-flooded screw compressors for special-purpose service; not vane, liquid-ring or general-purpose air machines.<a class="ref" href="#src-37">37</a></td><td>Screw compressors on process duty</td></tr>
+          <tr><td class="lead">API 692</td><td>1st, June 2018</td><td>Dry gas sealing systems for axial, centrifugal and screw compressors and expanders.<a class="ref" href="#src-38">38</a></td><td>Seal type, seal gas supply and filtration, vents</td></tr>
+          <tr><td class="lead">API 614</td><td>6th, February 2022</td><td>Lubrication, oil-type shaft-sealing and oil-control systems, excluding dry gas seals.<a class="ref" href="#src-27">27</a></td><td>Lube oil consoles</td></tr>
+          <tr><td class="lead">API 670</td><td>6th, July 2025</td><td>Machinery protection systems: vibration, axial position, speed, rod drop, overspeed and temperature.<a class="ref" href="#src-28">28</a></td><td>Trips and alarms in the cause-and-effect chart</td></tr>
+          <tr><td class="lead">API 611, 612, 616, 613, 677, 671</td><td>Various</td><td>Steam turbines, gas turbines, gears and couplings.</td><td>Driver and drive-train selection</td></tr>
+          <tr><td class="lead">API 521 and API 520</td><td>API 521 7th, 2020</td><td>Overpressure scenarios and depressuring (API 521);<a class="ref" href="#src-39">39</a> relief device sizing and installation (API 520).</td><td>Relief and blowdown around the compressor</td></tr>
+          <tr><td class="lead">ASME PTC 10</td><td>2022, published August 2023</td><td>Performance testing of axial and centrifugal compressors.<a class="ref" href="#src-40">40</a> The 2022 revision uses real-gas relations and new polytropic methods, adds a Reynolds number correction and requires multipoint tests to verify the curve.<a class="ref" href="#src-10">10</a></td><td>Shop performance test, Type 1 or Type 2</td></tr>
+          <tr><td class="lead">ISO 5389 and ISO 1217</td><td>2005; 2009 with 2016 amendment</td><td>Performance tests for turbocompressors<a class="ref" href="#src-41">41</a> and acceptance tests for displacement compressors.<a class="ref" href="#src-42">42</a></td><td>Test codes outside North America; packaged screws and recips</td></tr>
+          <tr><td class="lead">ISO 10439</td><td>2015</td><td>The ISO family for axial and centrifugal compressors that corresponds to API 617.<a class="ref" href="#src-43">43</a></td><td>International projects</td></tr>
+          <tr><td class="lead">ASME VIII, ASME B31.3</td><td>Current</td><td>Pressure vessels (scrubbers, bottles, coolers) and process piping.</td><td>Vessel and piping design around the machine</td></tr>
+          <tr><td class="lead">CSA B51</td><td>B51:24</td><td>Boiler, pressure vessel and pressure piping code; design registration (CRN) in each province.<a class="ref" href="#src-30">30</a></td><td>Any pressure vessel installed in Canada</td></tr>
+          <tr><td class="lead">NACE MR0175 / ISO 15156</td><td>Current</td><td>Materials for H₂S-containing (sour) service.<a class="ref" href="#src-44">44</a></td><td>Sour gas compressors and their wetted parts</td></tr>
+          <tr><td class="lead">IEC 61511</td><td>Current</td><td>Safety instrumented systems in the process industry.<a class="ref" href="#src-29">29</a></td><td>Compressor trips that are safety functions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="main">
+        <p class="cap">Many operators add their own supplements, and the IOGP JIP33 specifications (for example S-612 for API 672 air compressors) harmonize them.<a class="ref" href="#src-45">45</a> Read the company specification before the API standard; it usually overrides it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 Safety -->
+  <section class="sec" id="safety" aria-labelledby="h-safety">
+    <div class="sec-head"><p class="marker">12</p><h2 id="h-safety">Safety: hazards and safeguards</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>A compressor concentrates three kinds of energy: the pressure of a gas that is often flammable or toxic, the heat of compression, and a rotor turning at thousands of rpm. Process safety means controlling energy as well as materials, and high-speed rotating equipment is one of the clearest examples.<a class="ref" href="#src-46">46</a> Table 6 lists the hazards a HAZOP will raise and the safeguards that usually answer them.</p>
+      </div>
+    </div>
+    <div class="tbl tbl-wide wide">
+      <table>
+        <caption>Table 6. Compressor hazards and typical safeguards. Each site decides the required layers with its own HAZOP and LOPA.</caption>
+        <thead><tr><th>Hazard</th><th>How it happens</th><th>Safeguards</th></tr></thead>
+        <tbody>
+          <tr><td class="lead">Surge</td><td>Low flow, high back-pressure, lighter or hotter gas, or a trip without fast recycle</td><td>Anti-surge controller with a control-line margin, fast recycle valve, check valve close to the discharge, recycle valve opened on every trip<a class="ref" href="#src-1">1</a><a class="ref" href="#src-21">21</a></td></tr>
+          <tr><td class="lead">Liquid in the suction</td><td>Carryover from an upstream separator, condensation in a cold suction line, a failed level control</td><td>Suction scrubber with mist eliminator and high-high level trip, heat tracing and low-point drains, warm-up before start. Entrainment can run for a long time at low vibration and then cause a sudden failure.<a class="ref" href="#src-47">47</a><a class="ref" href="#src-48">48</a></td></tr>
+          <tr><td class="lead">Overpressure, positive displacement</td><td>Blocked discharge: a recip or screw keeps compressing</td><td>Relief valve on each stage between the cylinder and the first block valve, sized for full capacity; block valves interlocked or locked open; never start against a closed discharge</td></tr>
+          <tr><td class="lead">Overpressure, centrifugal</td><td>Highest head occurs at surge, at maximum speed, with maximum suction pressure and the heaviest gas</td><td>Compare that pressure with downstream design pressure; add relief or a high-integrity trip where it is higher</td></tr>
+          <tr><td class="lead">Settle-out and backflow</td><td>After a trip, gas equalizes between discharge and suction; a leaking check valve or shutdown valve lets the whole downstream system back</td><td>Design suction-side equipment for settle-out pressure or relieve it;<a class="ref" href="#src-49">49</a> check valve plus shutdown valve on the discharge; vent on trip</td></tr>
+          <tr><td class="lead">Reverse rotation</td><td>Discharge gas flows back through the machine after the driver stops</td><td>Check valve near the discharge, fast and adequately sized recycle, discharge vent on trip<a class="ref" href="#src-22">22</a></td></tr>
+          <tr><td class="lead">Fire or explosion in air systems</td><td>Oil and carbon deposits in discharge lines; peroxides in carbon decompose at about 165 °C; at 13.8 bar oil can autoignite as low as 212 °C<a class="ref" href="#src-50">50</a></td><td>Keep discharge below 150 °C, high-temperature alarm and shutdown on final discharge, cooling-water flow switch, the right lubricant, inspection and cleaning of discharge lines<a class="ref" href="#src-50">50</a></td></tr>
+          <tr><td class="lead">High temperature, process gas</td><td>Lost intercooling, fouled coolers, leaking recip valves recompressing hot gas, ratio creep</td><td>Discharge temperature alarm and trip on each cylinder or stage; API 618 limits at design<a class="ref" href="#src-2">2</a></td></tr>
+          <tr><td class="lead">Release of flammable or toxic gas</td><td>Seal or packing failure, small-bore fittings, flanges, vents</td><td>Tandem dry gas seals with leak monitoring and primary vent to flare; purged distance pieces; gas detection and ventilation; emergency shutdown and blowdown</td></tr>
+          <tr><td class="lead">Pulsation and vibration fatigue</td><td>Acoustic resonance in recip piping; long, unsupported small-bore branches</td><td>API 618 pulsation and mechanical studies;<a class="ref" href="#src-14">14</a> bracing; management of change for temporary modifications<a class="ref" href="#src-51">51</a></td></tr>
+          <tr><td class="lead">Air ingress</td><td>Suction below atmospheric pressure on flare gas or vacuum service</td><td>Low suction pressure trip, oxygen analyzer, nitrogen purge</td></tr>
+          <tr><td class="lead">Overspeed and mechanical failure</td><td>Loss of load on a turbine driver, coupling failure, bearing failure</td><td>Independent overspeed trip; vibration, axial position and bearing temperature protection to API 670<a class="ref" href="#src-28">28</a></td></tr>
+          <tr><td class="lead">Stored energy in maintenance</td><td>Trapped pressure in cylinders, bottles and coolers; a rotor turned by gas flow</td><td>Isolate, depressure, purge, lock out and verify before opening<a class="ref" href="#src-46">46</a></td></tr>
+          <tr><td class="lead">Asphyxiation</td><td>Nitrogen seal gas or purge in enclosures and confined spaces</td><td>Enclosure ventilation, oxygen monitoring, confined-space entry permits</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="main">
+        <h3>Depressuring</h3>
+        <p>A compressor building full of hydrocarbon is usually fitted with automatic blowdown. API 521 bases the rate on fire exposure: reduce the pressure to about 50 % of the vessel's design pressure within roughly 15 minutes, a criterion written for carbon steel walls of about 25 mm and thicker; thinner walls need faster depressuring.<a class="ref" href="#src-52">52</a> The logic is that a fire-heated wall loses strength, so halving the pressure halves the stress and buys time before rupture.<a class="ref" href="#src-53">53</a></p>
+        <h3>Two incidents worth reading</h3>
+        <p>A pressure gauge on a new compressor system was moved onto a longer pipe during troubleshooting and left there. The longer pipe amplified the compressor's vibration until the connection broke and released a large volume of flammable vapour, which did not ignite. A small, temporary change had needed a management-of-change review.<a class="ref" href="#src-51">51</a></p>
+        <p>An operator opened a high-pressure condensate drain on an air booster with a fast-opening valve. Rapid compression of the air ignited hydrocarbon deposits inside the drain line, the line ruptured and the operator was seriously injured.<a class="ref" href="#src-54">54</a> Lubricated air compressors carry fuel, oxygen and heat at the same time; the safeguards in Table 6 exist because of incidents like this one.</p>
+      </div>
+      <aside class="sn">
+        <p><b>What I bring to a compressor HAZOP:</b> the map with every case on it, the settle-out pressure, the maximum discharge pressure case, the relief valve list, the trip list from the vendor, and the scrubber level and liquid-handling design.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 13 Examples -->
+  <section class="sec" id="examples" aria-labelledby="h-ex">
+    <div class="sec-head"><p class="marker">13</p><h2 id="h-ex">Worked examples</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Each example uses the equations above with the numbers shown, so you can follow it with a calculator. R = 8.314 kJ/kmol·K; standard conditions are 15 °C and 1.01325 bar.</p>
+      </div>
+    </div>
+
+    <article class="ex" id="ex1" aria-labelledby="ex1-h">
+      <div class="row"><div class="main">
+        <h3 id="ex1-h">Example 1. Standard flow is not what the compressor sees</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>Natural gas, 1.2 million Sm³/d, M = 18.5 kg/kmol. Compressor suction 30 bara, 30 °C, Z<sub>1</sub> = 0.93.</dd>
+          <dt>Find</dt><dd>Molar, mass and actual inlet flows.</dd>
+        </dl>
+        <ol class="steps">
+          <li>Molar volume at standard conditions: <span class="calcline">8.314 × 288.15 / 101.325 = 23.64 m³/kmol</span></li>
+          <li>Molar and mass flow: <span class="calcline">1.2×10⁶ / 23.64 / 24 = 2,115 kmol/h;  × 18.5 = 39,120 kg/h = 10.87 kg/s</span></li>
+          <li>Actual inlet flow, equation (2): <span class="calcline">Q₁ = 2,115 × 0.93 × 8.314 × 303.15 / 3,000 = 1,652 m³/h</span></li>
+        </ol>
+        <p class="takeaway">50,000 Sm³/h is 1,650 m³/h at the flange, 30 times less. Selection charts, maps and cylinders all work in actual inlet flow.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex2" aria-labelledby="ex2-h">
+      <div class="row"><div class="main">
+        <h3 id="ex2-h">Example 2. Head, discharge temperature and power of a centrifugal booster</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>The rated point of Figure 1: M = 20, k = 1.30, Z<sub>avg</sub> = 0.96, 20 bara and 35 °C to 31.6 bara, 6,000 m³/h actual inlet flow, η<sub>p</sub> = 80 %. Mechanical losses 2 %.</dd>
+          <dt>Find</dt><dd>Polytropic head, discharge temperature, mass flow, power, and the equivalent isentropic efficiency.</dd>
+        </dl>
+        <ol class="steps">
+          <li>Ratio and exponent, equation (6): <span class="calcline">r = 31.6/20 = 1.580;  (n−1)/n = 0.30/(1.30 × 0.80) = 0.2885,  n = 1.405</span></li>
+          <li>Gas term: <span class="calcline">Z R T₁/M = 0.96 × (8.314/20) × 308.15 = 122.98 kJ/kg</span></li>
+          <li>Head, equation (5): <span class="calcline">H_p = 122.98/0.2885 × (1.580^0.2885 − 1) = 426.3 × 0.1410 = 60.1 kJ/kg</span></li>
+          <li>Discharge temperature, equation (7): <span class="calcline">T₂ = 308.15 × 1.1410 = 351.6 K = 78.5 °C</span></li>
+          <li>Mass flow from equation (1): <span class="calcline">ρ₁ = 20×10⁵ × 20 / (0.96 × 8,314 × 308.15) = 16.26 kg/m³
+ṁ = 16.26 × 6,000/3,600 = 27.10 kg/s</span></li>
+          <li>Power, equation (8): <span class="calcline">P_gas = 27.10 × 60.1/0.80 = 2,037 kW;  P_shaft = 2,037 × 1.02 = 2,078 kW</span></li>
+          <li>Isentropic efficiency, equation (9), and a cross-check: <span class="calcline">η_s = (1.580^0.2308 − 1)/(1.580^0.2885 − 1) = 0.1113/0.1410 = 78.9 %
+H_s = 59.3 kJ/kg;  59.3/0.789 = 75.2 kJ/kg = 60.1/0.80  ✓</span></li>
+        </ol>
+        <p class="takeaway">The same machine is "80 % efficient" or "78.9 % efficient" depending on the definition, and both give the same 75.2 kJ/kg of work. Always say which one you mean.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex3" aria-labelledby="ex3-h">
+      <div class="row"><div class="main">
+        <h3 id="ex3-h">Example 3. Why plant air is compressed in stages</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>Air (M = 28.96, k = 1.40, Z = 1), 1.0 kg/s from 1.0 bara and 25 °C to 8.0 bara. η<sub>p</sub> = 80 % per stage, perfect intercooling to 25 °C, no interstage pressure drop.</dd>
+          <dt>Find</dt><dd>Discharge temperature and gas power for one, two and three stages.</dd>
+        </dl>
+        <ol class="steps">
+          <li>Constants: <span class="calcline">(n−1)/n = 0.40/(1.40 × 0.80) = 0.3571;  R T₁/M = (8.314/28.96) × 298.15 = 85.60 kJ/kg</span></li>
+          <li>One stage, r = 8: <span class="calcline">T₂ = 298.15 × 8^0.3571 = 626.6 K = 353 °C
+H = 85.60/0.3571 × 1.1015 = 264.0 kJ/kg;  P = 330 kW</span></li>
+          <li>Two stages, r = 2.828 each: <span class="calcline">T₂ = 159 °C;  H = 2 × 107.8 = 215.5 kJ/kg;  P = 269 kW  (−18 %)</span></li>
+          <li>Three stages, r = 2.000 each: <span class="calcline">T₂ = 109 °C;  H = 3 × 67.3 = 202.0 kJ/kg;  P = 252 kW  (−24 %)</span></li>
+          <li>Isothermal minimum, equation (3): <span class="calcline">W = 85.60 × ln 8 = 178 kW</span></li>
+        </ol>
+        <p class="takeaway">One stage would deliver air at 353 °C, far above the 150 °C ceiling for oil-lubricated air systems.<a class="ref" href="#src-50">50</a> Two stages are still too hot for most designs; three are comfortable. Load the plant-air preset in the calculator to see it.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex4" aria-labelledby="ex4-h">
+      <div class="row"><div class="main">
+        <h3 id="ex4-h">Example 4. Capacity and discharge temperature of a hydrogen cylinder</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>Double-acting cylinder: bore 250 mm, stroke 200 mm, rod 60 mm, 375 rpm, clearance 14 %. Hydrogen make-up from 20 to 56 bara (r = 2.8), suction 40 °C, k = 1.41.</dd>
+          <dt>Find</dt><dd>Displacement, volumetric efficiency, capacity and the ideal discharge temperature.</dd>
+        </dl>
+        <ol class="steps">
+          <li>Areas: <span class="calcline">A = π × 0.250²/4 = 0.04909 m²;  a = π × 0.060²/4 = 0.00283 m²</span></li>
+          <li>Displacement, equation (11): <span class="calcline">PD = (2 × 0.04909 − 0.00283) × 0.200 × 375 × 60 = 429 m³/h</span></li>
+          <li>Compressibility from an equation of state: <span class="calcline">Z_s = 1.011 (20 bara, 40 °C);  Z_d = 1.026 (56 bara, ~150 °C);  Z_s/Z_d = 0.985</span></li>
+          <li>Volumetric efficiency, equation (12): <span class="calcline">VE = 100 − 2.8 − 14 × (0.985 × 2.8^(1/1.41) − 1) = 100 − 2.8 − 14.6 = 82.6 %</span></li>
+          <li>Capacity: <span class="calcline">429 × 0.826 = 354 m³/h
+ρ₁ = 20×10⁵ × 2.016/(1.011 × 8,314 × 313.15) = 1.532 kg/m³ → 543 kg/h</span></li>
+          <li>Ideal discharge temperature: <span class="calcline">T₂ = 313.15 × 2.8^(0.41/1.41) = 313.15 × 1.349 = 422.5 K = 149 °C</span></li>
+        </ol>
+        <p class="takeaway">Even the ideal temperature is above the 135 °C API 618 limit for hydrogen-rich gas,<a class="ref" href="#src-2">2</a> and the real one is higher. A ratio of about 2.3 per stage (126 °C ideal) is the practical ceiling, which is why a 20 → 160 bara make-up compressor has three stages, not two (Problem 5).</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex5" aria-labelledby="ex5-h">
+      <div class="row"><div class="main">
+        <h3 id="ex5-h">Example 5. Checking a vendor's normal point</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>The "Normal" column of Table 3: M = 20, k = 1.30, Z<sub>avg</sub> = 0.96, 20.0 bara and 35 °C, 87,820 kg/h, 30.54 bara, η<sub>p</sub> = 79.9 %. The vendor quotes 55.4 kJ/kg, 75.1 °C, 1,690 kW gas power, 9,490 rpm and a surge flow of 3,700 m³/h at that speed.</dd>
+          <dt>Find</dt><dd>Whether the numbers hang together, and the surge margin.</dd>
+        </dl>
+        <ol class="steps">
+          <li>Inlet flow: <span class="calcline">ρ₁ = 16.26 kg/m³ (Example 2);  87,820/16.26 = 5,400 m³/h</span></li>
+          <li>Head: <span class="calcline">r = 1.527;  (n−1)/n = 0.30/(1.30 × 0.799) = 0.2888
+H_p = 122.98/0.2888 × (1.527^0.2888 − 1) = 55.4 kJ/kg  ✓</span></li>
+          <li>Temperature: <span class="calcline">T₂ = 308.15 × 1.1300 = 348.2 K = 75.1 °C  ✓</span></li>
+          <li>Power: <span class="calcline">24.39 kg/s × 55.4/0.799 = 1,690 kW  ✓;  shaft ≈ 1,724 kW</span></li>
+          <li>Surge margin, equation (15): <span class="calcline">5,400/3,700 − 1 = 46 %, well clear of the 10 % control line</span></li>
+          <li>Speed: <span class="calcline">9,490/10,000 = 95 %, leaving room for a heavier or lighter gas</span></li>
+        </ol>
+        <p class="takeaway">Five minutes with a calculator. When head or power is more than 1–2 % off, ask which Z, k and calculation method the vendor used before discussing efficiency.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex6" aria-labelledby="ex6-h">
+      <div class="row"><div class="main">
+        <h3 id="ex6-h">Example 6. A lighter gas on the same machine</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>At 100 % speed and 6,000 m³/h the machine of Figure 1 makes 60 kJ/kg. An upstream change drops the molar mass from 20 to 17 (Z = 0.97, other properties unchanged). The process still needs 31.6 bara.</dd>
+          <dt>Find</dt><dd>The new discharge pressure, the speed needed to restore it, and what happens at maximum continuous speed (105 %).</dd>
+        </dl>
+        <ol class="steps">
+          <li>Same speed and flow give the same head, 60 kJ/kg. New gas term: <span class="calcline">0.97 × (8.314/17) × 308.15 = 146.2 kJ/kg</span></li>
+          <li>New ratio, equation (5) solved for r: <span class="calcline">r = (1 + 60 × 0.2885/146.2)^(1/0.2885) = 1.474  →  P₂ = 29.5 bara, 2.1 bar short</span></li>
+          <li>Head needed for r = 1.578: <span class="calcline">146.2/0.2885 × (1.578^0.2885 − 1) = 71.3 kJ/kg</span></li>
+          <li>Speed needed at the same flow, equation (14): <span class="calcline">√(71.3/60) = 1.09 → 109 %, above the 105 % limit</span></li>
+          <li>At 105 % the machine reaches 71.3 kJ/kg only near the left end of its curve: <span class="calcline">Q ≈ 4,280 m³/h, left of the surge control line at 4,505 m³/h → recycle opens</span></li>
+        </ol>
+        <p class="takeaway">A 15 % drop in molar mass turns a comfortable design into a recycle problem. Put every credible composition on the datasheet as a case.<a class="ref" href="#src-19">19</a><a class="ref" href="#src-20">20</a> Try it with the light-gas case in Figure 1.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex7" aria-labelledby="ex7-h">
+      <div class="row"><div class="main">
+        <h3 id="ex7-h">Example 7. How much gas the anti-surge valve recycles</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>Figure 1 machine at 90 % speed. Surge flow at that speed is 0.65 × 6,000 × 0.90 = 3,510 m³/h; the control line is 10 % to the right. The process now takes only 3,000 m³/h (at suction conditions).</dd>
+          <dt>Find</dt><dd>Recycle flow and the power spent on it.</dd>
+        </dl>
+        <ol class="steps">
+          <li>Control line: <span class="calcline">1.10 × 3,510 = 3,861 m³/h</span></li>
+          <li>Recycle, equation (16): <span class="calcline">3,861 − 3,000 = 861 m³/h, 22 % of the compressor's flow</span></li>
+          <li>Operating point on the control line: <span class="calcline">H = 52.3 kJ/kg,  η_p = 77.6 %,  ṁ = 16.26 × 3,861/3,600 = 17.44 kg/s</span></li>
+          <li>Power: <span class="calcline">17.44 × 52.3/0.776 = 1,175 kW gas power
+of which 22 % ≈ 262 kW compresses recycled gas</span></li>
+        </ol>
+        <p class="takeaway">Recycle protects the machine, but it is a heater fed with electricity. If the plant will run here for months, rerate the impellers or run fewer machines in parallel.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex8" aria-labelledby="ex8-h">
+      <div class="row"><div class="main">
+        <h3 id="ex8-h">Example 8. Settle-out pressure after a trip</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>The compressor trips and the discharge check valve closes. Suction side (scrubber, piping, casing) 25 m³ at 20 bara and 35 °C; discharge side up to the check valve (piping, aftercooler) 15 m³ at 31.6 bara and 40 °C. The gas settles at 40 °C; ignore the change in Z.</dd>
+          <dt>Find</dt><dd>Settle-out pressure.</dd>
+        </dl>
+        <ol class="steps">
+          <li>Moles are proportional to PV/T: <span class="calcline">suction 20 × 25/308.15 = 1.623;  discharge 31.6 × 15/313.15 = 1.514</span></li>
+          <li>Settle-out: <span class="calcline">P_so = (1.623 + 1.514) × 313.15/40 = 24.6 bara</span></li>
+        </ol>
+        <p class="takeaway">The suction scrubber normally sees 20 bara, but after every trip it sees 24.6. Its design pressure must cover settle-out with margin, or its relief valve must be sized for it. Settle-out also sets the restart conditions and the starting point of blowdown calculations.<a class="ref" href="#src-49">49</a> If the check valve leaks, the downstream system joins the balance and the pressure climbs further.</p>
+      </div></div>
+    </article>
+
+    <article class="ex" id="ex9" aria-labelledby="ex9-h">
+      <div class="row"><div class="main">
+        <h3 id="ex9-h">Example 9. CO₂ compression for carbon capture</h3>
+        <dl class="given">
+          <dt>Given</dt><dd>100 t/h of CO₂ from a capture plant at 1.2 bara and 40 °C, compressed to 30 bara in four intercooled stages (back to 40 °C), η<sub>p</sub> = 80 %, k = 1.29, no interstage pressure drop.</dd>
+          <dt>Find</dt><dd>Stage ratio, head, discharge temperature and power; then compare with a rigorous real-gas calculation.</dd>
+        </dl>
+        <ol class="steps">
+          <li>Ratio and exponent: <span class="calcline">r_stage = (30/1.2)^(1/4) = 2.236;  (n−1)/n = 0.29/(1.29 × 0.80) = 0.2810</span></li>
+          <li>Average Z per stage from an equation of state: <span class="calcline">0.995,  0.988,  0.974,  0.940</span></li>
+          <li>Heads, equation (5): <span class="calcline">53.1 + 52.8 + 52.0 + 50.2 = 208.1 kJ/kg
+T₂ = 313.15 × 2.236^0.2810 = 119.5 °C each stage</span></li>
+          <li>Power: <span class="calcline">27.78 kg/s × 208.1/0.80 = 7.23 MW gas power, about 74 kWh per tonne at the shaft</span></li>
+          <li>Rigorous check, integrating dh = v dP/η<sub>p</sub> with the Span–Wagner equation of state: <span class="calcline">207.1 kJ/kg (0.5 % lower);  T₂ = 114–115 °C</span></li>
+        </ol>
+        <p class="takeaway">The average-Z method is good to half a percent here and slightly conservative on temperature. Beyond about 74 bar and 31 °C CO₂ is supercritical; pipelines carry it in the dense phase, typically above 86 bar,<a class="ref" href="#src-55">55</a> and some designs finish with a pump rather than more compressor stages.<a class="ref" href="#src-56">56</a> Integrally geared machines suit the duty because each stage can run at its own speed and be intercooled.<a class="ref" href="#src-4">4</a></p>
+      </div></div>
+    </article>
+  </section>
+
+  <!-- 14 Problems -->
+  <section class="sec" id="problems" aria-labelledby="h-prob">
+    <div class="sec-head"><p class="marker">14</p><h2 id="h-prob">Practice problems</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Work each one before opening the solution. Numerical answers are accepted within 2 %. "The Figure 1 machine" means the illustrative compressor of Figure 1 and Table 3.</p>
+      </div>
+    </div>
+
+    <article class="ex prob" id="p1">
+      <div class="row"><div class="main">
+        <h3>Problem 1. Standard to actual flow</h3>
+        <p>A gas plant sends 2.5 million Sm³/d (15 °C, 1.01325 bar) of gas with M = 18.0 to a compressor whose suction is at 45 bara and 25 °C, with Z = 0.91. What is the actual inlet flow?</p>
+        <div class="check"><label class="lbl" for="p1-in">Inlet flow</label><div class="field"><input id="p1-in" inputmode="decimal"><span class="unit">m³/h</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p1" data-ans="2208">Check answer</button><span class="fb" id="p1-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p1-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p1-sol" hidden><span class="calcline">ṅ = 2.5×10⁶ / 23.64 / 24 = 4,405 kmol/h  (22.0 kg/s)
+Q₁ = 4,405 × 0.91 × 8.314 × 298.15 / 4,500 = 2,208 m³/h</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p2">
+      <div class="row"><div class="main">
+        <h3>Problem 2. One-stage air temperature</h3>
+        <p>Air at 20 °C is compressed from 1.0 to 4.0 bara in one stage with an isentropic efficiency of 78 % (k = 1.40). Find the discharge temperature. Is it acceptable for an oil-lubricated machine?</p>
+        <div class="check"><label class="lbl" for="p2-in">T₂</label><div class="field"><input id="p2-in" inputmode="decimal"><span class="unit">°C</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p2" data-ans="202.7">Check answer</button><span class="fb" id="p2-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p2-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p2-sol" hidden><span class="calcline">T₂ = 293.15 × [1 + (4^0.2857 − 1)/0.78] = 293.15 × 1.6231 = 475.8 K = 202.7 °C</span><p>No. The isentropic value alone is 162 °C; the real one is above the 150 °C ceiling for lubricated air service. Use two stages.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p3">
+      <div class="row"><div class="main">
+        <h3>Problem 3. Converting efficiencies</h3>
+        <p>A centrifugal section has η<sub>p</sub> = 78 % on a gas with k = 1.28, at a ratio of 3.0. What isentropic efficiency would a screw vendor quote for the same duty to be equivalent?</p>
+        <div class="check"><label class="lbl" for="p3-in">η<sub>s</sub></label><div class="field"><input id="p3-in" inputmode="decimal"><span class="unit">%</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p3" data-ans="75.3">Check answer</button><span class="fb" id="p3-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p3-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p3-sol" hidden><span class="calcline">(k−1)/k = 0.2188;  (n−1)/n = 0.2188/0.78 = 0.2804
+η_s = (3^0.2188 − 1)/(3^0.2804 − 1) = 0.2717/0.3609 = 75.3 %</span><p>Comparing a 78 % polytropic offer with a 76 % isentropic one, the isentropic one is the better machine.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p4">
+      <div class="row"><div class="main">
+        <h3>Problem 4. Propane refrigeration head</h3>
+        <p>Propane (M = 44.1, k = 1.13, Z<sub>avg</sub> = 0.94) enters a refrigeration compressor at 1.6 bara and −30 °C. The ratio is 4.0 and η<sub>p</sub> = 78 %. Find the polytropic head and the discharge temperature.</p>
+        <div class="check"><label class="lbl" for="p4-in">Head</label><div class="field"><input id="p4-in" inputmode="decimal"><span class="unit">kJ/kg</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p4" data-ans="66.3">Check answer</button><span class="fb" id="p4-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p4-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p4-sol" hidden><span class="calcline">(n−1)/n = 0.13/(1.13 × 0.78) = 0.1475
+Z R T₁/M = 0.94 × 0.1885 × 243.15 = 43.09 kJ/kg
+H_p = 43.09/0.1475 × (4^0.1475 − 1) = 292.2 × 0.2269 = 66.3 kJ/kg
+T₂ = 243.15 × 1.2269 = 298.3 K = 25 °C</span><p>A heavy, low-k gas: a large ratio from modest head, and a mild temperature rise.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p5">
+      <div class="row"><div class="main">
+        <h3>Problem 5. Stages for hydrogen</h3>
+        <p>Hydrogen make-up goes from 20 to 200 bara, suction 40 °C, k = 1.41, intercooled to 40 °C, equal ratios. Using the ideal isentropic discharge temperature and the 135 °C limit, what is the minimum number of stages?</p>
+        <div class="check"><label class="lbl" for="p5-in">Stages</label><div class="field"><input id="p5-in" inputmode="numeric"><span class="unit">–</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p5" data-ans="3" data-tol="0.001">Check answer</button><span class="fb" id="p5-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p5-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p5-sol" hidden><span class="calcline">Two stages: r = 10^(1/2) = 3.16 → T₂ = 313.15 × 3.16^0.2908 = 437.7 K = 165 °C  ✗
+Three stages: r = 10^(1/3) = 2.15 → T₂ = 391.5 K = 118 °C  ✓</span><p>Three stages leave room for real inefficiency, which adds 10–20 K to the ideal value.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p6">
+      <div class="row"><div class="main">
+        <h3>Problem 6. Volumetric efficiency</h3>
+        <p>A cylinder has 12 % clearance and runs at a ratio of 3.5 on a gas with k = 1.25 (Z<sub>s</sub>/Z<sub>d</sub> = 1). Estimate the volumetric efficiency with equation (12).</p>
+        <div class="check"><label class="lbl" for="p6-in">VE</label><div class="field"><input id="p6-in" inputmode="decimal"><span class="unit">%</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p6" data-ans="75.8">Check answer</button><span class="fb" id="p6-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p6-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p6-sol" hidden><span class="calcline">VE = 100 − 3.5 − 12 × (3.5^0.8 − 1) = 100 − 3.5 − 12 × 1.724 = 75.8 %</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p7">
+      <div class="row"><div class="main">
+        <h3>Problem 7. Fan laws</h3>
+        <p>At 9,500 rpm a centrifugal compressor handles 5,000 m³/h at 55 kJ/kg and absorbs 1,500 kW. Estimate flow, head and power at 10,000 rpm on the equivalent point. Enter the head.</p>
+        <div class="check"><label class="lbl" for="p7-in">Head</label><div class="field"><input id="p7-in" inputmode="decimal"><span class="unit">kJ/kg</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p7" data-ans="60.9">Check answer</button><span class="fb" id="p7-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p7-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p7-sol" hidden><span class="calcline">s = 10,000/9,500 = 1.0526
+Q = 5,263 m³/h;  H = 55 × 1.108 = 60.9 kJ/kg;  P = 1,500 × 1.166 = 1,750 kW</span><p>Power rises 17 % for a 5 % speed increase. Check the driver before raising speed.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p8">
+      <div class="row"><div class="main">
+        <h3>Problem 8. Same head, different gas</h3>
+        <p>A compressor makes 50 kJ/kg at its operating point (η<sub>p</sub> = 78 %, k = 1.30, Z = 0.95, 10 bara, 30 °C). What discharge pressure does it give on a gas with M = 22, and on one with M = 18? Enter the value for M = 18.</p>
+        <div class="check"><label class="lbl" for="p8-in">P₂ for M = 18</label><div class="field"><input id="p8-in" inputmode="decimal"><span class="unit">bara</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p8" data-ans="14.28">Check answer</button><span class="fb" id="p8-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p8-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p8-sol" hidden><span class="calcline">(n−1)/n = 0.30/(1.30 × 0.78) = 0.2959
+M = 22: Z R T₁/M = 108.8 kJ/kg
+        r = (1 + 50 × 0.2959/108.8)^(1/0.2959) = 1.538 → 15.38 bara
+M = 18: Z R T₁/M = 132.9 kJ/kg
+        r = 1.428 → 14.28 bara</span><p>Lose 4 units of molar mass and lose more than a bar of discharge pressure at the same speed and flow.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p9">
+      <div class="row"><div class="main">
+        <h3>Problem 9. Surge margin</h3>
+        <p>At the current speed the surge flow is 4,100 m³/h and the compressor runs at 4,600 m³/h. What is the surge margin? With a control line 10 % from surge, is the recycle valve open?</p>
+        <div class="check"><label class="lbl" for="p9-in">Surge margin</label><div class="field"><input id="p9-in" inputmode="decimal"><span class="unit">%</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p9" data-ans="12.2">Check answer</button><span class="fb" id="p9-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p9-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p9-sol" hidden><span class="calcline">4,600/4,100 − 1 = 12.2 %;  control line = 4,510 m³/h</span><p>The valve is closed, but only 90 m³/h (2 %) separates the machine from recycle. A small upset will open it.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p10">
+      <div class="row"><div class="main">
+        <h3>Problem 10. Recycle flow</h3>
+        <p>The same compressor, at the same speed, now sees a process demand of only 3,800 m³/h. How much does the anti-surge valve recycle?</p>
+        <div class="check"><label class="lbl" for="p10-in">Recycle</label><div class="field"><input id="p10-in" inputmode="decimal"><span class="unit">m³/h</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p10" data-ans="710">Check answer</button><span class="fb" id="p10-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p10-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p10-sol" hidden><span class="calcline">4,510 − 3,800 = 710 m³/h  (16 % of the compressor's flow)</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p11">
+      <div class="row"><div class="main">
+        <h3>Problem 11. Settle-out of a two-stage machine</h3>
+        <p>After a trip the recycle valves open and three volumes equalize: suction 12 m³ at 8 bara and 30 °C, interstage 9 m³ at 22 bara and 40 °C, and discharge 6 m³ at 60 bara and 45 °C. The gas settles at 40 °C; ignore Z. Find the settle-out pressure.</p>
+        <div class="check"><label class="lbl" for="p11-in">P<sub>so</sub></label><div class="field"><input id="p11-in" inputmode="decimal"><span class="unit">bara</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p11" data-ans="24.13">Check answer</button><span class="fb" id="p11-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p11-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p11-sol" hidden><span class="calcline">Σ PV/T = 8×12/303.15 + 22×9/313.15 + 60×6/318.15 = 0.3167 + 0.6323 + 1.1315 = 2.0805
+P_so = 2.0805 × 313.15/27 = 24.1 bara</span><p>Three times the normal suction pressure. The first-stage scrubber is designed for this, not for 8 bara.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p12">
+      <div class="row"><div class="main">
+        <h3>Problem 12. Driver rating</h3>
+        <p>Across all datasheet cases, including 105 % speed and the heaviest gas, the highest compressor shaft power is 3,120 kW. What minimum driver rating does API 617 ask for?</p>
+        <div class="check"><label class="lbl" for="p12-in">Driver rating</label><div class="field"><input id="p12-in" inputmode="decimal"><span class="unit">kW</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p12" data-ans="3432">Check answer</button><span class="fb" id="p12-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p12-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p12-sol" hidden><span class="calcline">1.10 × 3,120 = 3,432 kW  → next motor size up</span><p>Add gear and coupling losses if they sit between the compressor and the driver.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p13">
+      <div class="row"><div class="main">
+        <h3>Problem 13. What the intercooler is worth</h3>
+        <p>Air goes from 1 to 9 bara at 25 °C (η<sub>p</sub> = 80 %, k = 1.40). What percentage of gas power do two equal intercooled stages save over one stage?</p>
+        <div class="check"><label class="lbl" for="p13-in">Saving</label><div class="field"><input id="p13-in" inputmode="decimal"><span class="unit">%</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p13" data-ans="19.4">Check answer</button><span class="fb" id="p13-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p13-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p13-sol" hidden><span class="calcline">One stage:  H = 239.7 × (9^0.3571 − 1) = 285.6 kJ/kg
+Two stages: H = 2 × 239.7 × (3^0.3571 − 1) = 230.3 kJ/kg
+Saving = 1 − 230.3/285.6 = 19.4 %</span></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p14">
+      <div class="row"><div class="main">
+        <h3>Problem 14. Gas rod load</h3>
+        <p>A double-acting cylinder has a 250 mm bore and a 63.5 mm rod. Suction is 15 bara and discharge 45 bara. Using gauge pressures, find the gas rod load in compression (head end compressing). Then find the load in tension.</p>
+        <div class="check"><label class="lbl" for="p14-in">Compression load</label><div class="field"><input id="p14-in" inputmode="decimal"><span class="unit">kN</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p14" data-ans="151.7">Check answer</button><span class="fb" id="p14-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p14-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p14-sol" hidden><span class="calcline">A = 0.04909 m²;  a = 0.00317 m²;  P_d = 44 barg;  P_s = 14 barg
+Compression: 44×10⁵ × 0.04909 − 14×10⁵ × 0.04592 = 216.0 − 64.3 = 151.7 kN
+Tension:     44×10⁵ × 0.04592 − 14×10⁵ × 0.04909 = 202.1 − 68.7 = 133.3 kN</span><p>Compare with the frame's allowable loads at the relief-valve set pressure, not just at normal discharge pressure.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p15">
+      <div class="row"><div class="main">
+        <h3>Problem 15. Spot the error</h3>
+        <p>A revised proposal keeps every number in the low-molar-mass column of Table 3 but lists the gas power as 1,650 kW. Calculate the gas power from the other numbers. Is the revision credible?</p>
+        <div class="check"><label class="lbl" for="p15-in">Gas power</label><div class="field"><input id="p15-in" inputmode="decimal"><span class="unit">kW</span></div><button type="button" class="btn btn-secondary btn-sm" data-check="p15" data-ans="1841">Check answer</button><span class="fb" id="p15-fb" aria-live="polite"></span></div>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p15-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p15-sol" hidden><span class="calcline">84,450/3,600 × 62.7/0.799 = 23.46 × 78.5 = 1,841 kW</span><p>1,650 kW would need either 89 % polytropic efficiency or a head of 56 kJ/kg. One of the numbers is wrong; ask before you evaluate the bid.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p16">
+      <div class="row"><div class="main">
+        <h3>Problem 16. The hot afternoon</h3>
+        <p>On a summer afternoon the suction temperature of the Figure 1 machine rises from 35 to 50 °C at fixed speed while the process holds 31.6 bara. Explain what happens on the map.</p>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p16-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p16-sol" hidden><p>For the same ratio the head rises with T<sub>1</sub>: from 60.1 to 63.1 kJ/kg (equation 5). At fixed speed the machine can only make more head at lower flow, so the operating point slides left along its speed line toward surge, and the inlet density falls by 5 %, so mass flow drops further. Remedies: raise the speed, restore suction cooling, or use inlet guide vanes where fitted. This is why many plants see their compressor limit in summer and their driver limit in winter.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p17">
+      <div class="row"><div class="main">
+        <h3>Problem 17. Recycle and check valve placement</h3>
+        <p>Where do you take off the anti-surge recycle, where does it return, and where does the discharge check valve go? Give reasons.</p>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p17-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p17-sol" hidden><p>Take the recycle off downstream of the aftercooler, so recycled gas does not heat the suction; return it upstream of the suction scrubber, so any condensate is knocked out. Place the check valve just downstream of the recycle take-off and as close to the compressor as that allows, to minimise the volume that must flow back through the machine on a trip. The valve must open fully in about 2 seconds and be sized for the whole map, and the trip logic must open it.</p></div>
+      </div></div>
+    </article>
+
+    <article class="ex prob" id="p18">
+      <div class="row"><div class="main">
+        <h3>Problem 18. Starting against a closed valve</h3>
+        <p>An operator wants to start a reciprocating compressor with its discharge block valve closed "to load it gently". What happens, and what should the procedure be?</p>
+        <button type="button" class="toggle" aria-expanded="false" aria-controls="p18-sol"><span class="chev" aria-hidden="true">›</span> Show the solution</button>
+        <div class="sol" id="p18-sol" hidden><p>A positive displacement machine keeps pushing gas into the trapped volume, and the pressure rises every stroke until the relief valve lifts or something fails: a gasket, a cylinder head, the rod or the crosshead. If the relief valve sits downstream of the closed block valve, nothing protects the cylinder. Start unloaded instead: suction unloaders held open or the start-up bypass open, discharge valve open, then load in steps. The relief valve belongs between the cylinder and the first block valve, and discharge block valves should be interlocked or locked open in service.</p></div>
+      </div></div>
+    </article>
+  </section>
+
+  <!-- 15 Datasheet -->
+  <section class="sec" id="datasheet" aria-labelledby="h-ds">
+    <div class="sec-head"><p class="marker">15</p><h2 id="h-ds">What goes on the datasheet</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>The process engineer owns the process side of the compressor datasheet, and the vendor can only design for the cases written on it. I fill in every line below before a vendor sees it.</p>
+      </div>
+    </div>
+    <ul class="checklist wide">
+      <li><b>Gas composition</b> in mol % for every case: normal, rated, minimum, start-up, regeneration and each credible alternative gas</li>
+      <li><b>Trace components:</b> H₂S, CO₂, water, mercury, oxygen, chlorides, ammonia, anything that polymerizes</li>
+      <li><b>Properties:</b> M, k, and Z at suction and discharge, with the equation of state used</li>
+      <li><b>Flows:</b> mass flow for each case, with the basis of any margin; actual inlet flow as a check</li>
+      <li><b>Suction:</b> pressure and temperature, minimum, normal and maximum; humidity for air</li>
+      <li><b>Discharge pressure</b> for each case; maximum allowable downstream pressure</li>
+      <li><b>Sidestreams</b> in or out for multisection machines, with their pressures and flows</li>
+      <li><b>Settle-out pressure</b> and the volumes it was calculated from</li>
+      <li><b>Liquids and solids:</b> scrubber performance, droplet sizes, fouling tendency</li>
+      <li><b>Temperature limits:</b> process, seal and material</li>
+      <li><b>Control and turndown:</b> method, range, parallel operation, anti-surge requirements</li>
+      <li><b>Hazards:</b> flammability, toxicity, area classification; seal and distance-piece requirements</li>
+      <li><b>Materials:</b> sour service, hydrogen partial pressure, corrosion allowances</li>
+      <li><b>Utilities:</b> cooling water supply and return temperatures, seal gas source, nitrogen, power</li>
+      <li><b>Driver:</b> type, speed range, voltage, VFD, starting conditions</li>
+      <li><b>Site:</b> elevation, ambient range, winterization, noise limits</li>
+      <li><b>Testing:</b> PTC 10 Type 1 or 2, mechanical run test, string test, witness points</li>
+      <li><b>Standards:</b> API 617, 618, 619 or 672, with edition and company supplements; API 614, 670 and 692 for auxiliaries</li>
+    </ul>
+  </section>
+
+  <!-- 16 Sources -->
+  <section class="sec" id="sources" aria-labelledby="h-src">
+    <div class="sec-head"><p class="marker">16</p><h2 id="h-src">Sources</h2></div>
+    <div class="row">
+      <div class="main">
+        <p>Standards are copyrighted and cost money; the links below go to publishers' listings and to articles that describe or quote them. Buy the standard before you write a specification around it.</p>
+      </div>
+    </div>
+    <ol class="sources wide">
+      <li id="src-1"><b>[1]</b><span>Turbomachinery Magazine, <a href="https://www.turbomachinerymag.com/view/five-requirements-for-successful-surge-avoidance">five requirements for successful surge avoidance</a>.</span></li>
+      <li id="src-2"><b>[2]</b><span>Hydrocarbon Processing (October 2024), S. Kanikar, Technip Energies, <a href="https://read.nxtbook.com/gulf_energy_information/hydrocarbon_processing/october_2024/special_focus_kanikar_technip_energies.html">compressor type selection: operating limits and screening rules</a>.</span></li>
+      <li id="src-3"><b>[3]</b><span>Efficient Plant, <a href="https://efficientplantmag.com/?p=845">oil-free and oil-flooded screw compressors, differential pressure limits</a>.</span></li>
+      <li id="src-4"><b>[4]</b><span>Siemens Energy, CompressorTech2 (March 2024), <a href="https://assets.siemens-energy.com/dam/974eb935-5e70-41b1-a700-b1310156fcde/CT2-Delivering-CCUS-Mar24-pdf_Original%20file.pdf">delivering CCUS: integrally geared compressors and intercooling</a>.</span></li>
+      <li id="src-5"><b>[5]</b><span>Atlas Copco, <a href="https://www.atlascopco.com/content/dam/atlas-copco/compressor-technique/gas-and-process/documents/Ensuring%20integrally-geared-compressor-reliability-API-617.pdf">ensuring integrally geared compressor reliability under API 617</a>.</span></li>
+      <li id="src-6"><b>[6]</b><span>Baker Hughes, <a href="https://www.bakerhughes.com/reciprocating-compressors/api618-reciprocating-compressors">API 618 reciprocating compressors: up to 800 bar and 20,000 kW</a>.</span></li>
+      <li id="src-7"><b>[7]</b><span>Burckhardt Compression, <a href="https://www.burckhardtcompression.com/products/hyper-compressors/">hyper compressors for LDPE and EVA, up to 3,500 bara</a>.</span></li>
+      <li id="src-8"><b>[8]</b><span>Turbomachinery Magazine, <a href="https://turbomachinerymag.com/view/compressor-performance-and-thermodynamic">impact of thermodynamic property accuracy on compressor performance (PTC 10, ISO 5389, Schultz)</a>.</span></li>
+      <li id="src-9"><b>[9]</b><span>M. Taher and F. Evans, International Journal of Turbomachinery, Propulsion and Power (2021), <a href="https://mdpi.com/2504-186X/6/2/15">centrifugal compressor polytropic performance and the history of the Schultz methods</a>.</span></li>
+      <li id="src-10"><b>[10]</b><span>ASME Turbo Expo paper 129055, <a href="https://asme-turboexpo.secure-platform.com/a/solicitations/223/sessiongallery/15718/application/129055">ASME PTC 10-2022: concise update overview</a>.</span></li>
+      <li id="src-11"><b>[11]</b><span>Technical Toolboxes, <a href="https://help.technicaltoolboxes.com/?p=13543">reciprocating compressor volumetric efficiency and horsepower equations</a>.</span></li>
+      <li id="src-12"><b>[12]</b><span>Detechtion, <a href="https://blog.detechtion.com/learningcenter/enalysis-tip-1.20-natural-gas-compression-basics-4-recip-compressor-capacity">natural gas compression basics: reciprocating compressor capacity</a>.</span></li>
+      <li id="src-13"><b>[13]</b><span>Pumps &amp; Systems, <a href="https://pumpsandsystems.com/various-loads-used-rate-reciprocating-compressors-part-two">various loads used to rate reciprocating compressors, part two (rod load reversal)</a>.</span></li>
+      <li id="src-14"><b>[14]</b><span>Hydrocarbon Processing (August 2023), M. Eshaghi and R. Perez, <a href="https://read.nxtbook.com/gulf_energy_information/hydrocarbon_processing/august_2023/vpt_eshaghi_contributing_auth.html">API 618 pulsation design approaches</a>.</span></li>
+      <li id="src-15"><b>[15]</b><span>Wood Vibration, Dynamics and Noise (CompressorTech2, 2008), <a href="https://vdn-es.woodplc.com/assets/pdfs/Technical_Articles/CT2-2008_API-618-Standard-5th-Ed-Part1-3.pdf">API 618 5th edition: selecting the design approach</a>.</span></li>
+      <li id="src-16"><b>[16]</b><span>Southwest Research Institute, <a href="https://www.swri.org/node/12816231">API 618 and API 688 compressor pulsation analysis</a>.</span></li>
+      <li id="src-17"><b>[17]</b><span>Using API 617 as a purchase specification for centrifugal compressors, <a href="https://kh.aquaenergyexpo.com/wp-content/uploads/2023/07/Using-API-617-As-A-Purchase-Specification-For-Centrifugal-Compressors.pdf">definitions, driver sizing and operating terms</a>.</span></li>
+      <li id="src-18"><b>[18]</b><span>Compressed Air Best Practices, <a href="https://www.airbestpractices.com/technology/air-compressors/centrifugal-air-compressor-basics-part-ii-understanding-basic-performance">centrifugal air compressor basics, part II: turndown, stonewall and rise to surge</a>.</span></li>
+      <li id="src-19"><b>[19]</b><span>John M. Campbell, Tip of the Month (November 2008), <a href="https://jmcampbell.com/tip-of-the-month/2008/11/effect-of-gas-molecular-weight-on-centrifugal-compressor-performance">effect of gas molecular weight on centrifugal compressor performance</a>.</span></li>
+      <li id="src-20"><b>[20]</b><span>Turbomachinery Magazine, <a href="https://www.turbomachinerymag.com/view/boosting-capacity-at-a-compression-plant">boosting capacity at a compression plant (lower molecular weight)</a>.</span></li>
+      <li id="src-21"><b>[21]</b><span>Pipeline &amp; Gas Journal (March 2012), <a href="https://pgjonline.com/magazine/2012/march-2012-vol-239-no-3/features/protecting-a-centrifugal-compressor-from-surge">protecting a centrifugal compressor from surge</a>.</span></li>
+      <li id="src-22"><b>[22]</b><span>Turbomachinery Magazine (July 2026), <a href="https://www.turbomachinerymag.com/view/myth-busters-you-cannot-avoid-compressor-reverse-rotation">myth busters: you cannot avoid compressor reverse rotation</a>.</span></li>
+      <li id="src-23"><b>[23]</b><span>Turbomachinery Magazine (2023), <a href="https://www.turbomachinerymag.com/view/how-ptc-10-has-evolved">how PTC 10 has evolved: Type 1 and Type 2 tests</a>.</span></li>
+      <li id="src-24"><b>[24]</b><span>Turbomachinery Magazine, <a href="https://www.turbomachinerymag.com/view/shop-test-compressors">shop test of compressors: similarity limits for Type 2 tests</a>.</span></li>
+      <li id="src-25"><b>[25]</b><span>rotatingmachinery.com, <a href="https://rotatingmachinery.com/wp-content/uploads/2023/07/Controlling-Centrifugal-Compressors.pdf">controlling centrifugal compressors, including API 617 7th edition test tolerances</a>.</span></li>
+      <li id="src-26"><b>[26]</b><span>John Crane, <a href="https://www.johncrane.com/en/resources/blog/why-api-692-specifies-the-use-of-seal-gas-boosters-as-standard">why API 692 specifies seal gas boosters, and the four parts of API 692</a>.</span></li>
+      <li id="src-27"><b>[27]</b><span>GlobalSpec, <a href="https://standards.globalspec.com/std/14496180/std-614">API Std 614, 6th edition (February 2022): scope</a>.</span></li>
+      <li id="src-28"><b>[28]</b><span>Skybear Standards, <a href="https://www.skybearstandards.com/documents/api-std-670-machinery-protection-systems-2">API Std 670, 6th edition (July 2025): scope</a>.</span></li>
+      <li id="src-29"><b>[29]</b><span>Meggitt, <a href="https://meggittsensing.com/energy/expert-articles/machinery-protection-systems-the-api-670-perspective/">machinery protection systems and SIL: the API 670 perspective (IEC 61508 and 61511)</a>.</span></li>
+      <li id="src-30"><b>[30]</b><span>Technical Safety BC, <a href="https://www.technicalsafetybc.ca/regulatory-resources/regulatory-notices/information-bulletin-air-receivers">information bulletin on air receivers: CRN and CSA B51 requirements</a>.</span></li>
+      <li id="src-31"><b>[31]</b><span>MyStandards, <a href="https://mystandards.biz/standard/apistd-617-ed-9-1.4.2022.html">API Std 617, 9th edition (April 2022): Parts 1 to 4</a>.</span></li>
+      <li id="src-32"><b>[32]</b><span>GlobalSpec, <a href="https://standards.globalspec.com/std/10041720/api-std-617">API Std 617 scope and document history</a>.</span></li>
+      <li id="src-33"><b>[33]</b><span>Accuris, <a href="https://store.accuristech.com/api/products/preview/2080531">API Std 672, 5th edition (August 2019, reaffirmed April 2024): preview</a>.</span></li>
+      <li id="src-34"><b>[34]</b><span>FS-Elliott, <a href="https://www.fs-elliott.com/blog/how-to-specify-a-centrifugal-compressor-for-reliability-and-lower-lifecycle-costs">how to specify a centrifugal compressor: API 672 versus API 617 for air service</a>.</span></li>
+      <li id="src-35"><b>[35]</b><span>Technormen, <a href="https://www.technormen.de/norm/apistd-618-1.5.2024.html">API Std 618, 6th edition (May 2024): scope</a>.</span></li>
+      <li id="src-36"><b>[36]</b><span>Standards Ireland shop, <a href="https://shop.standards.ie/en-ie/standards/iso-13631-2002-613478_saig_iso_iso_1407419">ISO 13631:2002 packaged reciprocating gas compressors: scope (supersedes API 11P)</a>.</span></li>
+      <li id="src-37"><b>[37]</b><span>MyStandards, <a href="https://www.mystandards.biz/standard/apistd-619_r2024-1.12.2010.html">API Std 619, 5th edition (2010, reaffirmed 2024): scope</a>.</span></li>
+      <li id="src-38"><b>[38]</b><span>Normservis, <a href="https://eshop.normservis.sk/norma/apistd-692-ed-1-1.6.2018.html">API Std 692, 1st edition (June 2018): scope</a>.</span></li>
+      <li id="src-39"><b>[39]</b><span>Hydrocarbon Engineering (June 2020), <a href="https://www.hydrocarbonengineering.com/gas-processing/08062020/api-publishes-7th-edition-of-api-standard-521/">API publishes the 7th edition of API Standard 521</a>.</span></li>
+      <li id="src-40"><b>[40]</b><span>BSI Knowledge, <a href="https://knowledge.bsigroup.com/products/performance-test-code-on-compressors-and-exhausters-1">ASME PTC 10-2022, published 24 August 2023</a>.</span></li>
+      <li id="src-41"><b>[41]</b><span>Standards New Zealand, <a href="https://www.standards.govt.nz/shop/ISO-53892005">ISO 5389:2005 turbocompressors, performance test code</a>.</span></li>
+      <li id="src-42"><b>[42]</b><span>SAI Global, <a href="https://infostore.saiglobal.com/en-au/standards/iso-1217-2009-602798_saig_iso_iso_1380556/">ISO 1217:2009 displacement compressors, acceptance tests</a>.</span></li>
+      <li id="src-43"><b>[43]</b><span>SAI Global, <a href="https://infostore.saiglobal.com/en-au/standards/api-617-2014-97044_saig_api_api_203369/">API 617 and the related ISO 10439-1:2015</a>.</span></li>
+      <li id="src-44"><b>[44]</b><span>Project Materials, <a href="https://blog.projectmaterials.com/oil-gas-equipment/compressors-types">compressor types for oil and gas, with applicable standards including NACE MR0175 / ISO 15156</a>.</span></li>
+      <li id="src-45"><b>[45]</b><span>IOGP, <a href="https://www.iogp.org/bookstore/product/s-612-air-compressors-api-672-v2-01/">JIP33 specification S-612, air compressors (API 672)</a>.</span></li>
+      <li id="src-46"><b>[46]</b><span>CCPS Process Safety Beacon (October 2018), <a href="https://www.aiche.org/resources/publications/cep/2018/october/process-safety-beacon-energy-hazardous-too">energy is hazardous, too</a>.</span></li>
+      <li id="src-47"><b>[47]</b><span>Chemical Processing (September 2019), <a href="https://www.chemicalprocessing.com/articles/2019/properly-protect-your-compressor">properly protect your compressor: entrained liquid</a>.</span></li>
+      <li id="src-48"><b>[48]</b><span>AMACS, <a href="https://amacs.com/wp-content/uploads/2012/09/Ask-AMACS-Compressor-Suction-Drums1.pdf">compressor suction drums and liquid carryover</a>.</span></li>
+      <li id="src-49"><b>[49]</b><span>Oil &amp; Gas Journal, <a href="https://www.ogj.com/general-interest/companies/article/17237380/method-improves-high-pressure-settle-out-calculations">method improves high-pressure settle-out calculations</a>.</span></li>
+      <li id="src-50"><b>[50]</b><span>AXA XL Property Risk Consulting, PRC.3.1.1, <a href="https://qac-cms.axaxl.com/-/media/axaxl/files/pdfs/prc-guidelines/prc-3/prc311preventionofexplosionandfireincompressedairvesselsandsystemsv1.pdf">prevention of explosion and fire in compressed air vessels and systems</a>.</span></li>
+      <li id="src-51"><b>[51]</b><span>CCPS Process Safety Beacon (November 2020), <a href="https://aiche.org/resources/publications/cep/2020/november/process-safety-beacon-not-all-vibrations-are-good-vibrations">not all vibrations are good vibrations</a>.</span></li>
+      <li id="src-52"><b>[52]</b><span>Cheresources forum, <a href="https://www.cheresources.com/invision/topic/15501-which-criteria-should-be-selected-between-50-and-690kpag100psig-in-api-521">API 521 depressuring criteria, quoting the 5th edition</a>.</span></li>
+      <li id="src-53"><b>[53]</b><span>Bryan Research &amp; Engineering, <a href="https://bre.com/Blog/Keeping-Things-Cool.aspx">keeping things cool: the basis of the 15-minute depressuring rule</a>.</span></li>
+      <li id="src-54"><b>[54]</b><span>Government of Western Australia, Petroleum Safety Significant Incident Report 01/2015, <a href="https://commerce.wa.gov.au/publications/petroleum-safety-significant-incident-report-no-012015-worker-seriously-injured">worker seriously injured by explosion of a condensate drain line on an air booster compressor</a>.</span></li>
+      <li id="src-55"><b>[55]</b><span>N. K. Daud et al., Journal of Physics: Conference Series 1349 (2019), <a href="https://discovery.ucl.ac.uk/10092772/1/Daud_2019_J._Phys.__Conf._Ser._1349_012010.pdf">power requirements for industrial compression strategies for CCS</a>.</span></li>
+      <li id="src-56"><b>[56]</b><span>Southwest Research Institute (2024), K. Brun and K. Wygant, <a href="https://www.swri.org/sites/default/files/documents/gems-2024-brun-wygant.pdf">CO₂ compression: integrally geared compressors and the hybrid compressor–pump</a>.</span></li>
+    </ol>
+    <div class="row" style="margin-top:24px">
+      <div class="main">
+        <p class="cap">Equations (1)–(10) are standard thermodynamics; equations (11)–(16) are the usual industry forms. The compressor map, curves and datasheet values on this page come from one illustrative model and are not any vendor's product. Real-gas checks in Examples 4 and 9 used the CoolProp property library (Span–Wagner equation for CO₂, Leachman equation for hydrogen). Typical ranges in Table 1 and Figure 3 are approximate screening values.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div>
+      <div class="foot-name">Chemical Process Engineering</div>
+      <p>Lessons, calculators and tools for chemical engineering students and engineers.</p>
+    </div>
+    <ul class="foot-links">
+      <li><a href="/calculators/">Calculators</a></li>
+      <li><a href="/lessons/">Lessons</a></li>
+      <li><a href="/data/">Data</a></li>
+      <li><a href="/analysis/">Analysis</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="https://github.com/alotfi73">GitHub</a></li>
+    </ul>
+    <p class="foot-note">Run by Alireza Lotfollahzade, EIT, in Metro Vancouver. Educational content: numbers are illustrative unless stated, and codes, standards and your company's specifications govern any real design.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var NS = 'http://www.w3.org/2000/svg';
+  var RU = 8.314462618; /* kJ/kmol·K */
+
+  /* ---------- helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    if (attrs) { for (var k in attrs) { if (Object.prototype.hasOwnProperty.call(attrs, k)) e.setAttribute(k, attrs[k]); } }
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function tx(parent, x, y, s, cls, anchor) {
+    var t = el('text', { x: (+x).toFixed(1), y: (+y).toFixed(1), 'class': cls || 'lab-s', 'text-anchor': anchor || 'start' }, parent);
+    t.textContent = s;
+    return t;
+  }
+  function fm(v, d) {
+    if (!isFinite(v)) return '–';
+    var s = Math.abs(v).toLocaleString('en-CA', { minimumFractionDigits: d, maximumFractionDigits: d });
+    return (v < 0 && Number(s.replace(/,/g, '')) !== 0 ? '−' : '') + s;
+  }
+  function niceTicks(max, target, min) {
+    min = min || 0;
+    var raw = (max - min) / target, p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p;
+    var step = (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p, t = [];
+    for (var v = Math.ceil(min / step - 1e-9) * step; v <= max + 1e-9; v += step) t.push(+v.toFixed(6));
+    return t;
+  }
+  function niceMax(v) {
+    var p = Math.pow(10, Math.floor(Math.log10(v))), m = v / p;
+    return (m <= 1 ? 1 : m <= 1.2 ? 1.2 : m <= 1.5 ? 1.5 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 3 ? 3 : m <= 4 ? 4 : m <= 5 ? 5 : m <= 6 ? 6 : m <= 8 ? 8 : 10) * p;
+  }
+  function widthOf(c) { return Math.max(300, Math.min(984, Math.floor(c.clientWidth || 900))); }
+  function makeSVG(c, W, H) {
+    c.innerHTML = '';
+    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, 'aria-hidden': 'true', focusable: 'false' });
+    c.appendChild(svg);
+    return svg;
+  }
+  var clipN = 0;
+  function frame(svg, o) {
+    var g0 = el('g', {}, svg);
+    var sx = function (v) { return o.l + (v - o.x0) / (o.x1 - o.x0) * (o.r - o.l); };
+    var sy = function (v) { return o.b - (v - o.y0) / (o.y1 - o.y0) * (o.b - o.t); };
+    (o.yt || []).forEach(function (v) {
+      el('line', { x1: o.l, x2: o.r, y1: sy(v), y2: sy(v), 'class': 'grid' }, g0);
+      tx(g0, o.l - 8, sy(v) + 4, fm(v, o.ydec || 0), 'tick', 'end');
+    });
+    (o.xt || []).forEach(function (v) {
+      el('line', { x1: sx(v), x2: sx(v), y1: o.b, y2: o.b + 4, 'class': 'axis' }, g0);
+      if (o.showX !== false) tx(g0, sx(v), o.b + 18, fm(v, o.xdec || 0), 'tick', 'middle');
+    });
+    el('line', { x1: o.l, x2: o.r, y1: o.b, y2: o.b, 'class': 'axis' }, g0);
+    if (o.xl) tx(g0, o.r, o.b + 38, o.xl, 'alab', 'end');
+    if (o.yl) tx(g0, o.l - (o.ylx || 40), o.t - 12, o.yl, 'alab', 'start');
+    var id = 'clp' + (++clipN);
+    var defs = el('defs', {}, svg);
+    var cp = el('clipPath', { id: id }, defs);
+    el('rect', { x: o.l, y: o.t - 2, width: o.r - o.l, height: o.b - o.t + 2 }, cp);
+    return { g: g0, sx: sx, sy: sy, clip: 'url(#' + id + ')', o: o };
+  }
+  function path(fr, pts, cls, parent, noclip) {
+    var d = '';
+    for (var i = 0; i < pts.length; i++) d += (i ? 'L' : 'M') + fr.sx(pts[i][0]).toFixed(1) + ' ' + fr.sy(pts[i][1]).toFixed(1);
+    var a = { d: d, 'class': cls };
+    if (!noclip) a['clip-path'] = fr.clip;
+    return el('path', a, parent);
+  }
+  function dot(parent, x, y, r, style) { var c = el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: r }, parent); if (style) c.setAttribute('style', style); return c; }
+  function callout(parent, x, y, n, px, py) {
+    var g0 = el('g', { 'class': 'callout' }, parent);
+    if (px !== undefined) el('line', { x1: px.toFixed(1), y1: py.toFixed(1), x2: x.toFixed(1), y2: y.toFixed(1), stroke: '#000', 'stroke-width': 0.75 }, g0);
+    el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: 9 }, g0);
+    tx(g0, x, y + 4, String(n), '', 'middle');
+    return g0;
+  }
+  function flash(tile) {
+    if (!tile || !tile.animate) return;
+    tile.animate([{ backgroundColor: '#a6d7f0' }, { backgroundColor: '#ffffff' }], { duration: 1500, easing: 'cubic-bezier(0,0,0.3,1)' });
+  }
+  function setTile(id, text, doFlash) {
+    var t = $(id); if (!t) return;
+    var v = t.querySelector('.v');
+    if (v.textContent !== text) { v.textContent = text; if (doFlash) flash(t); }
+  }
+  function parseNum(s) {
+    s = String(s == null ? '' : s).replace(/\s/g, '').replace(/−/g, '-').replace(/,(?=\d{3}(\D|$))/g, '').replace(',', '.');
+    if (s === '' || s === '-' || s === '.') return NaN;
+    return Number(s);
+  }
+  function copyText(text, note, host) {
+    var done = function () { note.textContent = 'Copied to the clipboard.'; setTimeout(function () { note.textContent = ''; }, 2500); };
+    var fail = function () {
+      note.textContent = 'Copying is blocked here. Select the text below instead.';
+      var ta = host.querySelector('textarea.copy-fallback');
+      if (!ta) { ta = document.createElement('textarea'); ta.className = 'copy-fallback'; ta.readOnly = true; ta.setAttribute('aria-label', 'Text to copy'); host.appendChild(ta); }
+      ta.value = text; ta.focus(); ta.select();
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fail);
+      else fail();
+    } catch (e) { fail(); }
+  }
+  function pressSeg(group, btn) {
+    Array.prototype.forEach.call(group.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+  }
+
+  /* ---------- illustrative centrifugal compressor ---------- */
+  var QD = 6000, HD = 60, N0 = 10000, P1 = 20, T1 = 308.15, ZC = 0.96, KC = 1.30, DP0 = 5.6;
+  var QS = 0.65, QSCL = 0.715, QCH = 1.35, QMAX = 1.40, MECH = 1.02;
+  function fq(q) { return 1.0845 + 0.0055 * q * q - 0.09 * Math.pow(q, 6); }
+  function etaq(q) { var d = q - 1, e = 0.80 - 0.30 * d * d; if (q > 1.15) { var x = q - 1.15; e -= 1.2 * x * x; } return e; }
+  function zrtm(M) { return ZC * RU / M * T1; }
+  function mexp(ep) { return (KC - 1) / (KC * ep); }
+  function hReq(r, M, ep) { var m = mexp(ep); return zrtm(M) / m * (Math.pow(r, m) - 1); }
+  function rFromH(H, M, ep) { var m = mexp(ep); return Math.pow(1 + H * m / zrtm(M), 1 / m); }
+  function compH(Q, s) { return HD * s * s * fq(Q / (QD * s)); }
+  function rho1(M) { return P1 * 1e5 * M / (ZC * RU * 1000 * T1); }
+  function p2sys(Q, M, Pb) { var x = Q / QD; return Pb + DP0 * x * x * (M / 20); }
+  function clampq(q) { return Math.max(0.3, Math.min(QMAX, q)); }
+
+  function opPoint(s, M, Pb) {
+    var lo = 0.30 * QD * s, hi = QMAX * QD * s, i;
+    var g = function (Q) { var q = Q / (QD * s); return compH(Q, s) - hReq(p2sys(Q, M, Pb) / P1, M, etaq(q)); };
+    var res = { s: s, M: M, Pb: Pb, mode: 'int', recycle: false };
+    if (g(lo) < 0) res.mode = 'noflow';
+    else if (g(hi) > 0) res.mode = 'choke';
+    else {
+      for (i = 0; i < 60; i++) { var mid = (lo + hi) / 2; if (g(mid) > 0) lo = mid; else hi = mid; }
+      res.Qi = (lo + hi) / 2; res.qi = res.Qi / (QD * s); res.Hi = compH(res.Qi, s);
+    }
+    var qc;
+    if (res.mode === 'noflow' || (res.mode === 'int' && res.qi < QSCL)) { res.recycle = true; qc = QSCL; }
+    else qc = res.mode === 'choke' ? QMAX : res.qi;
+    var Qc = qc * QD * s, Hc = compH(Qc, s), ep = etaq(qc), r = rFromH(Hc, M, ep);
+    res.qc = qc; res.Qc = Qc; res.Hc = Hc; res.ep = ep; res.r = r; res.P2 = P1 * r;
+    res.Qp = Qc;
+    if (res.recycle) {
+      var d = res.P2 - Pb;
+      res.Qp = d > 0 ? Math.min(Qc, QD * Math.sqrt(d / (DP0 * M / 20))) : 0;
+    }
+    res.Qrec = Qc - res.Qp;
+    var md = rho1(M) * Qc / 3600;
+    res.Psh = md * Hc / ep * MECH;
+    res.SM = qc / QS - 1;
+    res.T2 = T1 * Math.pow(r, mexp(ep)) - 273.15;
+    return res;
+  }
+
+  /* ---------- Figure 1: compressor map ---------- */
+  var m1 = { s: 1, M: 20, Pb: 26 };
+  var M1PRE = { design: [100, 20, 26], light: [100, 17, 26], slow: [80, 20, 26], back: [100, 20, 29.5] };
+
+  function m1Status(o) {
+    var sp = fm(o.s * 100, 0) + ' %';
+    if (o.mode === 'noflow') return ['err', 'No forward flow', 'At ' + sp + ' speed the compressor cannot reach the ' + fm(o.Pb, 1) + ' bara the process holds even at zero flow. The anti-surge valve recycles all ' + fm(o.Qc, 0) + ' m³/h to keep the machine out of surge.'];
+    if (o.recycle) return ['warn', 'Recycle valve open', (o.qi < QS ? 'On its own the process would push the machine past the surge line. ' : 'On its own the process would put the machine only ' + fm(o.qi / QS * 100 - 100, 0) + ' % from surge, inside the control margin. ') + 'The controller holds the compressor on the control line and recycles ' + fm(o.Qrec, 0) + ' m³/h, ' + fm(o.Qrec / o.Qc * 100, 0) + ' % of its flow; the process receives ' + fm(o.Qp, 0) + ' m³/h.'];
+    if (o.mode === 'choke' || o.qc > 1.3) return ['err', 'Stonewall', 'The operating point is at the end of the speed line. Head and efficiency collapse and the machine cannot pass more gas.'];
+    if (o.qc > 1.2) return ['warn', 'Near stonewall', 'The flow is ' + fm(o.qc * 100, 0) + ' % of this speed line\'s rated flow. Head and efficiency are falling fast (η_p ' + fm(o.ep * 100, 1) + ' %).'];
+    if (o.SM < 0.2) return ['warn', 'Stable, close to recycle', 'Surge margin ' + fm(o.SM * 100, 0) + ' % at this speed; the control line sits at 10 %. A small upset will open the recycle valve.'];
+    return ['ok', 'Stable', 'Surge margin ' + fm(o.SM * 100, 0) + ' % at this speed, recycle valve closed. Polytropic efficiency ' + fm(o.ep * 100, 1) + ' %, discharge ' + fm(o.T2, 0) + ' °C.'];
+  }
+  function updateM1(doFlash) {
+    var o = opPoint(m1.s, m1.M, m1.Pb);
+    $('m1-speed-v').textContent = fm(m1.s * 100, 0) + ' % · ' + fm(N0 * m1.s, 0) + ' rpm';
+    $('m1-mw-v').textContent = fm(m1.M, 1) + ' kg/kmol';
+    $('m1-pb-v').textContent = fm(m1.Pb, 1) + ' bara';
+    setTile('t1-flow', fm(o.Qc, 0), doFlash);
+    setTile('t1-head', fm(o.Hc, 1), doFlash);
+    setTile('t1-p2', fm(o.P2, 1), doFlash);
+    setTile('t1-pow', fm(o.Psh, 0), doFlash);
+    var st = m1Status(o);
+    $('m1-status').innerHTML = '<span class="tag ' + st[0] + '">' + st[1] + '</span><span>' + st[2] + '</span>';
+    drawM1(o);
+  }
+  function surgeCoef(q) { return HD * fq(q) / Math.pow(q * QD, 2); }
+  function drawM1(o) {
+    var c = $('m1-chart'); if (!c) return;
+    var W = widthOf(c), small = W < 560, Hh = small ? 340 : 420;
+    var svg = makeSVG(c, W, Hh);
+    var fr = frame(svg, { x0: 0, x1: 9000, y0: 0, y1: 80, l: 46, r: W - 14, t: 30, b: Hh - 46, xt: niceTicks(9000, small ? 3 : 6), yt: [0, 20, 40, 60, 80], xl: 'Actual inlet flow, m³/h', yl: 'Polytropic head, kJ/kg', ylx: 40 });
+    var g = el('g', {}, svg);
+    /* surge region */
+    var cs = surgeCoef(QS), qTop = Math.sqrt(80 / cs), reg = [[0, 0]], i;
+    for (i = 1; i <= 30; i++) { var qq = qTop * i / 30; reg.push([qq, cs * qq * qq]); }
+    reg.push([0, 80]);
+    var d = ''; reg.forEach(function (p, j) { d += (j ? 'L' : 'M') + fr.sx(p[0]).toFixed(1) + ' ' + fr.sy(p[1]).toFixed(1); });
+    el('path', { d: d + 'Z', 'class': 'bad', 'clip-path': fr.clip }, g);
+    tx(g, fr.sx(800), fr.sy(70), 'Surge', 'lab-s nohalo', 'start');
+    /* reference speed lines */
+    [0.7, 0.8, 0.9, 1.0, 1.05].forEach(function (s) {
+      var pts = [];
+      for (var k = 0; k <= 50; k++) { var q = QS + (QCH - QS) * k / 50; pts.push([q * QD * s, HD * s * s * fq(q)]); }
+      path(fr, pts, 'lm', g);
+      var ql = 1.2, xL = ql * QD * s, yL = HD * s * s * fq(ql);
+      if (!small && !(Math.abs(s - o.s) < 0.006)) tx(g, fr.sx(xL) + 4, fr.sy(yL) - 6, fm(s * 100, 0) + ' %', 'lab-s', 'start');
+    });
+    /* surge, control and stonewall lines */
+    var line = function (q, cls) {
+      var cq = surgeCoef(q), pts = [];
+      for (var k = 0; k <= 40; k++) { var s = 0.62 + (1.08 - 0.62) * k / 40, Q = q * QD * s; pts.push([Q, cq * Q * Q]); }
+      return path(fr, pts, cls, g);
+    };
+    line(QS, 'lk'); line(QSCL, 'lk dash'); line(QCH, 'lm dash');
+    var sTop = 1.07;
+    tx(g, fr.sx(QS * QD * sTop) - 6, fr.sy(HD * sTop * sTop * fq(QS)) - 8, small ? 'Surge' : 'Surge limit', 'lab tk', 'end');
+    tx(g, fr.sx(QSCL * QD * sTop) + 6, fr.sy(HD * sTop * sTop * fq(QSCL)) - 8, small ? 'Control' : 'Control line', 'lab tk', 'start');
+    var sCh = 1.04;
+    tx(g, fr.sx(QCH * QD * sCh) - 4, fr.sy(HD * sCh * sCh * fq(QCH)) + 18, 'Stonewall', 'lab-s', 'end');
+    /* current speed line: unstable part dashed, stable part solid */
+    var s = o.s, un = [], stl = [];
+    for (i = 0; i <= 20; i++) { var q1 = 0.40 + (QS - 0.40) * i / 20; un.push([q1 * QD * s, HD * s * s * fq(q1)]); }
+    for (i = 0; i <= 60; i++) { var q2 = QS + (QCH - QS) * i / 60; stl.push([q2 * QD * s, HD * s * s * fq(q2)]); }
+    path(fr, un, 'l1 dot2', g);
+    path(fr, stl, 'l1', g);
+    if (small) { var lq2 = 1.3; tx(g, fr.sx(lq2 * QD * s) - 6, fr.sy(HD * s * s * fq(lq2)) + 4, fm(s * 100, 0) + ' %', 'lab t1', 'end'); }
+    else { var lq = 1.2; tx(g, fr.sx(lq * QD * s) + 6, fr.sy(HD * s * s * fq(lq)) - 6, fm(s * 100, 0) + ' % speed', 'lab t1', 'start'); }
+    /* process curve */
+    var pc = [], xEnd = 9000;
+    for (i = 0; i <= 90; i++) {
+      var Q = xEnd * i / 90, qx = clampq(Q / (QD * s)), Hq = hReq(p2sys(Q, m1.M, m1.Pb) / P1, m1.M, etaq(qx));
+      pc.push([Q, Hq]);
+    }
+    path(fr, pc, 'l2', g);
+    var lastIn = null;
+    for (i = pc.length - 1; i >= 0; i--) { if (pc[i][1] <= 78) { lastIn = pc[i]; break; } }
+    if (lastIn) tx(g, Math.min(fr.sx(lastIn[0]) - 4, fr.o.r - 2), fr.sy(lastIn[1]) - 8, 'Process', 'lab t2', 'end');
+    /* rated point */
+    if (!(Math.abs(o.Qc - 6000) < 250 && Math.abs(o.Hc - 60) < 3)) {
+      dot(g, fr.sx(6000), fr.sy(60), 4, 'fill:#fff;stroke:#000;stroke-width:1.25');
+      tx(g, fr.sx(6000) + 7, fr.sy(60) + 16, 'Rated', 'lab-s', 'start');
+    }
+    /* recycle link */
+    if (o.recycle && o.mode === 'int') {
+      el('line', { x1: fr.sx(o.Qi).toFixed(1), y1: fr.sy(o.Hi).toFixed(1), x2: fr.sx(o.Qc).toFixed(1), y2: fr.sy(o.Hc).toFixed(1), stroke: '#ab6528', 'stroke-width': 1.5, 'stroke-dasharray': '4 3' }, g);
+      dot(g, fr.sx(o.Qi), fr.sy(o.Hi), 5, 'fill:#fff;stroke:#ab6528;stroke-width:1.75');
+      var lft = fr.sx(o.Qi) < 300;
+      tx(g, fr.sx(o.Qi) + (lft ? 8 : -8), fr.sy(o.Hi) + (lft ? 22 : -10), small ? 'Process alone' : 'Where the process alone would put it', 'lab t2', lft ? 'start' : 'end');
+    }
+    /* operating point */
+    dot(g, fr.sx(o.Qc), fr.sy(o.Hc), 6.5, 'fill:#12647e;stroke:#fff;stroke-width:2');
+    if (!small) tx(g, fr.sx(o.Qc) + 10, fr.sy(o.Hc) + 18, 'Operating point', 'lab tk', 'start');
+  }
+  function m1CSV() {
+    var rows = ['series,actual_inlet_flow_m3h,polytropic_head_kJkg'];
+    [0.7, 0.8, 0.9, 1.0, 1.05, m1.s].forEach(function (s, j) {
+      var name = (j === 5 ? 'current speed ' : 'speed ') + (s * 100).toFixed(0) + '%';
+      for (var k = 0; k <= 20; k++) { var q = QS + (QCH - QS) * k / 20; rows.push(name + ',' + (q * QD * s).toFixed(0) + ',' + (HD * s * s * fq(q)).toFixed(2)); }
+    });
+    [['surge limit', QS], ['surge control line', QSCL], ['stonewall', QCH]].forEach(function (L) {
+      var cq = surgeCoef(L[1]);
+      for (var k = 0; k <= 10; k++) { var s = 0.65 + 0.4 * k / 10, Q = L[1] * QD * s; rows.push(L[0] + ',' + Q.toFixed(0) + ',' + (cq * Q * Q).toFixed(2)); }
+    });
+    for (var i = 0; i <= 18; i++) { var Q = 500 * i, qx = clampq(Q / (QD * m1.s)); rows.push('process (M ' + m1.M + ', ' + m1.Pb + ' bara),' + Q + ',' + hReq(p2sys(Q, m1.M, m1.Pb) / P1, m1.M, etaq(qx)).toFixed(2)); }
+    return rows.join('\n');
+  }
+
+  /* ---------- Figure 3: application envelopes ---------- */
+  function drawF3() {
+    var c = $('f3-chart'); if (!c) return;
+    var W = widthOf(c), small = W < 560, Hh = small ? 360 : 440;
+    var svg = makeSVG(c, W, Hh);
+    var L = 52, R = W - 14, T = 24, B = Hh - 46, lx1 = Math.log10(2e6), ly1 = Math.log10(5000);
+    var sx = function (v) { return L + Math.log10(v) / lx1 * (R - L); };
+    var sy = function (v) { return B - Math.log10(v) / ly1 * (B - T); };
+    var g = el('g', {}, svg);
+    [1, 10, 100, 1000].forEach(function (v) {
+      el('line', { x1: L, x2: R, y1: sy(v), y2: sy(v), 'class': 'grid' }, g);
+      tx(g, L - 8, sy(v) + 4, fm(v, 0), 'tick', 'end');
+    });
+    var xs = [1, 10, 100, 1000, 1e4, 1e5, 1e6];
+    xs.forEach(function (v, j) {
+      el('line', { x1: sx(v), x2: sx(v), y1: T, y2: B, 'class': 'grid' }, g);
+      if (!small || j % 2 === 0) tx(g, sx(v), B + 18, fm(v, 0), 'tick', j === xs.length - 1 ? 'end' : 'middle');
+    });
+    el('line', { x1: L, x2: R, y1: B, y2: B, 'class': 'axis' }, g);
+    tx(g, R, B + 38, 'Actual inlet flow, m³/h (log scale)', 'alab', 'end');
+    tx(g, L - 44, T - 10, 'Discharge pressure, bara (log scale)', 'alab', 'start');
+    var regions = [
+      { n: 'Reciprocating', col: '#ab6528', pts: [[1, 1], [30000, 1], [30000, 40], [3000, 800], [1, 800]], lab: [1.6, 300], anchor: 'start' },
+      { n: 'Hyper (LDPE)', col: '#ab6528', dash: true, pts: [[30, 1000], [600, 1000], [600, 3500], [30, 3500]], lab: [36, 1800], anchor: 'start' },
+      { n: 'Screw', col: '#4676bf', pts: [[50, 1], [60000, 1], [60000, 15], [15000, 40], [50, 40]], lab: [70, 24], anchor: 'start' },
+      { n: 'Centrifugal', col: '#12647e', pts: [[200, 1.2], [300000, 1.2], [300000, 40], [50000, 250], [8000, 700], [1000, 700], [200, 250]], lab: [20000, 110], anchor: 'middle' },
+      { n: 'Axial', col: '#2a8285', pts: [[50000, 1.2], [1500000, 1.2], [1500000, 15], [50000, 20]], lab: [600000, 6], anchor: 'middle' }
+    ];
+    regions.forEach(function (rg) {
+      var d = '';
+      rg.pts.forEach(function (p, j) { d += (j ? 'L' : 'M') + sx(p[0]).toFixed(1) + ' ' + sy(p[1]).toFixed(1); });
+      el('path', { d: d + 'Z', fill: rg.col, 'fill-opacity': 0.09, stroke: rg.col, 'stroke-width': 1.75, 'stroke-dasharray': rg.dash ? '5 4' : 'none' }, g);
+    });
+    regions.forEach(function (rg) {
+      var t = tx(g, sx(rg.lab[0]), sy(rg.lab[1]), rg.n, 'lab', rg.anchor);
+      t.setAttribute('style', 'fill:' + rg.col);
+    });
+  }
+
+  /* ---------- Calculator and Figure 4 ---------- */
+  var CPRE = {
+    air: { mw: 28.96, k: 1.40, z: 1.00, m: 3600, p1: 1.0, t1: 25, p2: 8.0, eff: 80, basis: 'p', n: 3 },
+    booster: { mw: 20, k: 1.30, z: 0.96, m: 97580, p1: 20, t1: 35, p2: 31.6, eff: 80, basis: 'p', n: 1 },
+    h2: { mw: 2.016, k: 1.41, z: 1.02, m: 1500, p1: 20, t1: 40, p2: 160, eff: 85, basis: 's', n: 3 },
+    co2: { mw: 44.01, k: 1.29, z: 0.97, m: 100000, p1: 1.2, t1: 40, p2: 30, eff: 80, basis: 'p', n: 4 }
+  };
+  var basis = 'p', lastCalc = null;
+  function cval(id) { return parseNum($(id).value); }
+  function stageCalc(inp, N) {
+    var T1k = inp.t1 + 273.15, r = inp.p2 / inp.p1, rs = Math.pow(r, 1 / N);
+    var zr = inp.z * RU / inp.mw * T1k, e = (inp.k - 1) / inp.k, eff = inp.eff / 100, h1, T2, w1, m, ealt;
+    if (inp.basis === 'p') {
+      m = e / eff; h1 = zr / m * (Math.pow(rs, m) - 1); T2 = T1k * Math.pow(rs, m); w1 = h1 / eff;
+      ealt = (Math.pow(rs, e) - 1) / (Math.pow(rs, m) - 1);
+    } else {
+      h1 = zr / e * (Math.pow(rs, e) - 1); T2 = T1k * (1 + (Math.pow(rs, e) - 1) / eff); w1 = h1 / eff;
+      m = Math.log(T2 / T1k) / Math.log(rs); ealt = e / m;
+    }
+    var md = inp.m / 3600, gas = md * w1 * N;
+    return { N: N, r: r, rs: rs, zr: zr, e: e, m: m, h1: h1, H: h1 * N, T2: T2 - 273.15, gas: gas, shaft: gas * MECH, md: md, ealt: ealt,
+      iso: md * zr * Math.log(r), Q1: md * inp.z * RU * 1000 * T1k / (inp.p1 * 1e5 * inp.mw) * 3600, T1k: T1k };
+  }
+  function readCalc() {
+    var inp = { mw: cval('c-mw'), k: cval('c-k'), z: cval('c-z'), m: cval('c-m'), p1: cval('c-p1'), t1: cval('c-t1'), p2: cval('c-p2'), eff: cval('c-eff'), n: cval('c-n'), basis: basis };
+    var err = null;
+    if (!(inp.mw > 0.5 && inp.mw < 300)) err = 'Enter a molar mass between 1 and 300 kg/kmol.';
+    else if (!(inp.k > 1.01 && inp.k < 1.7)) err = 'Enter k between 1.01 and 1.70.';
+    else if (!(inp.z > 0.2 && inp.z < 1.5)) err = 'Enter an average Z between 0.2 and 1.5.';
+    else if (!(inp.m > 0)) err = 'Enter a positive mass flow.';
+    else if (!(inp.p1 > 0)) err = 'Enter a positive suction pressure in bara.';
+    else if (!(inp.t1 > -150 && inp.t1 < 400)) err = 'Enter a suction temperature between −150 and 400 °C.';
+    else if (!(inp.p2 > inp.p1)) err = 'The discharge pressure must be higher than the suction pressure.';
+    else if (!(inp.eff >= 30 && inp.eff <= 100)) err = 'Enter an efficiency between 30 and 100 %.';
+    else if (!(inp.n >= 1 && inp.n <= 6 && Math.round(inp.n) === inp.n)) err = 'Enter a whole number of stages from 1 to 6.';
+    return { inp: inp, err: err };
+  }
+  function updateCalc(doFlash) {
+    var rd = readCalc(), st = $('c-status');
+    if (rd.err) { st.innerHTML = '<span class="tag err">Check the inputs</span><span>' + rd.err + '</span>'; return; }
+    var inp = rd.inp, R = stageCalc(inp, inp.n), lim = inp.mw <= 12 ? 135 : 150;
+    setTile('c-t-r', fm(R.rs, 2), doFlash);
+    setTile('c-t-t2', fm(R.T2, 1), doFlash);
+    setTile('c-t-h', fm(R.H, 1), doFlash);
+    setTile('c-t-p', R.shaft >= 1000 ? fm(R.shaft, 0) : fm(R.shaft, 1), doFlash);
+    $('c-t-h').querySelector('.k').textContent = (inp.basis === 'p' ? 'Polytropic' : 'Isentropic') + ' head, all stages';
+    var tag, txt;
+    if (R.T2 > lim) { tag = '<span class="tag err">Above the limit</span>'; txt = 'Each stage discharges at ' + fm(R.T2, 0) + ' °C, above the ' + lim + ' °C API 618 limit for a reciprocating cylinder on this gas. Add a stage or lower the ratio.'; }
+    else if (R.T2 > lim - 15) { tag = '<span class="tag warn">Close to the limit</span>'; txt = 'Each stage discharges at ' + fm(R.T2, 0) + ' °C, within 15 K of the ' + lim + ' °C limit. Real machines run hotter than this estimate.'; }
+    else { tag = '<span class="tag ok">Within the limit</span>'; txt = 'Each stage discharges at ' + fm(R.T2, 0) + ' °C; the API 618 limit for a reciprocating cylinder on this gas is ' + lim + ' °C.'; }
+    st.innerHTML = tag + '<span>' + txt + ' Actual inlet flow to the first stage: ' + fm(R.Q1, R.Q1 < 100 ? 1 : 0) + ' m³/h.</span>';
+    var ps = [], p = inp.p1;
+    for (var i = 0; i <= inp.n; i++) { ps.push(fm(p, p < 10 ? 2 : 1)); p *= R.rs; }
+    $('c-stages').textContent = 'Stage pressures, bara: ' + ps.join(' → ') + '. Isothermal minimum ' + fm(R.iso, R.iso < 100 ? 1 : 0) + ' kW.';
+    renderWorking(inp, R);
+    lastCalc = { inp: inp, R: R, lim: lim };
+    drawF4();
+  }
+  function renderWorking(inp, R) {
+    var w = $('c-work'), poly = inp.basis === 'p', lines = [];
+    var eff = inp.eff / 100;
+    lines.push('r = P₂/P₁ = ' + fm(inp.p2, 2) + '/' + fm(inp.p1, 2) + ' = ' + fm(R.r, 3) + ';  per stage r = ' + fm(R.r, 3) + '^(1/' + inp.n + ') = ' + fm(R.rs, 3));
+    lines.push('Z R T₁/M = ' + fm(inp.z, 3) + ' × 8.314/' + fm(inp.mw, 3) + ' × ' + fm(R.T1k, 2) + ' = ' + fm(R.zr, 2) + ' kJ/kg');
+    if (poly) {
+      lines.push('(n−1)/n = (k−1)/(k η_p) = ' + fm(inp.k - 1, 2) + '/(' + fm(inp.k, 2) + ' × ' + fm(eff, 3) + ') = ' + fm(R.m, 4));
+      lines.push('H_p per stage = ' + fm(R.zr, 2) + '/' + fm(R.m, 4) + ' × (' + fm(R.rs, 3) + '^' + fm(R.m, 4) + ' − 1) = ' + fm(R.h1, 2) + ' kJ/kg;  total ' + fm(R.H, 1) + ' kJ/kg');
+      lines.push('T₂ = ' + fm(R.T1k, 2) + ' × ' + fm(R.rs, 3) + '^' + fm(R.m, 4) + ' = ' + fm(R.T2 + 273.15, 1) + ' K = ' + fm(R.T2, 1) + ' °C');
+    } else {
+      lines.push('(k−1)/k = ' + fm(R.e, 4));
+      lines.push('H_s per stage = ' + fm(R.zr, 2) + '/' + fm(R.e, 4) + ' × (' + fm(R.rs, 3) + '^' + fm(R.e, 4) + ' − 1) = ' + fm(R.h1, 2) + ' kJ/kg;  total ' + fm(R.H, 1) + ' kJ/kg');
+      lines.push('T₂ = ' + fm(R.T1k, 2) + ' × [1 + (' + fm(R.rs, 3) + '^' + fm(R.e, 4) + ' − 1)/' + fm(eff, 3) + '] = ' + fm(R.T2 + 273.15, 1) + ' K = ' + fm(R.T2, 1) + ' °C');
+    }
+    lines.push('ṁ = ' + fm(inp.m, 0) + '/3,600 = ' + fm(R.md, 4) + ' kg/s;  P_gas = ṁ H/η = ' + fm(R.md, 4) + ' × ' + fm(R.H, 1) + '/' + fm(eff, 3) + ' = ' + fm(R.gas, 1) + ' kW');
+    lines.push('P_shaft = ' + fm(R.gas, 1) + ' × 1.02 = ' + fm(R.shaft, 1) + ' kW;  isothermal minimum = ṁ (Z R T₁/M) ln r = ' + fm(R.iso, 1) + ' kW');
+    lines.push(poly ? 'Equivalent isentropic efficiency per stage, equation (9) = ' + fm(R.ealt * 100, 1) + ' %' : 'Equivalent polytropic efficiency per stage = (k−1)/k ÷ [ln(T₂/T₁)/ln r] = ' + fm(R.ealt * 100, 1) + ' %');
+    w.innerHTML = '';
+    lines.forEach(function (s) { var li = document.createElement('li'); li.textContent = s; w.appendChild(li); });
+  }
+  function bars(c, vals, sel, opts) {
+    var W = widthOf(c), Hh = 260, svg = makeSVG(c, W, Hh);
+    var ymax = niceMax(Math.max.apply(null, vals.concat([opts.line || 0])) * 1.12);
+    var fr = frame(svg, { x0: 0.4, x1: 6.6, y0: 0, y1: ymax, l: 50, r: W - 10, t: 18, b: Hh - 44, yt: niceTicks(ymax, 4), xt: [], xl: 'Number of stages', yl: '', ylx: 40 });
+    var g = el('g', {}, svg), bw = Math.min(46, (fr.sx(2) - fr.sx(1)) * 0.6);
+    vals.forEach(function (v, j) {
+      var n = j + 1, x = fr.sx(n), y = fr.sy(Math.max(0, v));
+      el('rect', { x: (x - bw / 2).toFixed(1), y: y.toFixed(1), width: bw.toFixed(1), height: (fr.sy(0) - y).toFixed(1), fill: n === sel ? '#12647e' : '#b1b5b9' }, g);
+      tx(g, x, y - 6, opts.fmt(v), n === sel ? 'lab tk' : 'lab-s', 'middle');
+      tx(g, x, fr.o.b + 18, String(n), 'tick', 'middle');
+    });
+    if (opts.line) {
+      el('line', { x1: fr.o.l, x2: fr.o.r, y1: fr.sy(opts.line).toFixed(1), y2: fr.sy(opts.line).toFixed(1), 'class': 'lk dash' }, g);
+      tx(g, fr.o.r - 2, fr.sy(opts.line) - 6, opts.lineLab, 'lab tk', 'end');
+    }
+  }
+  function drawF4() {
+    if (!lastCalc) return;
+    var pw = [], tt = [];
+    for (var n = 1; n <= 6; n++) { var R = stageCalc(lastCalc.inp, n); pw.push(R.shaft); tt.push(R.T2); }
+    var pf = function (v) { return v >= 1000 ? fm(v / 1000, 2) + ' MW' : fm(v, 0); };
+    bars($('f4a'), pw, lastCalc.inp.n, { fmt: pf, line: lastCalc.R.iso, lineLab: 'Isothermal minimum' });
+    bars($('f4b'), tt, lastCalc.inp.n, { fmt: function (v) { return fm(v, 0); }, line: lastCalc.lim, lineLab: 'Limit ' + lastCalc.lim + ' °C' });
+  }
+  function setCalc(p) {
+    $('c-mw').value = String(p.mw); $('c-k').value = p.k.toFixed(2); $('c-z').value = p.z.toFixed(2);
+    $('c-m').value = fm(p.m, 0); $('c-p1').value = String(p.p1); $('c-t1').value = String(p.t1);
+    $('c-p2').value = String(p.p2); $('c-eff').value = String(p.eff); $('c-n').value = String(p.n);
+    basis = p.basis;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-basis]'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-basis') === basis ? 'true' : 'false'); });
+  }
+
+  /* ---------- Figure 5: P–V diagram ---------- */
+  var pv = { c: 0.15, r: 3.0, k: 1.27 };
+  function updatePV(doFlash) {
+    var c = pv.c, r = pv.r, k = pv.k;
+    $('pv-c-v').textContent = fm(c * 100, 0) + ' %';
+    $('pv-r-v').textContent = fm(r, 1);
+    var veI = Math.max(0, 1 - c * (Math.pow(r, 1 / k) - 1)) * 100;
+    var ve2 = Math.max(0, 100 - r - c * 100 * (Math.pow(r, 1 / k) - 1));
+    setTile('pv-t-ve', fm(veI, 1), doFlash);
+    setTile('pv-t-ve2', fm(ve2, 1), doFlash);
+    setTile('pv-t-t2', fm(313.15 * Math.pow(r, (k - 1) / k) - 273.15, 0), doFlash);
+    setTile('pv-t-rmax', fm(Math.pow(1 + 1 / c, k), 1), doFlash);
+    drawPV();
+  }
+  function drawPV() {
+    var cE = $('pv-chart'); if (!cE) return;
+    var W = widthOf(cE), small = W < 560, Hh = small ? 320 : 380, svg = makeSVG(cE, W, Hh);
+    var c = pv.c, r = pv.r, k = pv.k;
+    var fr = frame(svg, { x0: 0, x1: 1.45, y0: 0, y1: 7, l: 46, r: W - 14, t: 26, b: Hh - 46, xt: [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4], xdec: 1, yt: [0, 1, 2, 3, 4, 5, 6, 7], xl: 'Cylinder volume, fraction of swept volume', yl: 'Pressure ÷ suction pressure', ylx: 40 });
+    var g = el('g', {}, svg), V1 = 1 + c, V2 = V1 * Math.pow(1 / r, 1 / k), V3 = c, V4 = c * Math.pow(r, 1 / k), i;
+    el('line', { x1: fr.sx(c), x2: fr.sx(c), y1: fr.o.t, y2: fr.o.b, 'class': 'lm dot2' }, g);
+    tx(g, fr.sx(c) + 4, fr.o.t + 12, 'Clearance', 'lab-s', 'start');
+    if (V4 >= V1) {
+      var pts = [];
+      for (i = 0; i <= 40; i++) { var v = V1 - (V1 - c) * i / 40; pts.push([v, Math.pow(V1 / v, k)]); }
+      path(fr, pts, 'l2', g);
+      tx(g, fr.sx(0.75), fr.sy(Math.pow(V1 / 0.75, k)) - 12, 'Valves never open: no delivery', 'lab t2', 'start');
+      return;
+    }
+    var comp = [], reexp = [];
+    for (i = 0; i <= 40; i++) { var va = V1 - (V1 - V2) * i / 40; comp.push([va, Math.pow(V1 / va, k)]); }
+    for (i = 0; i <= 40; i++) { var vb = V3 + (V4 - V3) * i / 40; reexp.push([vb, r * Math.pow(V3 / vb, k)]); }
+    var cyc = comp.concat([[V3, r]]).concat(reexp).concat([[V1, 1]]);
+    var d = ''; cyc.forEach(function (p, j) { d += (j ? 'L' : 'M') + fr.sx(p[0]).toFixed(1) + ' ' + fr.sy(p[1]).toFixed(1); });
+    el('path', { d: d + 'Z', 'class': 'band', 'clip-path': fr.clip }, g);
+    path(fr, comp, 'l1', g);
+    path(fr, [[V2, r], [V3, r]], 'l1', g);
+    path(fr, reexp, 'l2', g);
+    path(fr, [[V4, 1], [V1, 1]], 'l1', g);
+    var pts4 = [[V1, 1, 1, 14, 14], [V2, r, 2, 14, -14], [V3, r, 3, -14, -14], [V4, 1, 4, 0, 18]];
+    pts4.forEach(function (p) { callout(g, fr.sx(p[0]) + p[3], fr.sy(p[1]) + p[4], p[2], fr.sx(p[0]), fr.sy(p[1])); });
+    tx(g, fr.sx((V2 + V3) / 2), fr.sy(r) - 10, 'Discharge', 'lab-s', 'middle');
+    tx(g, fr.sx((V4 + V1) / 2), fr.sy(1) - 8, 'Suction', 'lab-s', 'middle');
+    var ym = 0.45, yS = 0.18;
+    el('line', { x1: fr.sx(V4), x2: fr.sx(V1), y1: fr.sy(ym), y2: fr.sy(ym), stroke: '#12647e', 'stroke-width': 2 }, g);
+    tx(g, fr.sx((V4 + V1) / 2), fr.sy(ym) - 6, 'Fresh gas drawn in', 'lab t1', 'middle');
+    el('line', { x1: fr.sx(c), x2: fr.sx(V1), y1: fr.sy(yS), y2: fr.sy(yS), stroke: '#5f646a', 'stroke-width': 1.25 }, g);
+    tx(g, fr.sx(c) + 4, fr.sy(yS) - 5, 'Swept volume', 'lab-s', 'start');
+  }
+
+  /* ---------- Figure 6: vendor curves ---------- */
+  function drawF6() {
+    var c = $('f6-chart'); if (!c) return;
+    var W = widthOf(c), small = W < 560, svg = makeSVG(c, W, small ? 600 : 640);
+    var speeds = [{ s: 1.0, cls: 'l1', t: 't1', lab: '100 %' }, { s: 0.9492, cls: 'l4', t: 't4', lab: '95 %' }];
+    var xa = [3000, 8600], xt = niceTicks(8600, small ? 3 : 6, 3000).filter(function (v) { return v >= 3000; });
+    function curve(s, fn) { var pts = []; for (var k = 0; k <= 60; k++) { var q = QS + (QCH - QS) * k / 60, Q = q * QD * s, H = HD * s * s * fq(q), ep = etaq(q), r = rFromH(H, 20, ep); pts.push([Q, fn(q, Q, H, ep, r)]); } return pts; }
+    var fP2 = function (q, Q, H, ep, r) { return P1 * r; };
+    var fEta = function (q, Q, H, ep) { return ep * 100; };
+    var fPow = function (q, Q, H, ep) { return rho1(20) * Q / 3600 * H / ep * MECH; };
+    var panels = [
+      { t: 26, b: 230, y0: 24, y1: 36, yt: [24, 27, 30, 33, 36], fn: fP2, yl: 'Discharge pressure, bara', dec: 0 },
+      { t: 282, b: 410, y0: 70, y1: 82, yt: [70, 74, 78, 82], fn: fEta, yl: 'Polytropic efficiency, %', dec: 0 },
+      { t: 462, b: (small ? 560 : 596), y0: 1000, y1: 2400, yt: [1000, 1400, 1800, 2200], fn: fPow, yl: 'Shaft power, kW', dec: 0 }
+    ];
+    var frs = panels.map(function (P, j) {
+      return frame(svg, { x0: xa[0], x1: xa[1], y0: P.y0, y1: P.y1, l: 52, r: W - 16, t: P.t, b: P.b, yt: P.yt, xt: xt, showX: j === 2, xl: j === 2 ? 'Actual inlet flow, m³/h' : '', yl: P.yl, ylx: 46 });
+    });
+    var g = el('g', {}, svg);
+    panels.forEach(function (P, j) {
+      var fr = frs[j];
+      speeds.forEach(function (sp) {
+        var pts = curve(sp.s, P.fn);
+        path(fr, pts, sp.cls, g);
+        if (j === 0) {
+          var qL = 1.18, QL = qL * QD * sp.s, HL = HD * sp.s * sp.s * fq(qL), eL = etaq(qL);
+          tx(g, fr.sx(QL), fr.sy(P.fn(qL, QL, HL, eL, rFromH(HL, 20, eL))) + (sp.s === 1 ? -10 : 18), sp.lab + ' speed', 'lab ' + sp.t, 'middle');
+        }
+      });
+      /* surge, control and stonewall joins */
+      [[QS, 'lk'], [QSCL, 'lk dash'], [QCH, 'lm dash']].forEach(function (L) {
+        var a = speeds.map(function (sp) { var Q = L[0] * QD * sp.s, H = HD * sp.s * sp.s * fq(L[0]), ep = etaq(L[0]); return [Q, P.fn(L[0], Q, H, ep, rFromH(H, 20, ep))]; });
+        path(frs[j], a, L[1], g);
+      });
+    });
+    /* callouts */
+    var fA = frs[0], fB = frs[1], fC = frs[2];
+    var ptRated = [6000, fP2(1, 6000, 60, 0.8, rFromH(60, 20, 0.8))];
+    var sN = 0.9492, qN = 5400 / (QD * sN), HN = HD * sN * sN * fq(qN), eN = etaq(qN);
+    var ptNorm = [5400, P1 * rFromH(HN, 20, eN)];
+    var HS = HD * fq(QS), ptSurge = [QS * QD, P1 * rFromH(HS, 20, etaq(QS))];
+    var HC = HD * fq(QSCL), ptScl = [QSCL * QD, P1 * rFromH(HC, 20, etaq(QSCL))];
+    var HCH = HD * fq(QCH), ptCh = [QCH * QD, P1 * rFromH(HCH, 20, etaq(QCH))];
+    [[ptRated, fA, 1, 18, -22], [ptNorm, fA, 2, -20, 24], [ptSurge, fA, 3, -18, -22], [ptScl, fA, 4, 20, -26], [ptCh, fA, 5, -24, -20]].forEach(function (cdef) {
+      var p = cdef[0], fr = cdef[1], x = fr.sx(p[0]), y = fr.sy(p[1]);
+      dot(g, x, y, 3.5, 'fill:#000');
+      callout(g, x + cdef[3], y + cdef[4], cdef[2], x, y);
+    });
+    var xe = fB.sx(6000), ye = fB.sy(80);
+    dot(g, xe, ye, 3.5, 'fill:#000'); callout(g, xe + 18, ye + 22, 6, xe, ye);
+    var pw = curve(1.0, fPow), best = pw[0];
+    pw.forEach(function (p) { if (p[1] > best[1]) best = p; });
+    var xp = fC.sx(best[0]), yp = fC.sy(best[1]);
+    dot(g, xp, yp, 3.5, 'fill:#000'); callout(g, xp - 22, yp - 18, 7, xp, yp);
+    var sLo = QS * QD * 0.9492, HLo = HD * 0.9492 * 0.9492 * fq(QS), pLo = P1 * rFromH(HLo, 20, etaq(QS));
+    tx(g, fA.sx(sLo) - 6, fA.sy(pLo) + 4, small ? 'Surge' : 'Surge line', 'lab-s', 'end');
+  }
+
+  /* ---------- problems and toggles ---------- */
+  function initChecks() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-check]'), function (b) {
+      var id = b.getAttribute('data-check'), ans = parseFloat(b.getAttribute('data-ans')), tol = parseFloat(b.getAttribute('data-tol') || '0.02');
+      var inp = $(id + '-in'), fb = $(id + '-fb');
+      var go = function () {
+        var v = parseNum(inp.value);
+        if (!isFinite(v)) { fb.className = 'fb err'; fb.textContent = 'Enter a number.'; return; }
+        if (Math.abs(v - ans) <= Math.abs(ans) * tol + 1e-9) { fb.className = 'fb ok'; fb.textContent = 'Correct.'; }
+        else { fb.className = 'fb err'; fb.textContent = 'Not quite. Check your working, then open the solution.'; }
+      };
+      b.addEventListener('click', go);
+      inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') go(); });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('button.toggle'), function (b) {
+      b.addEventListener('click', function () {
+        var t = $(b.getAttribute('aria-controls')), open = b.getAttribute('aria-expanded') === 'true';
+        b.setAttribute('aria-expanded', open ? 'false' : 'true');
+        if (open) t.setAttribute('hidden', ''); else t.removeAttribute('hidden');
+        if (b.lastChild && b.lastChild.nodeType === 3) b.lastChild.textContent = b.lastChild.textContent.replace(open ? 'Hide' : 'Show', open ? 'Show' : 'Hide');
+      });
+    });
+  }
+
+  /* ---------- wiring ---------- */
+  function init() {
+    var sp = $('m1-speed'), mw = $('m1-mw'), pb = $('m1-pb');
+    sp.addEventListener('input', function () { m1.s = +sp.value / 100; updateM1(true); });
+    mw.addEventListener('input', function () { m1.M = +mw.value; updateM1(true); });
+    pb.addEventListener('input', function () { m1.Pb = +pb.value; updateM1(true); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-m1]'), function (b) {
+      b.addEventListener('click', function () {
+        var p = M1PRE[b.getAttribute('data-m1')];
+        sp.value = p[0]; mw.value = p[1]; pb.value = p[2];
+        m1.s = p[0] / 100; m1.M = p[1]; m1.Pb = p[2];
+        updateM1(true);
+      });
+    });
+    $('m1-copy').addEventListener('click', function () { copyText(m1CSV(), $('m1-copy-note'), $('fig1')); });
+    updateM1(false);
+
+    drawF3();
+
+    ['c-mw', 'c-k', 'c-z', 'c-m', 'c-p1', 'c-t1', 'c-p2', 'c-eff', 'c-n'].forEach(function (id) {
+      $(id).addEventListener('input', function () { updateCalc(true); });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-basis]'), function (b) {
+      b.addEventListener('click', function () { basis = b.getAttribute('data-basis'); pressSeg(b.parentNode, b); updateCalc(true); });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-cp]'), function (b) {
+      b.addEventListener('click', function () { setCalc(CPRE[b.getAttribute('data-cp')]); updateCalc(true); });
+    });
+    $('c-copy').addEventListener('click', function () {
+      if (!lastCalc) return;
+      var i = lastCalc.inp, R = lastCalc.R;
+      var t = ['Compression estimate (chemprocesseng.com)',
+        'Gas: M ' + i.mw + ' kg/kmol, k ' + i.k + ', Z_avg ' + i.z,
+        'Duty: ' + fm(i.m, 0) + ' kg/h from ' + i.p1 + ' bara, ' + i.t1 + ' °C to ' + i.p2 + ' bara',
+        'Stages: ' + i.n + ', ratio per stage ' + fm(R.rs, 3) + ', ' + (i.basis === 'p' ? 'polytropic' : 'isentropic') + ' efficiency ' + i.eff + ' %',
+        'Discharge temperature per stage: ' + fm(R.T2, 1) + ' °C',
+        'Head, all stages: ' + fm(R.H, 1) + ' kJ/kg',
+        'Gas power: ' + fm(R.gas, 1) + ' kW; shaft power (2 % mechanical losses): ' + fm(R.shaft, 1) + ' kW',
+        'Isothermal minimum: ' + fm(R.iso, 1) + ' kW; actual inlet flow: ' + fm(R.Q1, 1) + ' m³/h'].join('\n');
+      copyText(t, $('c-copy-note'), $('calc'));
+    });
+    updateCalc(false);
+
+    var pc = $('pv-c'), pr = $('pv-r');
+    pc.addEventListener('input', function () { pv.c = +pc.value / 100; updatePV(true); });
+    pr.addEventListener('input', function () { pv.r = +pr.value; updatePV(true); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-pvk]'), function (b) {
+      b.addEventListener('click', function () { pv.k = parseFloat(b.getAttribute('data-pvk')); pressSeg(b.parentNode, b); updatePV(true); });
+    });
+    updatePV(false);
+
+    drawF6();
+    initChecks();
+
+    var rt = null, lastW = window.innerWidth;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
+      clearTimeout(rt);
+      rt = setTimeout(function () { updateM1(false); drawF3(); drawF4(); drawPV(); drawF6(); }, 150);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
+</body>
+</html>

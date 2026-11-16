@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<!--
+  NPPE study guide. The content is in nppe-guide.json next to this file (or embedded in #nppe-data).
+  Reader progress is saved in this browser (localStorage key "cpe.nppe.progress.v1") and can be
+  downloaded and uploaded as a JSON file from the "Your progress" view (#progress). No account, no server.
+-->
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NPPE study guide · Chemical Process Engineering</title>
+<meta name="description" content="A study guide for the National Professional Practice Examination: professionalism, ethics, professional practice and law for Canadian engineers, with 71 practice questions and progress you can download and upload.">
+
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/assets/icons/site.webmanifest">
+<meta name="theme-color" content="#4c5157">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Chemical Process Engineering">
+<meta property="og:title" content="NPPE study guide">
+<meta property="og:description" content="The six NPPE blueprint areas explained, 71 practice questions with an explanation for every answer, and progress saved in your browser that you can download and pick up later.">
+<meta property="og:url" content="https://chemprocesseng.com/lessons/nppe/">
+<meta property="og:image" content="https://chemprocesseng.com/assets/brand/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://chemprocesseng.com/lessons/nppe/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&amp;family=Newsreader:opsz,wght@6..72,300;6..72,400&amp;family=Open+Sans:wght@300;400;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Tokens from website/DESIGN.md */
+:root{
+  --primary:#a6d7f0; --primary-hover:#8fcbe9; --secondary:#8f5a39;
+  --ink:#000; --ink-muted:#4d5459; --ink-subtle:#5f646a;
+  --interactive:#12647e; --brand-deep:#3a2206;
+  --canvas:#f5f7f8; --surface:#fff; --surface-sunken:#e6e9eb; --mist:#f2f8fb;
+  --border:#e5e7eb; --border-strong:#b1b5b9; --rule:#000;
+  --success:#006b48; --warning:#9e4200; --error:#b42318; --info:#005ea6;
+  --chart-1:#12647e; --chart-muted:#b1b5b9; --chart-grid:#e6e9eb;
+  --f-display:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-body:"Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --f-card:system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease:cubic-bezier(0.4,0.14,0.3,1); --ease-enter:cubic-bezier(0,0,0.3,1); --ease-exit:cubic-bezier(0.4,0.14,1,1);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--canvas);color:var(--ink);font:400 16px/1.65 var(--f-body);letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--interactive);outline-offset:2px}
+p{margin:0 0 16px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.skip{position:absolute;left:-9999px;top:0;background:var(--surface);padding:8px 12px}
+.skip:focus{left:12px;top:12px;z-index:10}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+table,.tile-value,.num{font-variant-numeric:tabular-nums}
+
+/* Page frame and header (page-template.html) */
+.page{max-width:1200px;margin:0 auto;padding:0 40px 40px}
+#view:focus{outline:none}
+.header{padding:32px 0 8px}
+.crumb{font-size:14px;color:var(--ink-subtle);margin:0}
+.crumb a{color:var(--ink-subtle)}
+.crumb .sep{margin:0 6px}
+h1{font:300 56px/1.12 var(--f-display);letter-spacing:-0.01em;max-width:900px}
+.standfirst{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);max-width:680px;margin:18px 0 0}
+.byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;margin-top:22px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:984px}
+.byline .author{color:var(--ink);font-weight:600;text-decoration:none}
+.byline .author:hover{text-decoration:underline}
+.marker{font:400 15px/1.3 var(--f-display);letter-spacing:0.02em;color:var(--secondary);margin:0 0 8px}
+
+/* Guide toolbar: breadcrumb, progress, guide search */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding:24px 0 0}
+.tools{display:flex;align-items:center;gap:10px 20px;flex-wrap:wrap}
+.prog{font-size:14px;color:var(--ink-subtle);font-variant-numeric:tabular-nums}
+.prog a{color:var(--ink);font-weight:600;text-decoration:none}
+.prog a:hover{text-decoration:underline}
+.search{position:relative;width:min(340px,100%)}
+.search input{width:100%;height:44px;border:1px solid var(--border-strong);border-radius:8px;background:var(--surface);padding:10px 40px 10px 12px;font:400 16px var(--f-body);color:var(--ink)}
+.search input:focus{border-color:var(--interactive)}
+.search input::placeholder{color:var(--ink-subtle)}
+.search input:focus ~ kbd,.search input:not(:placeholder-shown) ~ kbd{display:none}
+.search kbd{position:absolute;right:10px;top:11px;font:12px var(--f-mono);color:var(--ink-subtle);border:1px solid var(--border);border-radius:4px;padding:1px 6px;background:var(--canvas)}
+.results{position:absolute;right:0;top:50px;width:min(560px,calc(100vw - 32px));max-height:70vh;overflow:auto;background:var(--surface);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:40;padding:8px 0}
+.results[hidden]{display:none}
+.results .count{font-size:13px;color:var(--ink-subtle);padding:4px 16px 8px;margin:0}
+.results ol{list-style:none;margin:0;padding:0}
+.results li a{display:block;padding:10px 16px;text-decoration:none;border-top:1px solid var(--border)}
+.results li a:hover,.results li a[aria-selected="true"]{background:var(--mist)}
+.results .where{font:400 13px/1.4 var(--f-body);color:var(--ink-subtle)}
+.results .snip{font-size:14px;line-height:1.5;margin-top:2px}
+.results .empty{padding:12px 16px;font-size:14px;color:var(--ink-muted);margin:0}
+mark{background:var(--primary);color:var(--ink);padding:0 1px;border-radius:2px}
+
+/* Reading page: 680 px column + 240 px rail */
+.layout{display:grid;grid-template-columns:minmax(0,680px) 240px;column-gap:64px;align-items:start;margin-top:40px}
+.content{min-width:0}
+.rail{position:sticky;top:24px;font-size:14px;line-height:1.55;color:var(--ink-muted);display:grid;gap:28px;padding-top:6px}
+.rail h2{font:600 13px/1.4 var(--f-body);letter-spacing:0.01em;color:var(--ink-subtle);margin:0 0 8px}
+.rail ol{list-style:none;margin:0;padding:0 0 0 14px;display:grid;gap:5px}
+.rail ol a{text-decoration:none;color:var(--ink-muted);display:block}
+.rail ol a:hover{color:var(--ink);text-decoration:underline}
+.rail ol a[aria-current="true"]{color:var(--ink);font-weight:600}
+.rail ol a.seen::before,.paths .st.seen::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--interactive);vertical-align:middle}
+.rail ol a.seen::before{margin:0 8px 2px -14px}
+.rail .aside{border-left:2px solid var(--secondary);padding-left:14px}
+.rail .mine{background:var(--surface);border-radius:8px;padding:14px 16px}
+.rail .mine p{margin:0 0 8px}
+.content > section + section{margin-top:84px}
+.content h2{font:300 40px/1.15 var(--f-display);letter-spacing:-0.005em;border-top:1px solid var(--rule);padding-top:16px;margin:0 0 24px;scroll-margin-top:16px}
+.content section{scroll-margin-top:16px}
+.content .label{font:600 19px/1.35 var(--f-body);letter-spacing:0;margin:36px 0 10px}
+.content ul,.content ol{margin:0 0 16px;padding-left:22px}
+.content li{margin:0 0 8px}
+.content li ul,.content li ol{margin-top:8px}
+.content code{font:14px var(--f-mono);background:var(--surface);border-radius:4px;padding:0 4px}
+.end{display:block;height:1px}
+.note{font-size:14px;line-height:1.55;color:var(--ink-muted);border-left:2px solid var(--secondary);padding:2px 0 2px 14px;margin:0 0 20px}
+.note strong:first-child{color:var(--ink)}
+.table-wrap{overflow-x:auto;margin:18px 0 24px;background:var(--surface)}
+table.wide{min-width:620px}
+table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.5}
+th{font:600 13px/1.4 var(--f-body);letter-spacing:0.01em;color:var(--ink-subtle);text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:bottom}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;white-space:nowrap}
+.flash{animation:flash 1.5s var(--ease-enter)}
+@keyframes flash{from{background:var(--primary)}to{background:transparent}}
+details.toc-inline{display:none}
+
+/* Figures */
+figure{margin:32px 0;padding-top:12px;border-top:1px solid var(--rule)}
+.fig-title{font-weight:600;font-size:16px;margin:0 0 12px}
+figcaption{font-size:13px;color:var(--ink-subtle);line-height:1.5;margin-top:10px}
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--f-body)}
+
+/* Buttons */
+.actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:32px 0 0}
+.btn{font:600 16px/1.4 var(--f-body);letter-spacing:0;min-height:44px;display:inline-flex;align-items:center;cursor:pointer;text-decoration:none;transition:background 200ms var(--ease),transform 200ms var(--ease)}
+.btn:active{transform:scale(.98)}
+.btn-primary{color:var(--ink);background:var(--primary);border:0;border-radius:100px;padding:10px 48px 10px 24px;position:relative}
+.btn-primary::after{content:"\2192";position:absolute;right:22px;top:50%;transform:translateY(-52%);transition:transform 200ms var(--ease)}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-primary:hover::after{transform:translate(3px,-52%)}
+.btn-primary[disabled]{opacity:.5;cursor:not-allowed}
+.btn-secondary{background:transparent;color:var(--secondary);border:1px solid var(--ink);border-radius:20px;padding:10px 24px}
+.btn-secondary:hover{background:var(--surface)}
+.btn-sm{min-height:34px;font-size:13px;padding:6px 14px;letter-spacing:0.01em}
+.btn-danger{color:var(--error)}
+.card-link{font-weight:600;text-decoration:none}
+.card-link::after{content:" \2192"}
+.card-link:hover{text-decoration:underline}
+
+/* Tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:32px 0 0;max-width:984px}
+.tiles.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tile{background:var(--surface);border-radius:8px;padding:16px;transition:background 1.5s var(--ease)}
+.tile-value{font:300 30px/1.1 var(--f-display);letter-spacing:-0.01em}
+.tile-unit{font-size:14px;color:var(--ink-muted);margin-left:4px}
+.tile-name{font-size:13px;color:var(--ink-subtle);margin-top:6px;line-height:1.4}
+.tile.changed{background:var(--primary);transition:none}
+
+/* Overview path list */
+.paths{list-style:none;padding:0 !important;margin:0 0 16px}
+.paths li{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid var(--border);margin:0}
+.paths li:last-child{border-bottom:1px solid var(--border)}
+.paths .m{font:400 15px var(--f-display);color:var(--secondary)}
+.paths .t{font:300 23px/1.25 var(--f-card)}
+.paths .d{font-size:14px;color:var(--ink-muted);margin-top:2px}
+.paths .q{font-size:13px;color:var(--ink-subtle);white-space:nowrap;text-align:right}
+.paths .st{display:block}
+.paths .st.seen::before{margin:0 6px 2px 0}
+
+/* Practice */
+.seg{display:inline-flex;flex-wrap:wrap;gap:6px}
+.seg button{font:600 13px/1.4 var(--f-body);min-height:34px;padding:6px 14px;border-radius:20px;border:1px solid var(--ink);background:var(--surface);color:var(--ink);cursor:pointer;letter-spacing:0.01em}
+.seg button:hover{background:var(--mist)}
+.seg button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary)}
+.controls{display:grid;gap:12px;margin:32px 0 0}
+.controls .row{display:flex;gap:12px 20px;align-items:center;flex-wrap:wrap}
+.controls .lbl{font:600 13px var(--f-body);color:var(--ink-subtle);min-width:64px}
+.qcard{background:var(--surface);border-radius:8px;padding:24px;margin-top:24px}
+.qmeta{font-size:13px;color:var(--ink-subtle);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0}
+.qstem{font:300 23px/1.35 var(--f-card);margin:12px 0 20px;padding:0}
+.opts{display:grid;gap:10px;border:0;padding:0;margin:0;min-width:0}
+.opt{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;border:1px solid var(--border-strong);border-radius:8px;padding:12px 14px;cursor:pointer;background:var(--surface);position:relative}
+.opt:hover{border-color:var(--ink)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .k{font:600 14px/1.6 var(--f-body);color:var(--ink-subtle)}
+.opt:has(input:focus-visible){outline:2px solid var(--interactive);outline-offset:2px}
+.opt.sel{border-color:var(--interactive);box-shadow:inset 0 0 0 1px var(--interactive)}
+.opt.right{border-color:var(--success);box-shadow:inset 0 0 0 1px var(--success)}
+.opt.wrong{border-color:var(--error);box-shadow:inset 0 0 0 1px var(--error)}
+.opt.right .k,.opt.wrong .k{color:inherit}
+.opt .yours{font-size:13px;color:var(--ink-subtle);margin-left:6px}
+.fb{margin-top:18px;font-size:15px}
+.verdict{font-weight:600}
+.ok{color:var(--success)} .no{color:var(--error)} .warn{color:var(--warning)}
+.review h2{margin-top:84px}
+.review details{background:var(--surface);border-radius:8px;padding:0 20px;margin-bottom:8px}
+.review summary{cursor:pointer;padding:14px 0;list-style:none;font-weight:600}
+.review summary::-webkit-details-marker{display:none}
+.review summary::before{content:"\203A";display:inline-block;width:16px;transition:transform 200ms var(--ease)}
+.review details[open] summary::before{transform:rotate(90deg)}
+.review .body{padding:0 0 16px 16px;font-size:15px}
+.review .mine-ans{font-size:14px;color:var(--ink-subtle)}
+
+/* Your progress */
+.card{background:var(--surface);border-radius:8px;padding:24px;margin:0 0 16px}
+.card-title{font:300 23px/1.25 var(--f-card);margin:0 0 10px}
+.card p:last-child{margin-bottom:0}
+.drop{display:block;border:1px dashed var(--border-strong);border-radius:8px;padding:18px;margin:16px 0 0;text-align:center;font-size:14px;color:var(--ink-muted);cursor:pointer;transition:background 200ms var(--ease)}
+.drop.over{background:var(--mist);border-color:var(--interactive)}
+.drop strong{color:var(--ink)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0}
+.drop:has(input:focus-visible){outline:2px solid var(--interactive);outline-offset:2px}
+.msg{font-size:14px;margin:14px 0 0}
+.preview{margin-top:16px;border-top:1px solid var(--border);padding-top:16px}
+.preview table{margin:8px 0 4px}
+.status-word{font-weight:600}
+
+/* Pager */
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:56px;border-top:1px solid var(--border);padding-top:20px;flex-wrap:wrap}
+.pager a{text-decoration:none;font-weight:600}
+.pager a:hover{text-decoration:underline}
+.pager .dir{display:block;font:400 13px var(--f-body);color:var(--ink-subtle)}
+.disclaimer{font-size:13px;color:var(--ink-subtle);max-width:680px;margin:56px 0 0}
+
+/* Floating message: the one soft shadow allowed for floating elements */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--surface);color:var(--ink);padding:12px 18px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);font-size:14px;z-index:60;max-width:calc(100vw - 32px)}
+.toast[hidden]{display:none}
+
+@media (max-width:1000px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .rail{display:none}
+  details.toc-inline{display:block;background:var(--surface);border-radius:8px;padding:0 16px;margin:24px 0 0;font-size:14px}
+  details.toc-inline summary{padding:12px 0;cursor:pointer;font-weight:600}
+  details.toc-inline ol{margin:0 0 12px;padding-left:20px}
+}
+@media (max-width:860px){ .tiles{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:700px){
+  .page{padding-left:20px;padding-right:20px}
+  h1{font-size:38px}
+  .content h2{font-size:32px}
+  .content > section + section{margin-top:46px}
+  .review h2{margin-top:46px}
+  .paths li{grid-template-columns:40px minmax(0,1fr)}
+  .paths .q{grid-column:2;text-align:left}
+  .tools,.search{width:100%}
+}
+@media (max-width:520px){ .tiles,.tiles.three{grid-template-columns:minmax(0,1fr)} .qcard,.card{padding:18px} }
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:120ms !important;animation-duration:120ms !important}
+  .btn:active{transform:none}
+}
+/* Site chrome (nav, search, footer, back-to-top) lives in /assets/css/site.css */
+</style>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script src="/assets/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/"><img src="/assets/brand/logo.svg" width="52" height="52" alt=""><span class="brand-name">Chemical Process Engineering</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="/calculators/">Calculators</a></li>
+        <li><a href="/lessons/" aria-current="page">Lessons</a></li>
+        <li><a href="/data/">Data</a></li>
+        <li><a href="/analysis/">Analysis</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+    <form class="site-search" action="/search/" method="get" role="search">
+      <label class="sr-only" for="site-q">Search the site</label>
+      <input type="search" id="site-q" name="q" placeholder="Search" autocomplete="off" enterkeyhint="search">
+      <button type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle cx="7.5" cy="7.5" r="5.25" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="m11.5 11.5 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></button>
+    </form>
+    <a class="search-link" href="/search/" aria-label="Search the site"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><circle cx="7.5" cy="7.5" r="5.25" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="m11.5 11.5 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></a>
+  </div>
+</header>
+
+<main class="page" id="content">
+  <div class="toolbar">
+    <p class="crumb" id="crumbs"><a href="/lessons/">Lessons</a><span class="sep">/</span>NPPE study guide</p>
+    <div class="tools">
+      <p class="prog" id="prog"><a href="#progress">Your progress</a></p>
+      <form class="search" id="search-form" role="search" autocomplete="off">
+        <label class="sr-only" for="q">Search the guide</label>
+        <input id="q" type="search" placeholder="Search the guide, e.g. contra proferentem" aria-controls="results" aria-expanded="false">
+        <kbd aria-hidden="true">/</kbd>
+        <div class="results" id="results" hidden role="listbox" aria-label="Search results"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="view" tabindex="-1">
+    <header class="header">
+      <h1>NPPE study guide</h1>
+      <p class="standfirst">Professional practice, ethics and law for Canadian engineers: the six blueprint areas of the National Professional Practice Examination, 71 practice questions with an explanation for every answer, and a progress file you can download and upload.</p>
+    </header>
+    <noscript><p class="note"><strong>JavaScript needed.</strong> The guide, its practice questions and the progress file all run in your browser, so they need JavaScript turned on.</p></noscript>
+  </div>
+
+  <p class="disclaimer">A study resource, not legal advice. Original notes and questions; not affiliated with APEGA, Engineers and Geoscientists BC or the NPPE. Confirm anything you rely on with your regulator, the official NPPE website and the statute itself.</p>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div>
+      <div class="foot-name">Chemical Process Engineering</div>
+      <p>Lessons, calculators and tools for chemical engineering students and engineers.</p>
+    </div>
+    <ul class="foot-links">
+      <li><a href="/calculators/">Calculators</a></li>
+      <li><a href="/lessons/">Lessons</a></li>
+      <li><a href="/data/">Data</a></li>
+      <li><a href="/analysis/">Analysis</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="https://github.com/alotfi73">GitHub</a></li>
+    </ul>
+    <p class="foot-note">Run by Alireza Lotfollahzade, EIT, in Metro Vancouver. Educational content: numbers are illustrative unless stated, and codes, standards and your company's specifications govern any real design.</p>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="sr-only" aria-live="polite" id="live"></div>
+
+<script id="nppe-data" type="application/json"></script>
+<script>
+(function () {
+  "use strict";
+  var DATA = null;
+  var view = document.getElementById("view");
+  var crumbs = document.getElementById("crumbs");
+  var live = document.getElementById("live");
+  var SITE = "Chemical Process Engineering";
+
+  /* ---------- helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function inline(s) {
+    var out = esc(s);
+    out = out.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, function (_, t, u) { return '<a href="' + u.replace(/"/g, "%22") + '" target="_blank" rel="noopener">' + t + "</a>"; });
+    out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    out = out.replace(/(^|[^*\w])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
+    out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
+    return out;
+  }
+  function plain(s) { return String(s).replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/[*`]/g, ""); }
+  function toast(msg) {
+    var t = $("toast"); t.textContent = msg; t.hidden = false;
+    clearTimeout(toast._t); toast._t = setTimeout(function () { t.hidden = true; }, 3200);
+  }
+  function plural(n, one, many) { return n + " " + (n === 1 ? one : (many || one + "s")); }
+  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  function fmtDate(iso) { var d = iso.split("-"); return (+d[2]) + " " + MONTHS[+d[1] - 1] + " " + d[0]; }
+  function fmtStamp(iso) {
+    if (!iso) return "never";
+    var d = new Date(iso); if (isNaN(d)) return "never";
+    var hh = String(d.getHours()).padStart(2, "0"), mm = String(d.getMinutes()).padStart(2, "0");
+    return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear() + ", " + hh + ":" + mm;
+  }
+  function todayISO() { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function nowISO() { return new Date().toISOString(); }
+  var isNum = /^[\s$~≈<>]*[\d.,]+[\s\d.,–\-%$×/]*$/;
+
+  /* ---------- block rendering ---------- */
+  function renderList(list) {
+    var tag = list.ordered ? "ol" : "ul";
+    return "<" + tag + ">" + list.items.map(function (it) {
+      return "<li>" + inline(it.text) + (it.children ? renderList(it.children) : "") + "</li>";
+    }).join("") + "</" + tag + ">";
+  }
+  function renderBlock(b, id) {
+    var a = ' id="' + id + '"';
+    if (b.type === "paragraph") return "<p" + a + ">" + inline(b.text) + "</p>";
+    if (b.type === "label") return '<p class="label"' + a + ">" + inline(b.text) + "</p>";
+    if (b.type === "note") return '<p class="note"' + a + "><strong>" + esc(b.label) + ".</strong> " + inline(b.text) + "</p>";
+    if (b.type === "list") { var h = renderList(b); return h.replace(/^<(ul|ol)>/, "<$1" + a + ">"); }
+    if (b.type === "table") {
+      var numCol = b.header.map(function (_, i) { return b.rows.length > 0 && b.rows.every(function (r) { return !r[i] || isNum.test(plain(r[i])); }); });
+      return '<div class="table-wrap"' + a + "><table" + (b.header.length > 3 ? ' class="wide"' : "") + "><thead><tr>" + b.header.map(function (c, i) { return "<th" + (numCol[i] ? ' class="n"' : "") + ' scope="col">' + inline(c) + "</th>"; }).join("") +
+        "</tr></thead><tbody>" + b.rows.map(function (r) { return "<tr>" + r.map(function (c, i) { return "<td" + (numCol[i] ? ' class="n"' : "") + ">" + inline(c) + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>";
+    }
+    return "";
+  }
+
+  /* ---------- data helpers ---------- */
+  var QBY = {};
+  var SECS = ["I", "II", "III", "IV", "V", "VI"];
+  var SESSION_KEYS = ["all", "I", "II", "III", "IV", "V", "VI", "missed"];
+  function page(id) { return DATA.pages.filter(function (p) { return p.id === id; })[0]; }
+  var ORDER = ["overview", "study-plan", "exam-technique", "section-i", "section-ii", "section-iii", "section-iv", "section-v", "section-vi", "practice", "case-studies", "glossary", "sources"];
+  function titleOf(id) {
+    if (id === "practice") return "Practice questions";
+    if (id === "progress") return "Your progress";
+    var m = /^practice-(i|ii|iii|iv|v|vi|missed)$/.exec(id);
+    if (m) return m[1] === "missed" ? "Missed questions" : "Practice, Section " + m[1].toUpperCase();
+    var p = page(id); return p ? p.title : id;
+  }
+  function bodyLead(p) {
+    return (p.lead || []).filter(function (b) {
+      if (b.type !== "paragraph") return true;
+      if (b.text === p.standfirst) return false;
+      if (b.text.indexOf("**Blueprint topics:**") === 0) return false;
+      return true;
+    });
+  }
+  function keysOf(q) { return q.options.map(function (o) { return o.key; }); }
+  function qid(q) { return q.id; }
+
+  /* ---------- progress store ----------
+     Saved in this browser as you go. "Download progress file" writes the same object to a JSON file;
+     "Upload a progress file" reads it back (replace or combine). Nothing leaves the reader's device. */
+  var KEY = "cpe.nppe.progress.v1", FORMAT = "chemprocesseng-nppe-progress", VERSION = 1;
+  var canStore = (function () { try { var k = KEY + ".test"; localStorage.setItem(k, "1"); localStorage.removeItem(k); return true; } catch (e) { return false; } })();
+  function blank() { return { reading: {}, answers: {}, quiz: {}, last: null, saved: null }; }
+  var P = blank();
+  function isoOr(t) { return typeof t === "string" && !isNaN(Date.parse(t)) ? t : null; }
+  function newer(a, b) { return (Date.parse(a || "") || 0) >= (Date.parse(b || "") || 0); }
+  function unitsOf(p) { return p.subsections.length ? p.subsections.map(function (s) { return s.id; }) : ["lead"]; }
+  function validIds(sec) {
+    var qs = DATA.practice.questions;
+    if (sec === "all" || sec === "missed") return qs.map(qid);
+    return qs.filter(function (q) { return q.section === sec; }).map(qid);
+  }
+  function missedIds() { return DATA.practice.questions.filter(function (q) { var a = P.answers[q.id]; return a && !a.ok; }).map(qid); }
+  function makeSession(sec, order) {
+    var ok = validIds(sec), ids;
+    if (order) {
+      ids = order.filter(function (x, i, a) { return ok.indexOf(x) >= 0 && a.indexOf(x) === i; });
+      if (sec !== "missed") ok.forEach(function (x) { if (ids.indexOf(x) < 0) ids.push(x); });
+    } else ids = sec === "missed" ? missedIds() : ok;
+    return { order: ids, i: 0, results: {}, started: nowISO() };
+  }
+  /* Accept only what this version of the guide knows about; anything else in a file is dropped. */
+  function clean(o) {
+    var out = blank(), skipped = 0;
+    if (!o || typeof o !== "object") return { p: out, skipped: 0 };
+    var r = o.reading && typeof o.reading === "object" ? o.reading : {};
+    DATA.pages.forEach(function (p) {
+      var e = r[p.id]; if (!e || typeof e !== "object") return;
+      var units = unitsOf(p);
+      var seen = Array.isArray(e.seen) ? e.seen.filter(function (s, i, a) { return units.indexOf(s) >= 0 && a.indexOf(s) === i; }) : [];
+      if (seen.length || e.done) out.reading[p.id] = { seen: seen, done: !!e.done || seen.length === units.length, t: isoOr(e.t) };
+    });
+    var a = o.answers && typeof o.answers === "object" ? o.answers : {};
+    Object.keys(a).forEach(function (id) {
+      var q = QBY[id], e = a[id];
+      if (!q || !e || typeof e !== "object" || keysOf(q).indexOf(e.last) < 0) { skipped++; return; }
+      out.answers[id] = { last: e.last, ok: e.last === q.answer, tries: Math.max(1, Math.min(9999, parseInt(e.tries, 10) || 1)), t: isoOr(e.t) };
+    });
+    var qz = o.quiz && typeof o.quiz === "object" ? o.quiz : {};
+    SESSION_KEYS.forEach(function (sec) {
+      var e = qz[sec]; if (!e || typeof e !== "object" || !Array.isArray(e.order)) return;
+      var s = makeSession(sec, e.order), res = e.results && typeof e.results === "object" ? e.results : {};
+      s.order.forEach(function (id) { if (keysOf(QBY[id]).indexOf(res[id]) >= 0) s.results[id] = res[id]; });
+      s.i = Math.max(0, Math.min(s.order.length, parseInt(e.i, 10) || 0));
+      s.started = isoOr(e.started) || nowISO();
+      out.quiz[sec] = s;
+    });
+    if (o.last && typeof o.last.route === "string" && knownRoute(o.last.route)) out.last = { route: o.last.route, t: isoOr(o.last.t) };
+    out.saved = isoOr(o.saved);
+    return { p: out, skipped: skipped };
+  }
+  function knownRoute(h) {
+    var pid = h.split("--")[0];
+    return /^practice(-(i|ii|iii|iv|v|vi|missed))?$/.test(pid) || !!page(pid);
+  }
+  function loadStore() {
+    if (!canStore) return;
+    try { var raw = localStorage.getItem(KEY); P = raw ? clean(JSON.parse(raw)).p : blank(); } catch (e) { P = blank(); }
+  }
+  function save() {
+    P.saved = nowISO();
+    if (canStore) { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { /* storage full or blocked */ } }
+    updateProg();
+  }
+  function exportObj() {
+    return { format: FORMAT, version: VERSION, site: "chemprocesseng.com/lessons/nppe/", guide: DATA.schema, guideUpdated: DATA.updated,
+      saved: P.saved || nowISO(), reading: P.reading, answers: P.answers, quiz: P.quiz, last: P.last };
+  }
+  function merge(a, b) {
+    var out = JSON.parse(JSON.stringify(a));
+    Object.keys(b.reading).forEach(function (id) {
+      var x = out.reading[id], y = b.reading[id];
+      if (!x) { out.reading[id] = y; return; }
+      y.seen.forEach(function (s) { if (x.seen.indexOf(s) < 0) x.seen.push(s); });
+      x.done = x.done || y.done; x.t = newer(x.t, y.t) ? x.t : y.t;
+    });
+    Object.keys(b.answers).forEach(function (id) {
+      var x = out.answers[id], y = b.answers[id];
+      if (!x || !newer(x.t, y.t)) { var tries = Math.max(x ? x.tries : 0, y.tries); out.answers[id] = y; y.tries = tries; }
+    });
+    Object.keys(b.quiz).forEach(function (k) {
+      var x = out.quiz[k], y = b.quiz[k];
+      if (!x || Object.keys(y.results).length > Object.keys(x.results).length) out.quiz[k] = y;
+    });
+    if (b.last && (!out.last || !newer(out.last.t, b.last.t))) out.last = b.last;
+    return out;
+  }
+  function summary(p) {
+    p = p || P;
+    var qs = DATA.practice.questions, ans = 0, ok = 0, read = 0, started = 0;
+    qs.forEach(function (q) { var a = p.answers[q.id]; if (a) { ans++; if (a.ok) ok++; } });
+    DATA.pages.forEach(function (pg) { var r = p.reading[pg.id]; if (r) { if (r.done) read++; else if (r.seen.length) started++; } });
+    return { pages: DATA.pages.length, read: read, started: started, qn: qs.length, ans: ans, ok: ok, missed: ans - ok };
+  }
+  function readState(pid) {
+    var u = unitsOf(page(pid)), r = P.reading[pid], done = !!(r && r.done);
+    return { total: u.length, seen: done ? u.length : (r ? r.seen.length : 0), done: done, has: function (s) { return done || !!(r && r.seen.indexOf(s) >= 0); } };
+  }
+  function updateProg() {
+    var el = $("prog"); if (!el || !DATA) return;
+    var s = summary();
+    el.innerHTML = '<a href="#progress">Your progress</a> · ' + s.ans + " of " + s.qn + " answered · " + s.read + " of " + s.pages + " pages read" +
+      (canStore ? "" : ' · <span class="warn">not saved in this browser</span>');
+  }
+
+  /* ---------- reading progress ---------- */
+  var readObs = null;
+  function markSeen(pid, unit) {
+    var units = unitsOf(page(pid));
+    if (units.indexOf(unit) < 0) return;
+    var r = P.reading[pid] || (P.reading[pid] = { seen: [], done: false, t: null });
+    if (r.seen.indexOf(unit) >= 0) return;
+    r.seen.push(unit); r.t = nowISO();
+    if (r.seen.length === units.length) r.done = true;
+    save();
+    var a = view.querySelector('.rail a[data-sub="' + unit + '"]');
+    if (a) { a.classList.add("seen"); a.setAttribute("title", "Read"); }
+    syncReadButton(pid);
+  }
+  function watchReading(pid) {
+    if (readObs) { readObs.disconnect(); readObs = null; }
+    if (!("IntersectionObserver" in window)) return;
+    readObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { markSeen(pid, e.target.getAttribute("data-u")); if (readObs) readObs.unobserve(e.target); } });
+    });
+    view.querySelectorAll(".end[data-u]").forEach(function (s) { readObs.observe(s); });
+  }
+  function readButton(pid) {
+    return '<button type="button" class="btn btn-secondary" id="mark-read" data-pid="' + pid + '"></button><span class="msg" id="read-state" style="margin:0"></span>';
+  }
+  function syncReadButton(pid) {
+    var b = $("mark-read"), st = $("read-state"); if (!b) return;
+    var rs = readState(pid);
+    b.textContent = rs.done ? "Mark as not read" : "Mark this page as read";
+    b.setAttribute("aria-pressed", rs.done ? "true" : "false");
+    st.textContent = rs.done ? "Read" : rs.seen + " of " + plural(rs.total, "part") + " read";
+  }
+  function bindReadButton(pid) {
+    var b = $("mark-read"); if (!b) return;
+    syncReadButton(pid);
+    b.addEventListener("click", function () {
+      var rs = readState(pid);
+      if (rs.done) delete P.reading[pid];
+      else P.reading[pid] = { seen: unitsOf(page(pid)), done: true, t: nowISO() };
+      save(); syncReadButton(pid);
+      view.querySelectorAll(".rail a[data-sub]").forEach(function (a) { a.classList.toggle("seen", !rs.done); });
+      if (rs.done) watchReading(pid);
+      toast(rs.done ? "Page marked as not read." : "Page marked as read.");
+    });
+  }
+
+  /* ---------- page parts ---------- */
+  function setCrumbs(items) {
+    crumbs.innerHTML = [{ t: "Lessons", href: "/lessons/" }].concat(items).map(function (it, i) {
+      return (i ? '<span class="sep" aria-hidden="true">/</span>' : "") + (it.href ? '<a href="' + it.href + '">' + esc(it.t) + "</a>" : '<span aria-current="page">' + esc(it.t) + "</span>");
+    }).join("");
+  }
+  function byline(extra) {
+    return '<div class="byline"><span><a class="author" href="/about/#authors">' + esc(DATA.author) + "</a>, EIT</span><span>Updated " + fmtDate(DATA.updated) + "</span>" + (extra ? "<span>" + esc(extra) + "</span>" : "") + "</div>";
+  }
+  function readingTime(p) {
+    var words = 0;
+    function count(s) { words += plain(s).split(/\s+/).length; }
+    function walk(blocks) { blocks.forEach(function (b) {
+      if (b.text) count(b.text);
+      if (b.items) b.items.forEach(function (i) { count(i.text); if (i.children) i.children.items.forEach(function (c) { count(c.text); }); });
+      if (b.rows) b.rows.forEach(function (r) { r.forEach(count); });
+    }); }
+    walk(p.lead || []); p.subsections.forEach(function (s) { walk(s.blocks); });
+    return "About " + Math.max(1, Math.round(words / 220)) + " min read";
+  }
+  function pager(id) {
+    var i = ORDER.indexOf(id), prev = ORDER[i - 1], next = ORDER[i + 1];
+    return '<nav class="pager" aria-label="Guide pages">' +
+      (prev ? '<a href="#' + prev + '"><span class="dir">Previous</span>' + esc(titleOf(prev)) + "</a>" : "<span></span>") +
+      (next ? '<a href="#' + next + '" style="text-align:right"><span class="dir">Next</span>' + esc(titleOf(next)) + "</a>" : '<a href="#progress" style="text-align:right"><span class="dir">Next</span>Your progress</a>') + "</nav>";
+  }
+  function shortTitle(id) { var p = page(id); return p && p.section ? p.section + ". " + p.title : titleOf(id); }
+  function guideRail(current) {
+    return '<div><h2>In this guide</h2><ol>' + ORDER.concat(["progress"]).map(function (id) {
+      var seen = page(id) && readState(id).done;
+      return '<li><a href="#' + id + '"' + (id === current ? ' aria-current="true"' : "") + (seen ? ' class="seen" title="Read"' : "") + ">" + esc(shortTitle(id)) + (seen ? '<span class="sr-only"> (read)</span>' : "") + "</a></li>";
+    }).join("") + "</ol></div>";
+  }
+  function progressAside() {
+    var s = summary();
+    return '<div class="mine"><h2>Your progress</h2><p>' + s.read + " of " + s.pages + " pages read<br>" + s.ans + " of " + s.qn + " questions answered" +
+      (s.ans ? ", " + Math.round(100 * s.ok / s.ans) + " % correct" : "") + '</p><a class="card-link" href="#progress">Download or upload</a></div>';
+  }
+
+  /* ---------- reading pages ---------- */
+  function renderReading(p) {
+    setCrumbs([{ t: "NPPE study guide", href: "#overview" }, { t: p.section ? "Section " + p.section : p.title }]);
+    var subs = p.subsections, rs = readState(p.id);
+    var html = '<header class="header">' +
+      '<p class="marker">' + esc(p.section ? "Section " + p.section + " · " + p.questions + " questions on the exam" : p.marker) + "</p>" +
+      "<h1>" + esc(p.title) + "</h1>" +
+      (p.standfirst ? '<p class="standfirst">' + inline(p.standfirst) + "</p>" : "") +
+      byline(readingTime(p)) + "</header>";
+    var toc = subs.length ? "<ol>" + subs.map(function (s) {
+      var seen = rs.has(s.id);
+      return '<li><a href="#' + p.id + "--" + s.id + '" data-sub="' + s.id + '"' + (seen ? ' class="seen" title="Read"' : "") + ">" + esc(s.title) + "</a></li>";
+    }).join("") + "</ol>" : "";
+    html += (toc ? '<details class="toc-inline"><summary>On this page</summary>' + toc + "</details>" : "");
+    html += '<div class="layout"><article class="content">';
+    var lead = bodyLead(p);
+    if (lead.length || !subs.length) html += "<section>" + lead.map(function (b, i) { return renderBlock(b, "b-" + p.id + "-lead-" + i); }).join("") + (subs.length ? "" : '<span class="end" data-u="lead" aria-hidden="true"></span>') + "</section>";
+    subs.forEach(function (s) {
+      html += '<section id="' + p.id + "--" + s.id + '" aria-labelledby="h-' + s.id + '"><h2 id="h-' + s.id + '">' + esc(s.title) + "</h2>" +
+        s.blocks.map(function (b, i) { return renderBlock(b, "b-" + p.id + "-" + s.id + "-" + i); }).join("") + '<span class="end" data-u="' + s.id + '" aria-hidden="true"></span></section>';
+    });
+    html += '<div class="actions">' + (p.section ? '<a class="btn btn-primary" href="#practice-' + p.section.toLowerCase() + '">Practise Section ' + p.section + "</a>" : "") + readButton(p.id) + "</div>";
+    html += pager(p.id) + "</article>";
+    html += '<aside class="rail" aria-label="Page navigation">' +
+      (toc ? "<div><h2>On this page</h2>" + toc + "</div>" : "") +
+      (p.blueprintTopics ? '<div class="aside"><h2>Blueprint topics</h2>' + inline(p.blueprintTopics) + "</div>" : "") +
+      progressAside() + guideRail(p.id) + "</aside></div>";
+    view.innerHTML = html;
+    bindReadButton(p.id);
+    watchReading(p.id);
+    spy(p.id);
+  }
+
+  /* ---------- overview ---------- */
+  function blueprintChart() {
+    var bp = DATA.blueprint, W = 680, rowH = 40, top = 16, left = 232, right = 52, H = top + bp.length * rowH + 48;
+    var max = 35, sx = function (v) { return left + (W - left - right) * v / max; };
+    var s = '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-labelledby="fig1t"><title id="fig1t">Questions per blueprint area, as a range from minimum to maximum</title>';
+    [0, 5, 10, 15, 20, 25, 30, 35].forEach(function (v) {
+      s += '<line x1="' + sx(v) + '" x2="' + sx(v) + '" y1="' + (top - 6) + '" y2="' + (H - 44) + '" stroke="#e6e9eb"/>' +
+        '<text x="' + sx(v) + '" y="' + (H - 26) + '" font-size="12" fill="#5f646a" text-anchor="middle">' + v + "</text>";
+    });
+    bp.forEach(function (b, i) {
+      var y = top + i * rowH + rowH / 2, hi = b.max >= 23;
+      var c = hi ? "#12647e" : "#b1b5b9";
+      s += '<text x="' + (left - 12) + '" y="' + (y + 4) + '" font-size="13" fill="#000" text-anchor="end">' + esc(b.section + ". " + b.title) + "</text>" +
+        '<line x1="' + sx(b.min) + '" x2="' + sx(b.max) + '" y1="' + y + '" y2="' + y + '" stroke="' + c + '" stroke-width="10" stroke-linecap="round"/>' +
+        '<text x="' + (sx(b.max) + 10) + '" y="' + (y + 4) + '" font-size="12" fill="' + (hi ? "#12647e" : "#5f646a") + '">' + b.min + "–" + b.max + "</text>";
+    });
+    s += '<text x="' + sx(17.5) + '" y="' + (H - 4) + '" font-size="12" fill="#5f646a" text-anchor="middle">Questions on the exam (of 110)</text>';
+    return s + "</svg>";
+  }
+  function renderOverview() {
+    var p = page("overview"), e = DATA.exam, s = summary();
+    setCrumbs([{ t: "NPPE study guide" }]);
+    var cont = P.last && P.last.route !== "overview" ? P.last.route : null;
+    var html = '<header class="header"><p class="marker">Lessons · Professional practice</p>' +
+      "<h1>NPPE study guide</h1>" +
+      '<p class="standfirst">Everything the National Professional Practice Examination tests, organized by the six blueprint areas, with ' + DATA.practice.questions.length + " practice questions and an explanation for every answer.</p>" +
+      byline("About 3 hours of reading") +
+      '<div class="actions">' + (cont ?
+        '<a class="btn btn-primary" href="#' + esc(cont) + '">Continue: ' + esc(titleOf(cont.split("--")[0])) + '</a><a class="btn btn-secondary" href="#progress">See your progress</a>' :
+        '<a class="btn btn-primary" href="#practice">Start the practice questions</a><a class="btn btn-secondary" href="#study-plan">Read the study plan</a>') + "</div>" +
+      (s.ans || s.read || s.started ? '<p class="msg">Progress saved in this browser: ' + s.read + " of " + s.pages + " pages read, " + s.ans + " of " + s.qn + ' questions answered. <a href="#progress">Download it as a file</a> to keep a copy.</p>' :
+        '<p class="msg">Your reading and answers are saved in this browser as you go. You can <a href="#progress">download them as a file</a> and upload it later, on any device.</p>') +
+      "</header>";
+    html += '<div class="tiles" aria-label="Exam facts">' +
+      tile(e.questions, "", "Multiple-choice questions") + tile(e.durationMinutes, "min", "Time allowed") +
+      tile(e.passScaledScore, "scaled", "Pass mark (not 65 % correct)") + tile(e.sessionsPerYear, "a year", "Exam sessions") + "</div>";
+    html += '<div class="layout"><article class="content"><section>';
+    html += '<figure><p class="fig-title">Figure 1. Professional practice, law and ethics carry about 70 % of the marks</p>' + blueprintChart() +
+      '<figcaption>Approximate number of questions per content area out of 110. Ranges as published with the NPPE blueprint and reported by preparation providers; check the current blueprint on nppexam.ca. <button class="btn btn-secondary btn-sm" type="button" id="copy-csv">Copy data as CSV</button></figcaption></figure>';
+    html += '<h2>The guide</h2>' + pathList() + "</section>";
+    p.subsections.forEach(function (sub) {
+      html += '<section id="overview--' + sub.id + '"><h2>' + esc(sub.title) + "</h2>" + sub.blocks.map(function (b, i) { return renderBlock(b, "b-overview-" + sub.id + "-" + i); }).join("") + '<span class="end" data-u="' + sub.id + '" aria-hidden="true"></span></section>';
+    });
+    html += pager("overview") + "</article>";
+    html += '<aside class="rail" aria-label="Page navigation"><div class="aside"><h2>About this guide</h2>Written for engineers-in-training and internationally trained engineers preparing for the NPPE. Examples lean towards process engineering; the law and ethics apply to every discipline.</div>' +
+      "<div><h2>2026 sessions</h2><ol>" + e.sessions2026.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ol></div>" + progressAside() + guideRail("overview") + "</aside></div>";
+    view.innerHTML = html;
+    watchReading("overview");
+    $("copy-csv").addEventListener("click", function () {
+      var csv = "section,area,min_questions,max_questions\n" + DATA.blueprint.map(function (b) { return [b.section, '"' + b.title + '"', b.min, b.max].join(","); }).join("\n");
+      copy(csv, "Blueprint data copied as CSV.");
+    });
+  }
+  function tile(v, unit, name, id) {
+    return '<div class="tile"' + (id ? ' id="' + id + '"' : "") + '><div><span class="tile-value">' + esc(v) + "</span>" + (unit ? '<span class="tile-unit">' + esc(unit) + "</span>" : '<span class="tile-unit"></span>') + '</div><div class="tile-name">' + esc(name) + "</div></div>";
+  }
+  function pathList() {
+    var groups = [
+      ["Prepare", ["study-plan", "exam-technique"]],
+      ["The six blueprint areas", ["section-i", "section-ii", "section-iii", "section-iv", "section-v", "section-vi"]],
+      ["Practise and look things up", ["practice", "case-studies", "glossary", "sources", "progress"]]
+    ];
+    return groups.map(function (g) {
+      return '<p class="label">' + esc(g[0]) + '</p><ol class="paths">' + g[1].map(function (id) {
+        var p = page(id), m = p && p.section ? p.section : "", d, st = "";
+        if (id === "practice") {
+          var sm = summary(); d = DATA.practice.questions.length + " questions with explanations, by section";
+          st = sm.ans ? '<span class="st">' + sm.ans + " answered</span>" : "";
+        } else if (id === "progress") {
+          d = "Download your reading and answers as a file, upload one to carry on, or start over";
+        } else {
+          d = firstSentence(p.standfirst || "");
+          var rs = readState(id);
+          st = rs.done ? '<span class="st seen">Read</span>' : (rs.seen ? '<span class="st">' + rs.seen + " of " + rs.total + " parts read</span>" : "");
+        }
+        var q = (p && p.questions ? '<span class="st">' + esc(p.questions) + " questions</span>" : "") + st;
+        return '<li><span class="m">' + esc(m) + '</span><div><a class="card-link t" href="#' + id + '">' + esc(titleOf(id)) + '</a><div class="d">' + esc(plain(d)) + '</div></div><span class="q">' + q + "</span></li>";
+      }).join("") + "</ol>";
+    }).join("");
+  }
+  function firstSentence(s) { var m = plain(s).match(/^.*?[.!?](\s|$)/); return m ? m[0].trim() : plain(s); }
+
+  /* ---------- practice ---------- */
+  var cur = "all";
+  function session(sec) {
+    var s = P.quiz[sec];
+    if (!s || !s.order.length) { s = P.quiz[sec] = makeSession(sec); }
+    return s;
+  }
+  function sessStats(s) {
+    var n = 0, ok = 0;
+    s.order.forEach(function (id) { var r = s.results[id]; if (r) { n++; if (r === QBY[id].answer) ok++; } });
+    return { n: n, ok: ok, pct: n ? Math.round(100 * ok / n) : 0 };
+  }
+  function record(q, picked) {
+    var a = P.answers[q.id] || { tries: 0 };
+    a.tries = (a.tries || 0) + 1; a.last = picked; a.ok = picked === q.answer; a.t = nowISO();
+    P.answers[q.id] = a;
+  }
+  function renderPractice(sec, focusId) {
+    cur = sec;
+    var s = session(sec);
+    if (focusId) { var k = s.order.indexOf(focusId); if (k >= 0) s.i = k; }
+    save();
+    setCrumbs([{ t: "NPPE study guide", href: "#overview" }, { t: sec === "missed" ? "Missed questions" : "Practice questions" }]);
+    var nMissed = missedIds().length;
+    var secs = [["all", "All sections"]].concat(DATA.practice.sections.map(function (x) { return [x.key, x.key]; }));
+    if (nMissed || sec === "missed") secs.push(["missed", "Missed (" + nMissed + ")"]);
+    var st = sessStats(s);
+    var html = '<header class="header"><p class="marker">Practise</p><h1>' + (sec === "missed" ? "Missed questions" : "Practice questions") + "</h1>" +
+      '<p class="standfirst">' + (sec === "missed" ? "The questions whose last answer was wrong. Get one right and it leaves this list." :
+        "Original questions weighted like the exam. Pick an answer, check it, and read the explanation before moving on. Your place and answers are saved as you go.") + "</p>" +
+      byline(plural(s.order.length, "question")) + "</header>";
+    html += '<div class="layout"><article class="content">';
+    html += '<div class="controls"><div class="row"><span class="lbl" id="seg-l">Section</span><div class="seg" role="group" aria-labelledby="seg-l">' +
+      secs.map(function (x) { return '<button type="button" data-sec="' + x[0] + '" aria-pressed="' + (x[0] === sec) + '">' + esc(x[1]) + "</button>"; }).join("") +
+      '</div></div><div class="row"><button type="button" class="btn btn-secondary btn-sm" id="shuffle">Shuffle the order</button><button type="button" class="btn btn-secondary btn-sm" id="restart">Start again</button></div></div>';
+    html += '<div class="tiles three" id="score" aria-label="Your score in this run">' +
+      tile(st.n, "of " + s.order.length, "Answered in this run", "t-ans") + tile(st.ok, "", "Correct", "t-cor") + tile(st.pct, "%", "Score", "t-pct") + "</div>";
+    html += '<div id="qbox"></div>';
+    html += '<div class="review"><h2>Review all ' + (sec === "all" || sec === "missed" ? "" : "Section " + sec + " ") + "answers</h2>" +
+      s.order.map(function (id) {
+        var q = QBY[id], a = q.options.filter(function (o) { return o.key === q.answer; })[0], mine = P.answers[id];
+        return '<details id="rev-' + q.id + '"><summary>' + esc(q.id + ". " + q.question) + '</summary><div class="body"><p><strong>Answer ' + esc(q.answer) + ".</strong> " + esc(a.text) + "</p><p>" + esc(q.explanation) + "</p>" +
+          (mine ? '<p class="mine-ans">Your last answer: ' + esc(mine.last) + (mine.ok ? ', <span class="ok">correct</span>' : ', <span class="no">not correct</span>') + " · " + plural(mine.tries, "try", "tries") + "</p>" : "") + "</div></details>";
+      }).join("") + "</div>";
+    html += pager("practice") + "</article>";
+    html += '<aside class="rail" aria-label="Page navigation"><div class="aside"><h2>How to use it</h2>Answer without looking at your notes, then read every explanation, including for questions you got right. These are original study questions, not official NPPE items.</div>' + progressAside() + guideRail("practice") + "</aside></div>";
+    view.innerHTML = html;
+    view.querySelectorAll(".seg button").forEach(function (b) { b.addEventListener("click", function () { location.hash = b.dataset.sec === "all" ? "practice" : "practice-" + b.dataset.sec.toLowerCase(); }); });
+    $("restart").addEventListener("click", function () { P.quiz[sec] = makeSession(sec); save(); renderPractice(sec); });
+    $("shuffle").addEventListener("click", function () {
+      var l = makeSession(sec).order;
+      for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = l[i]; l[i] = l[j]; l[j] = t; }
+      P.quiz[sec] = makeSession(sec, l); save(); renderPractice(sec);
+    });
+    drawQuestion(sec);
+  }
+  function bump(id, v, unit) {
+    var t = $(id); if (!t) return;
+    var val = t.querySelector(".tile-value");
+    if (unit !== undefined) t.querySelector(".tile-unit").textContent = unit;
+    if (val.textContent === String(v)) return;
+    val.textContent = v; t.classList.add("changed"); requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.remove("changed"); }); });
+  }
+  function showChecked(form, q, picked) {
+    var ok = picked === q.answer;
+    form.querySelectorAll(".opt").forEach(function (l) {
+      var inp = l.querySelector("input"), k = inp.value; l.classList.remove("sel");
+      if (k === picked) inp.checked = true;
+      if (k === q.answer) l.classList.add("right"); else if (k === picked) l.classList.add("wrong");
+      inp.disabled = true;
+    });
+    $("fb").innerHTML = '<p><span class="verdict ' + (ok ? "ok" : "no") + '">' + (ok ? "Correct." : "Not quite. The answer is " + q.answer + ".") + "</span> " + esc(q.explanation) + "</p>";
+  }
+  function drawQuestion(sec) {
+    var box = $("qbox"), s = P.quiz[sec]; if (!box || !s) return;
+    if (!s.order.length) {
+      box.innerHTML = '<div class="qcard"><p class="qmeta"><span>Nothing to review</span></p><p class="qstem">No missed questions right now.</p><p>Every question you have answered was right on its last try. Answer more in the other sections and any you miss will collect here.</p><div class="actions"><a class="btn btn-primary" href="#practice">Go to all practice questions</a></div></div>';
+      return;
+    }
+    var st = sessStats(s);
+    if (s.i >= s.order.length) {
+      var nm = missedIds().length;
+      box.innerHTML = '<div class="qcard"><p class="qmeta"><span>Finished</span></p><p class="qstem">You answered ' + st.ok + " of " + st.n + " correctly (" + st.pct + " %).</p>" +
+        "<p>Open the review list below to go over every answer, or start again." + (nm ? " " + plural(nm, "question") + " in the guide had a wrong last answer." : "") + '</p><div class="actions"><button class="btn btn-primary" type="button" id="again">Start again</button>' +
+        (nm && sec !== "missed" ? '<a class="btn btn-secondary" href="#practice-missed">Practise the ' + plural(nm, "missed question") + "</a>" : "") + "</div></div>";
+      $("again").addEventListener("click", function () { P.quiz[sec] = makeSession(sec); save(); renderPractice(sec); });
+      return;
+    }
+    var q = QBY[s.order[s.i]], done = s.results[q.id];
+    box.innerHTML = '<form class="qcard" id="qform"><p class="qmeta"><span>Question ' + (s.i + 1) + " of " + s.order.length + "</span><span>" + esc(q.id + " · " + q.sectionTitle + " · " + q.topic) + "</span></p>" +
+      '<fieldset class="opts"><legend class="qstem">' + esc(q.question) + "</legend>" +
+      q.options.map(function (o) { return '<label class="opt" for="o-' + o.key + '"><input type="radio" name="opt" id="o-' + o.key + '" value="' + o.key + '"><span class="k">' + o.key + "</span><span>" + esc(o.text) + "</span></label>"; }).join("") +
+      '</fieldset><div class="fb" id="fb" aria-live="polite"></div><div class="actions"><button class="btn btn-primary" type="submit" id="go" disabled>Check answer</button></div></form>';
+    var form = $("qform"), go = $("go"), picked = null, checked = !!done;
+    var nextLabel = function () { return s.i + 1 < s.order.length ? "Next question" : "See your score"; };
+    if (done) { showChecked(form, q, done); go.disabled = false; go.textContent = nextLabel(); }
+    form.querySelectorAll("input").forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        if (checked) return;
+        picked = inp.value; go.disabled = false;
+        form.querySelectorAll(".opt").forEach(function (l) { l.classList.toggle("sel", l.querySelector("input").checked); });
+      });
+    });
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      if (!checked) {
+        if (!picked) return;
+        checked = true; s.results[q.id] = picked; record(q, picked); save();
+        showChecked(form, q, picked);
+        go.textContent = nextLabel();
+        var n = sessStats(s);
+        bump("t-ans", n.n, "of " + s.order.length); bump("t-cor", n.ok); bump("t-pct", n.pct);
+        go.focus({ preventScroll: true });
+      } else {
+        s.i++; save(); drawQuestion(sec);
+        var f = $("qform"); if (f) { var first = f.querySelector("input"); if (first) first.focus({ preventScroll: true }); }
+      }
+    });
+  }
+
+  /* ---------- your progress: download, upload, reset ---------- */
+  var pending = null;
+  function renderProgress() {
+    setCrumbs([{ t: "NPPE study guide", href: "#overview" }, { t: "Your progress" }]);
+    var s = summary();
+    var html = '<header class="header"><p class="marker">Your progress</p><h1>Your progress</h1>' +
+      '<p class="standfirst">There are no accounts on this site. Your reading and answers are saved in this browser as you go; download them as a file to keep a copy or move to another device, and upload the file to carry on where you stopped.</p>' +
+      byline(P.saved ? "Last saved " + fmtStamp(P.saved) : "Nothing saved yet") + "</header>";
+    html += '<div class="tiles" aria-label="Progress summary">' +
+      tile(s.read, "of " + s.pages, "Pages read") + tile(s.ans, "of " + s.qn, "Questions answered") +
+      tile(s.ans ? Math.round(100 * s.ok / s.ans) : 0, "%", "Correct on the last try") + tile(s.missed, "", "Missed, to practise again") + "</div>";
+    html += '<div class="layout"><article class="content"><section id="progress--file"><h2>Save or restore</h2>';
+    if (!canStore) html += '<p class="note"><strong>Not saving.</strong> This browser is blocking storage for this site (a private window or strict privacy settings can do this). Progress lasts only until you close the tab, so download a file before you leave.</p>';
+    html += '<div class="card"><h3 class="card-title">Download a progress file</h3><p>A small JSON file with the pages and parts you have read, every answer you have checked, and where each practice run stopped. It holds no name, email or account details.</p>' +
+      '<div class="actions" style="margin-top:16px"><button type="button" class="btn btn-primary" id="dl">Download progress file</button></div></div>';
+    html += '<div class="card"><h3 class="card-title">Upload a progress file</h3><p>Choose a file you downloaded from this page. You will see what it contains before anything changes.</p>' +
+      '<label class="drop" id="drop"><input type="file" id="up" accept=".json,application/json"><strong>Choose a progress file</strong> or drop it here</label><div id="up-box" aria-live="polite"></div></div>';
+    html += '<div class="card"><h3 class="card-title">Start over</h3><p>Clears the reading marks, answers and practice runs saved in this browser. A file you downloaded is not affected.</p>' +
+      '<div class="actions" style="margin-top:16px" id="reset-row"><button type="button" class="btn btn-secondary btn-danger" id="reset">Reset progress</button></div></div>';
+    html += '<p class="note"><strong>Where it is kept.</strong> In this browser’s local storage for chemprocesseng.com, on this device only. Another browser, another device, a private window or clearing this site’s data starts empty; upload your file there to continue.</p>';
+    html += "</section>";
+    // reading table
+    html += '<section id="progress--reading"><h2>Reading</h2><div class="table-wrap"><table><thead><tr><th scope="col">Page</th><th class="n" scope="col">Parts read</th><th scope="col">Status</th></tr></thead><tbody>' +
+      ORDER.filter(function (id) { return id !== "practice"; }).map(function (id) {
+        var rs = readState(id);
+        var word = rs.done ? '<span class="status-word ok">Read</span>' : rs.seen ? "In progress" : '<span style="color:var(--ink-subtle)">Not started</span>';
+        return '<tr><td><a href="#' + id + '">' + esc(shortTitle(id)) + '</a></td><td class="n">' + rs.seen + " of " + rs.total + "</td><td>" + word + "</td></tr>";
+      }).join("") + "</tbody></table></div><p>A part counts as read once you have scrolled to its end. Use “Mark this page as read” at the foot of a page to mark it all at once.</p></section>";
+    // practice table
+    html += '<section id="progress--practice"><h2>Practice questions</h2><div class="table-wrap"><table><thead><tr><th scope="col">Section</th><th class="n" scope="col">Questions</th><th class="n" scope="col">Answered</th><th class="n" scope="col">Correct</th><th class="n" scope="col">Missed</th></tr></thead><tbody>' +
+      DATA.practice.sections.map(function (x) {
+        var qs = DATA.practice.questions.filter(function (q) { return q.section === x.key; }), n = 0, ok = 0;
+        qs.forEach(function (q) { var a = P.answers[q.id]; if (a) { n++; if (a.ok) ok++; } });
+        return '<tr><td><a href="#practice-' + x.key.toLowerCase() + '">' + esc(x.key + ". " + x.title) + '</a></td><td class="n">' + qs.length + '</td><td class="n">' + n + '</td><td class="n">' + ok + '</td><td class="n">' + (n - ok) + "</td></tr>";
+      }).join("") + '<tr><td><strong>All sections</strong></td><td class="n"><strong>' + s.qn + '</strong></td><td class="n"><strong>' + s.ans + '</strong></td><td class="n"><strong>' + s.ok + '</strong></td><td class="n"><strong>' + s.missed + "</strong></td></tr></tbody></table></div>" +
+      "<p>Correct and missed count the last answer you gave to each question.</p>" +
+      (s.missed ? '<div class="actions"><a class="btn btn-secondary" href="#practice-missed">Practise the ' + plural(s.missed, "missed question") + "</a></div>" : "") + "</section>";
+    html += '<nav class="pager" aria-label="Guide pages"><a href="#sources"><span class="dir">Previous</span>' + esc(titleOf("sources")) + '</a><a href="#overview" style="text-align:right"><span class="dir">Back to</span>' + esc(titleOf("overview")) + "</a></nav></article>";
+    html += '<aside class="rail" aria-label="Page navigation"><div class="aside"><h2>Moving to another device</h2>Download the file here, send it to yourself, open this page on the other device and upload it. Choose “Combine both” if you have studied on both.</div>' + guideRail("progress") + "</aside></div>";
+    view.innerHTML = html;
+    $("dl").addEventListener("click", download);
+    var up = $("up"), drop = $("drop");
+    up.addEventListener("change", function () { if (up.files && up.files[0]) readFile(up.files[0]); up.value = ""; });
+    ["dragenter", "dragover"].forEach(function (t) { drop.addEventListener(t, function (ev) { ev.preventDefault(); drop.classList.add("over"); }); });
+    ["dragleave", "drop"].forEach(function (t) { drop.addEventListener(t, function () { drop.classList.remove("over"); }); });
+    drop.addEventListener("drop", function (ev) { ev.preventDefault(); var f = ev.dataTransfer && ev.dataTransfer.files[0]; if (f) readFile(f); });
+    $("reset").addEventListener("click", askReset);
+  }
+  function download() {
+    try {
+      if (!P.saved) P.saved = nowISO();
+      var blob = new Blob([JSON.stringify(exportObj(), null, 1)], { type: "application/json" });
+      var url = URL.createObjectURL(blob), a = document.createElement("a");
+      a.href = url; a.download = "nppe-progress-" + todayISO() + ".json";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      toast("Progress file downloaded.");
+    } catch (e) { toast("This browser blocked the download. Try another browser."); }
+  }
+  function upMsg(cls, text) { $("up-box").innerHTML = '<p class="msg ' + cls + '">' + text + "</p>"; }
+  function readFile(file) {
+    pending = null;
+    if (file.size > 2000000) { upMsg("no", "That file is too large to be a progress file from this page."); return; }
+    var fr = new FileReader();
+    fr.onerror = function () { upMsg("no", "The file could not be read. Try choosing it again."); };
+    fr.onload = function () {
+      var o;
+      try { o = JSON.parse(String(fr.result).replace(/^﻿/, "")); } catch (e) { upMsg("no", "That file is not a progress file: it is not valid JSON."); return; }
+      if (!o || o.format !== FORMAT) { upMsg("no", "That file is not an NPPE progress file from this page."); return; }
+      if (typeof o.version !== "number" || o.version > VERSION) { upMsg("no", "That file was made by a newer version of this guide. Reload the page and try again."); return; }
+      var c = clean(o); pending = c.p;
+      var a = summary(pending), b = summary();
+      var note = (c.skipped ? "<p class=\"msg warn\">" + plural(c.skipped, "answer") + " in the file refer to questions this version of the guide no longer has; they will be skipped.</p>" : "") +
+        (o.guideUpdated && o.guideUpdated !== DATA.updated ? '<p class="msg">The file was saved with the guide as updated on ' + esc(fmtDate(String(o.guideUpdated))) + "; this page is the " + fmtDate(DATA.updated) + " version.</p>" : "");
+      $("up-box").innerHTML = '<div class="preview"><p><strong>' + esc(file.name) + "</strong>, saved " + esc(fmtStamp(pending.saved)) + ".</p>" +
+        '<div class="table-wrap"><table><thead><tr><th scope="col"></th><th class="n" scope="col">In the file</th><th class="n" scope="col">In this browser</th></tr></thead><tbody>' +
+        '<tr><td>Pages read</td><td class="n">' + a.read + '</td><td class="n">' + b.read + "</td></tr>" +
+        '<tr><td>Questions answered</td><td class="n">' + a.ans + '</td><td class="n">' + b.ans + "</td></tr>" +
+        '<tr><td>Correct on the last try</td><td class="n">' + a.ok + '</td><td class="n">' + b.ok + "</td></tr></tbody></table></div>" + note +
+        '<div class="actions" style="margin-top:12px"><button type="button" class="btn btn-secondary" id="up-replace">Replace with the file</button>' +
+        '<button type="button" class="btn btn-secondary" id="up-merge">Combine both</button><button type="button" class="btn btn-secondary btn-sm" id="up-cancel">Cancel</button></div>' +
+        '<p class="msg">“Combine both” keeps every page read in either, and the most recent answer to each question.</p></div>';
+      $("up-replace").addEventListener("click", function () { applyUpload(false); });
+      $("up-merge").addEventListener("click", function () { applyUpload(true); });
+      $("up-cancel").addEventListener("click", function () { pending = null; $("up-box").innerHTML = ""; });
+      $("up-replace").focus();
+    };
+    fr.readAsText(file);
+  }
+  function applyUpload(combine) {
+    if (!pending) return;
+    P = combine ? merge(P, pending) : pending; pending = null;
+    save(); renderProgress();
+    toast(combine ? "Progress combined with the file." : "Progress restored from the file.");
+    live.textContent = "Progress updated from the file.";
+  }
+  function askReset() {
+    $("reset-row").innerHTML = '<p class="msg" style="flex-basis:100%;margin:0">This clears everything saved in this browser. Download a copy first if you might want it back.</p>' +
+      '<button type="button" class="btn btn-secondary btn-sm" id="dl2">Download a copy first</button><button type="button" class="btn btn-secondary btn-sm btn-danger" id="reset-yes">Yes, clear my progress</button><button type="button" class="btn btn-secondary btn-sm" id="reset-no">Cancel</button>';
+    $("dl2").addEventListener("click", download);
+    $("reset-yes").addEventListener("click", function () {
+      P = blank(); if (canStore) { try { localStorage.removeItem(KEY); } catch (e) {} }
+      updateProg(); renderProgress(); toast("Progress cleared.");
+    });
+    $("reset-no").addEventListener("click", renderProgress);
+    $("reset-yes").focus();
+  }
+
+  /* ---------- search ---------- */
+  var INDEX = [];
+  function buildIndex() {
+    function blockText(b) {
+      if (b.type === "list") return b.items.map(function (i) { return i.text + (i.children ? " " + i.children.items.map(function (c) { return c.text; }).join(" ") : ""); }).join(" · ");
+      if (b.type === "table") return b.header.join(" · ") + " · " + b.rows.map(function (r) { return r.join(" — "); }).join(" · ");
+      return (b.label ? b.label + ". " : "") + b.text;
+    }
+    DATA.pages.forEach(function (p) {
+      var pageLabel = p.section ? "Section " + p.section + " · " + p.title : p.title;
+      INDEX.push({ route: p.id, target: null, where: pageLabel, title: p.title, text: plain(p.standfirst || ""), weight: 3 });
+      bodyLead(p).forEach(function (b, i) { INDEX.push({ route: p.id, target: "b-" + p.id + "-lead-" + i, where: pageLabel, title: "", text: plain(blockText(b)), weight: 1 }); });
+      p.subsections.forEach(function (s) {
+        INDEX.push({ route: p.id, target: p.id + "--" + s.id, where: pageLabel, title: s.title, text: "", weight: 2 });
+        s.blocks.forEach(function (b, i) {
+          if (b.type === "table") {
+            b.rows.forEach(function (r) { INDEX.push({ route: p.id, target: "b-" + p.id + "-" + s.id + "-" + i, where: pageLabel + " › " + s.title, title: "", text: plain(r.join(" — ")), weight: 1 }); });
+          } else if (b.type === "list") {
+            b.items.forEach(function (it) { INDEX.push({ route: p.id, target: "b-" + p.id + "-" + s.id + "-" + i, where: pageLabel + " › " + s.title, title: "", text: plain(it.text + (it.children ? " " + it.children.items.map(function (c) { return c.text; }).join(" ") : "")), weight: 1 }); });
+          } else {
+            INDEX.push({ route: p.id, target: "b-" + p.id + "-" + s.id + "-" + i, where: pageLabel + " › " + s.title, title: "", text: plain(blockText(b)), weight: 1 });
+          }
+        });
+      });
+    });
+    DATA.practice.questions.forEach(function (q) {
+      INDEX.push({ route: "practice-" + q.section.toLowerCase(), target: "q:" + q.id, where: "Practice question " + q.id, title: "", text: q.question + " " + q.options.map(function (o) { return o.text; }).join(" · ") + " " + q.explanation, weight: 1 });
+    });
+    INDEX.forEach(function (e) { e.hay = (e.title + " " + e.text).toLowerCase(); e.titleL = e.title.toLowerCase(); });
+  }
+  function terms(q) { return q.toLowerCase().replace(/[^\w\s.&'-]/g, " ").split(/\s+/).filter(function (t) { return t.length > 1 || /\d/.test(t); }); }
+  function search(q) {
+    var ts = terms(q); if (!ts.length) return [];
+    var phrase = q.trim().toLowerCase(), res = [];
+    INDEX.forEach(function (e) {
+      var score = 0;
+      for (var i = 0; i < ts.length; i++) {
+        var t = ts[i], at = e.hay.indexOf(t);
+        if (at < 0) return;
+        var wordStart = at === 0 || /\W/.test(e.hay[at - 1]);
+        score += (wordStart ? 3 : 1) + (e.titleL.indexOf(t) >= 0 ? 6 : 0);
+      }
+      if (phrase.length > 3 && e.hay.indexOf(phrase) >= 0) score += 8;
+      res.push({ e: e, s: score * e.weight + (e.title ? 2 : 0) });
+    });
+    res.sort(function (a, b) { return b.s - a.s; });
+    var seen = {}, out = [];
+    res.forEach(function (r) { var k = r.e.route + "|" + r.e.target + "|" + r.e.text.slice(0, 40); if (!seen[k]) { seen[k] = 1; out.push(r.e); } });
+    return out;
+  }
+  function snippet(text, ts) {
+    if (!text) return "";
+    var low = text.toLowerCase(), first = -1;
+    ts.forEach(function (t) { var i = low.indexOf(t); if (i >= 0 && (first < 0 || i < first)) first = i; });
+    var start = Math.max(0, first - 60), s = text.slice(start, start + 180);
+    if (start > 0) s = "…" + s.replace(/^\S*\s/, "");
+    if (start + 180 < text.length) s += "…";
+    var h = esc(s);
+    ts.slice().sort(function (a, b) { return b.length - a.length; }).forEach(function (t) {
+      var re = new RegExp("(" + esc(t).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+      h = h.replace(re, "<mark>$1</mark>");
+    });
+    return h.replace(/<mark><mark>/g, "<mark>").replace(/<\/mark><\/mark>/g, "</mark>");
+  }
+  var input = $("q"), panel = $("results"), sel = -1, current = [], pendingTarget = null;
+  function showResults() {
+    if (!DATA) return;
+    var q = input.value.trim();
+    if (q.length < 2) { panel.hidden = true; input.setAttribute("aria-expanded", "false"); return; }
+    var ts = terms(q); current = search(q); sel = -1;
+    var shown = current.slice(0, 12);
+    panel.innerHTML = current.length ?
+      '<p class="count">' + plural(current.length, "result") + (current.length > 12 ? ", showing the best 12" : "") + "</p><ol>" + shown.map(function (e, i) {
+        return '<li><a href="#' + e.route + '" role="option" data-i="' + i + '" aria-selected="false"><div class="where">' + esc(e.where) + "</div>" +
+          '<div class="snip">' + (e.title ? "<strong>" + snippet(e.title, ts) + "</strong>" + (e.text ? " — " : "") : "") + snippet(e.text, ts) + "</div></a></li>";
+      }).join("") + "</ol>" :
+      '<p class="empty">Nothing matches “' + esc(q) + '”. Try a shorter term, such as “seal”, “tort” or “holdback”.</p>';
+    panel.hidden = false; input.setAttribute("aria-expanded", "true");
+    live.textContent = plural(current.length, "result");
+    panel.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function (ev) { ev.preventDefault(); go(current[+a.dataset.i]); }); });
+  }
+  function go(e) {
+    panel.hidden = true; input.setAttribute("aria-expanded", "false");
+    pendingTarget = e.target;
+    if (location.hash.slice(1) === e.route) route(); else location.hash = e.route;
+  }
+  input.addEventListener("input", showResults);
+  input.addEventListener("focus", function () { if (input.value.trim().length > 1) showResults(); });
+  input.addEventListener("keydown", function (ev) {
+    var links = panel.querySelectorAll("a");
+    if (ev.key === "ArrowDown" || ev.key === "ArrowUp") {
+      if (!links.length) return; ev.preventDefault();
+      sel = (sel + (ev.key === "ArrowDown" ? 1 : -1) + links.length) % links.length;
+      links.forEach(function (l, i) { l.setAttribute("aria-selected", i === sel ? "true" : "false"); });
+      links[sel].scrollIntoView({ block: "nearest" });
+    } else if (ev.key === "Escape") { panel.hidden = true; input.blur(); }
+  });
+  $("search-form").addEventListener("submit", function (ev) { ev.preventDefault(); if (current.length) go(current[Math.max(sel, 0)]); });
+  document.addEventListener("click", function (ev) { if (!$("search-form").contains(ev.target)) panel.hidden = true; });
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "/" && document.activeElement !== input && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { ev.preventDefault(); input.focus(); input.select(); }
+  });
+
+  /* ---------- routing ---------- */
+  function route() {
+    var h = decodeURIComponent(location.hash.slice(1)) || "overview";
+    var parts = h.split("--"), pid = parts[0], sub = parts[1];
+    var target = pendingTarget; pendingTarget = null;
+    var m = pid.match(/^practice(?:-(i|ii|iii|iv|v|vi|missed))?$/);
+    if (readObs) { readObs.disconnect(); readObs = null; }
+    if (m) {
+      var focus = target && target.indexOf("q:") === 0 ? target.slice(2) : null;
+      renderPractice(m[1] ? (m[1] === "missed" ? "missed" : m[1].toUpperCase()) : "all", focus);
+      target = null;
+    } else if (pid === "progress") renderProgress();
+    else if (pid === "overview") renderOverview();
+    else if (page(pid)) renderReading(page(pid));
+    else { renderOverview(); pid = "overview"; h = "overview"; }
+    document.title = (pid === "overview" ? "NPPE study guide · " : titleOf(pid) + " · NPPE study guide · ") + SITE;
+    if (pid !== "overview" && pid !== "progress") { P.last = { route: h, t: nowISO() }; save(); }
+    var dest = target ? $(target) : (sub ? $(pid + "--" + sub) : null);
+    if (dest) {
+      dest.scrollIntoView({ block: "start" }); window.scrollBy(0, -16);
+      var f = dest.tagName === "SECTION" ? dest.querySelector("h2") : dest;
+      f.classList.remove("flash"); void f.offsetWidth; f.classList.add("flash");
+    } else window.scrollTo(0, 0);
+    if (!dest && !sub) view.focus({ preventScroll: true });
+  }
+  function spy(pid) {
+    var links = Array.prototype.slice.call(document.querySelectorAll(".rail a[data-sub]"));
+    if (!links.length || !("IntersectionObserver" in window)) return;
+    var secs = links.map(function (a) { return $(pid + "--" + a.dataset.sub); });
+    var obs = new IntersectionObserver(function () {
+      var best = null;
+      secs.forEach(function (s) { if (s && s.getBoundingClientRect().top < 160) best = s; });
+      links.forEach(function (a) { a.setAttribute("aria-current", best && best.id === pid + "--" + a.dataset.sub ? "true" : "false"); });
+    }, { rootMargin: "0px 0px -60% 0px", threshold: [0, 1] });
+    secs.forEach(function (s) { if (s) obs.observe(s); });
+  }
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest("a[href^='#']");
+    if (a && a.getAttribute("href") === location.hash && a.getAttribute("href").indexOf("--") > 0) { ev.preventDefault(); route(); }
+  });
+  /* The skip link must not change the hash, which is the guide's router. */
+  document.querySelector(".skip").addEventListener("click", function (ev) { ev.preventDefault(); view.focus(); view.scrollIntoView(); });
+  function copy(text, msg) {
+    try {
+      navigator.clipboard.writeText(text).then(function () { toast(msg); }, function () { toast("Copying is blocked here. Select the table and copy it instead."); });
+    } catch (e) { toast("Copying is blocked here. Select the table and copy it instead."); }
+  }
+  /* Another tab saved progress: pick it up. */
+  window.addEventListener("storage", function (ev) { if (ev.key === KEY && DATA) { loadStore(); updateProg(); } });
+
+  function boot(d) {
+    DATA = d;
+    DATA.practice.questions.forEach(function (q) { QBY[q.id] = q; });
+    loadStore(); buildIndex(); updateProg();
+    window.addEventListener("hashchange", route); route();
+  }
+  var raw = $("nppe-data").textContent.trim();
+  if (raw && raw.charAt(0) === "{") boot(JSON.parse(raw));
+  else fetch("nppe-guide.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(boot).catch(function () {
+    view.innerHTML = '<header class="header"><h1>The guide could not load</h1><p class="standfirst">nppe-guide.json was not found next to this page. Reload the page; if this keeps happening, the file is missing from the site.</p></header>';
+  });
+})();
+</script>
+</body>
+</html>
