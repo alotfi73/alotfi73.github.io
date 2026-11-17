@@ -62,15 +62,15 @@ h1,h2,h3{text-wrap:balance;margin:0}
 table,.tile-value,.num{font-variant-numeric:tabular-nums}
 
 /* Page frame and header (page-template.html) */
-.page{max-width:1200px;margin:0 auto;padding:0 40px 40px}
+.page{max-width:var(--page-max,1440px);margin:0 auto;padding:0 40px 40px}
 #view:focus{outline:none}
 .header{padding:32px 0 8px}
 .crumb{font-size:14px;color:var(--ink-subtle);margin:0}
 .crumb a{color:var(--ink-subtle)}
 .crumb .sep{margin:0 6px}
 h1{font:300 56px/1.12 var(--f-display);letter-spacing:-0.01em;max-width:900px}
-.standfirst{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);max-width:680px;margin:18px 0 0}
-.byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;margin-top:22px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:984px}
+.standfirst{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);max-width:var(--measure,880px);margin:18px 0 0}
+.byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;margin-top:22px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:var(--wide,1224px)}
 .byline .author{color:var(--ink);font-weight:600;text-decoration:none}
 .byline .author:hover{text-decoration:underline}
 .marker{font:400 15px/1.3 var(--f-display);letter-spacing:0.02em;color:var(--secondary);margin:0 0 8px}
@@ -99,7 +99,7 @@ h1{font:300 56px/1.12 var(--f-display);letter-spacing:-0.01em;max-width:900px}
 mark{background:var(--primary);color:var(--ink);padding:0 1px;border-radius:2px}
 
 /* Reading page: 680 px column + 240 px rail */
-.layout{display:grid;grid-template-columns:minmax(0,680px) 240px;column-gap:64px;align-items:start;margin-top:40px}
+.layout{display:grid;grid-template-columns:minmax(0,var(--measure,880px)) var(--sidenote,280px);column-gap:64px;align-items:start;margin-top:40px}
 .content{min-width:0}
 .rail{position:sticky;top:24px;font-size:14px;line-height:1.55;color:var(--ink-muted);display:grid;gap:28px;padding-top:6px}
 .rail h2{font:600 13px/1.4 var(--f-body);letter-spacing:0.01em;color:var(--ink-subtle);margin:0 0 8px}
@@ -159,7 +159,7 @@ figcaption{font-size:13px;color:var(--ink-subtle);line-height:1.5;margin-top:10p
 .card-link:hover{text-decoration:underline}
 
 /* Tiles */
-.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:32px 0 0;max-width:984px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:32px 0 0;max-width:var(--wide,1224px)}
 .tiles.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .tile{background:var(--surface);border-radius:8px;padding:16px;transition:background 1.5s var(--ease)}
 .tile-value{font:300 30px/1.1 var(--f-display);letter-spacing:-0.01em}
@@ -231,7 +231,7 @@ figcaption{font-size:13px;color:var(--ink-subtle);line-height:1.5;margin-top:10p
 .pager a{text-decoration:none;font-weight:600}
 .pager a:hover{text-decoration:underline}
 .pager .dir{display:block;font:400 13px var(--f-body);color:var(--ink-subtle)}
-.disclaimer{font-size:13px;color:var(--ink-subtle);max-width:680px;margin:56px 0 0}
+.disclaimer{font-size:13px;color:var(--ink-subtle);max-width:var(--measure,880px);margin:56px 0 0}
 
 /* Floating message: the one soft shadow allowed for floating elements */
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--surface);color:var(--ink);padding:12px 18px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);font-size:14px;z-index:60;max-width:calc(100vw - 32px)}
@@ -1065,9 +1065,11 @@ figcaption{font-size:13px;color:var(--ink-subtle);line-height:1.5;margin-top:10p
     var m = pid.match(/^practice(?:-(i|ii|iii|iv|v|vi|missed))?$/);
     if (readObs) { readObs.disconnect(); readObs = null; }
     if (m) {
-      var focus = target && target.indexOf("q:") === 0 ? target.slice(2) : null;
+      /* A question can be opened from the guide search (target "q:ID") or from a link such as
+         #practice-iv--q-IV-03, which the site-wide search uses. */
+      var focus = target && target.indexOf("q:") === 0 ? target.slice(2) : (sub && sub.indexOf("q-") === 0 ? sub.slice(2) : null);
       renderPractice(m[1] ? (m[1] === "missed" ? "missed" : m[1].toUpperCase()) : "all", focus);
-      target = null;
+      target = focus ? "qbox" : null; sub = null;
     } else if (pid === "progress") renderProgress();
     else if (pid === "overview") renderOverview();
     else if (page(pid)) renderReading(page(pid));

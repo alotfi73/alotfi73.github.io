@@ -60,8 +60,8 @@ sub,sup{line-height:0}
 .skip:focus{left:12px;top:12px;z-index:10}
 
 /* Page frame */
-.page{max-width:1200px;margin:0 auto;padding:0 40px}
-.grid{display:grid;grid-template-columns:minmax(0,680px) 240px;gap:0 64px}
+.page{max-width:var(--page-max,1440px);margin:0 auto;padding:0 40px}
+.grid{display:grid;grid-template-columns:minmax(0,var(--measure,880px)) var(--sidenote,280px);gap:0 64px}
 .main-col{grid-column:1}
 .side{grid-column:2;font-size:14px;line-height:1.55;color:var(--ink-muted)}
 .full{grid-column:1 / -1}
@@ -72,7 +72,7 @@ sub,sup{line-height:0}
 .crumb a{color:var(--ink-subtle)}
 .marker{font-family:var(--f-display);font-size:15px;color:var(--secondary);letter-spacing:0.02em;margin:0 0 10px}
 h1{font-family:var(--f-display);font-weight:300;font-size:56px;line-height:1.12;letter-spacing:-0.01em;max-width:900px}
-.standfirst{font-size:19px;font-weight:300;line-height:1.6;color:var(--ink-muted);max-width:680px;margin:18px 0 22px}
+.standfirst{font-size:19px;font-weight:300;line-height:1.6;color:var(--ink-muted);max-width:var(--measure,880px);margin:18px 0 22px}
 .byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:920px}
 
 /* Sections */
@@ -447,7 +447,7 @@ figure svg{display:block;width:100%;height:auto}
     <div class="grid">
       <div class="main-col full">
         <div class="sec-head"><h2>Calculator: LMTD, F and area</h2></div>
-        <p style="max-width:680px">Enter the four terminal temperatures, the duty and a design U. The calculator checks the energy balance, computes ΔT<sub>lm</sub>, the exact F for the shell arrangement you choose, the area, and how many 19.05 mm × 6.1 m tubes that area needs.</p>
+        <p style="max-width:var(--measure,880px)">Enter the four terminal temperatures, the duty and a design U. The calculator checks the energy balance, computes ΔT<sub>lm</sub>, the exact F for the shell arrangement you choose, the area, and how many 19.05 mm × 6.1 m tubes that area needs.</p>
       </div>
     </div>
 
@@ -842,7 +842,7 @@ figure svg{display:block;width:100%;height:auto}
     <div class="grid">
       <div class="main-col full">
         <div class="sec-head"><h2>Codes and standards</h2></div>
-        <div style="max-width:680px">
+        <div style="max-width:var(--measure,880px)">
           <p>Three layers of documents apply to most process exchangers. A <strong>pressure code</strong> (ASME VIII, EN 13445) makes the vessel legal and safe to operate. A <strong>manufacturer standard</strong> (TEMA, HEI) fixes construction details, tolerances and nomenclature. An <strong>owner's specification</strong> (API, ISO, PIP, IPS or a company standard) adds the oil-and-gas lessons learned on top. Process engineers rarely design to these clauses, but they write the datasheets that select them, so they need to know what each one controls.</p>
         </div>
         <div class="tbl-wrap">
@@ -870,7 +870,7 @@ figure svg{display:block;width:100%;height:auto}
             </tbody>
           </table>
         </div>
-        <p class="tbl-cap" style="max-width:680px">Table 3. Edition information is from publisher and reseller listings checked on 15 November 2026. Your project's owner specification decides which edition governs; always confirm against the contract.</p>
+        <p class="tbl-cap" style="max-width:var(--measure,880px)">Table 3. Edition information is from publisher and reseller listings checked on 15 November 2026. Your project's owner specification decides which edition governs; always confirm against the contract.</p>
       </div>
     </div>
   </section>
@@ -902,7 +902,7 @@ figure svg{display:block;width:100%;height:auto}
             </tbody>
           </table>
         </div>
-        <p class="tbl-cap" style="max-width:680px">Table 4. Typical practice; individual projects differ with pressure, fouling, plot space and owner preference.</p>
+        <p class="tbl-cap" style="max-width:var(--measure,880px)">Table 4. Typical practice; individual projects differ with pressure, fouling, plot space and owner preference.</p>
       </div>
     </div>
   </section>

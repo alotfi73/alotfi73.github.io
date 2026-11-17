@@ -170,9 +170,9 @@ spacing:
   lg: 40px
   xl: 84px
   gutter: 24px
-  measure: 680px
-  sidenote: 240px
-  page-max: 1200px
+  measure: 880px
+  sidenote: 280px
+  page-max: 1440px
   hero-art: 420px
   hero-overlap: 150px
   hero-inset: 48px
@@ -352,12 +352,12 @@ Rules:
 - All numbers in tables, results and charts use tabular figures (`font-variant-numeric: tabular-nums`) and are right-aligned in columns.
 - Use real symbols: the minus sign (−), multiplication (×), subscripts (CH₄, C/C₀), thin spaces before units where possible, and en dashes for ranges (10–20 %).
 - Headlines are sentence case. No all-caps labels. The only label above a heading is the sienna serif `marker`, in sentence case.
-- Measure: running text never wider than 680 px (about 70 characters).
+- Measure: running text never wider than 880 px (about 100 characters). The widths live in one place, the `--page-max`, `--measure`, `--sidenote` and `--wide` variables at the top of `/assets/css/site.css`; pages use them with fallbacks instead of fixed pixel values.
 
 # Layout
 
-- 12-column grid, 1200 px max width, 24 px gutters, 40 px page margins (20 px under 700 px).
-- Reading pages (lessons, analyses) use an asymmetric split: a 680 px text column and a 240 px sidenote column to its right for definitions, sources and asides. Under 1000 px, sidenotes drop inline as indented notes.
+- 12-column grid, 1440 px max width, 24 px gutters, 40 px page margins (20 px under 700 px).
+- Reading pages (lessons, analyses) use an asymmetric split: an 880 px text column and a 280 px sidenote column to its right, 64 px apart (1224 px together, the `--wide` width for figures and tables that span both) for definitions, sources and asides. Under 1000 px, sidenotes drop inline as indented notes.
 - Interactive pages (calculators, data) put the control next to the thing it changes: inputs beside results, chart controls directly above the chart.
 - Sections are separated by space (84 px, 46 px under 700 px). Reading and data pages also put a 1 px black rule above the section heading. The home page separates sections with space and one white band instead of rules.
 - Choose the layout after the content: lists of items are lists, tabular data is a table, and only self-contained interactive modules get a card.
@@ -399,7 +399,7 @@ Radius follows hierarchy, so it is never the same everywhere:
 
 ## Navigation
 White bar, 72 px tall. On the left, the home link: the full logo (`/assets/brand/logo.svg`) at 52 px followed, 14 px apart, by the site name "Chemical Process Engineering" in Newsreader 22 px. The site name, never a person's name, sits beside the logo. On the right, five text links (Calculators, Lessons, Data, Analysis, About), then the search box. The current section has a 2 px black underline.
-- Search box: 220 × 40 px, white, 1 px `border-strong` outline and 20 px radius (the same shape as a secondary control), placeholder "Search", and a magnifier button at its right end that fills with `primary` on hover. The focus ring is `focus` teal. Pressing Enter or the button opens the search results page.
+- Search box: 220 × 40 px, white, 1 px `border-strong` outline and 20 px radius (the same shape as a secondary control), placeholder "Search", and a magnifier button at its right end that fills with `primary` on hover. The focus ring is `focus` teal. Typing two or more letters shows live results under the box (up to eight, each with its page, section heading and a snippet with the search words marked in `primary`, plus "See all n results"); arrow keys move through them and Enter opens the selected one. Pressing Enter with nothing selected, or the button, opens the search results page. Both use the same index and matching: every word must appear in a section, anywhere inside a word, as in the NPPE guide's own search.
 - 641–1140 px: two rows, logo, name and search box first, links below.
 - 640 px and narrower: logo at 44 px, the name wraps onto two lines at 18 px, the search box becomes a 44 px round icon button that opens `/search/`, and the five links spread across the second row.
 - No other icons, no sticky bar, no blur.

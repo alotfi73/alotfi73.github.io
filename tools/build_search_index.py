@@ -11,6 +11,13 @@ at its h2/h3 headings, and writes assets/search/index.json:
   {"built": "...", "pages": [{"u": url, "t": title, "k": kind, "d": description}],
    "entries": [{"p": page number, "a": anchor id, "h": heading, "x": text}]}
 
+Pages whose content is drawn by JavaScript from a data file are indexed from that file too:
+lessons/nppe/nppe-guide.json adds every guide section and practice question, with anchors that
+open the guide at that place (#section-iv--sub-id, #practice-iv--q-IV-03).
+
+Folders whose names are not valid slugs (spaces, capitals, underscores) are not pages and are skipped,
+so old copies such as "NPPE Study Guide/" never reach the results.
+
 Only the Python standard library is used.
 """
 import datetime
@@ -132,11 +139,65 @@ def clean(s):
     return re.sub(r"\s+", " ", s or "").strip()
 
 
+SLUG = re.compile(r"[a-z0-9][a-z0-9-]*")
+
+
+def md_plain(s):
+    """Strip the light markdown used in the NPPE guide: [text](url), **bold**, *italic*, `code`."""
+    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", s or "")
+    return re.sub(r"[*`]", "", s)
+
+
+def block_text(b):
+    t = b.get("type")
+    if t == "list":
+        out = []
+        def walk(lst):
+            for it in lst.get("items", []):
+                out.append(it.get("text", ""))
+                if it.get("children"):
+                    walk(it["children"])
+        walk(b)
+        return " ".join(out)
+    if t == "table":
+        return " ".join(b.get("header", []) + [" ".join(r) for r in b.get("rows", [])])
+    if t == "note":
+        return (b.get("label") or "") + ". " + (b.get("text") or "")
+    return b.get("text") or ""
+
+
+def nppe_entries(path, pi):
+    """Entries for the NPPE study guide, whose text lives in nppe-guide.json."""
+    with open(path, encoding="utf-8") as f:
+        g = json.load(f)
+    if g.get("schema") != "nppe-guide/1":
+        return []
+    out = []
+    for p in g.get("pages", []):
+        label = ("Section " + p["section"] + ", " + p["title"]) if p.get("section") else p["title"]
+        lead = " ".join([p.get("standfirst") or ""] + [block_text(b) for b in p.get("lead", [])])
+        if clean(md_plain(lead)):
+            out.append({"p": pi, "a": p["id"], "h": label, "x": clean(md_plain(lead))})
+        for s in p.get("subsections", []):
+            x = clean(md_plain(" ".join(block_text(b) for b in s.get("blocks", []))))
+            out.append({"p": pi, "a": p["id"] + "--" + s["id"], "h": s["title"] + " (" + label + ")", "x": x})
+    for q in g.get("practice", {}).get("questions", []):
+        x = " ".join([q["question"]] + [o["key"] + ". " + o["text"] for o in q["options"]] + [q.get("explanation", "")])
+        out.append({"p": pi, "a": "practice-" + q["section"].lower() + "--q-" + q["id"],
+                    "h": "Practice question " + q["id"] + ": " + q.get("topic", ""), "x": clean(md_plain(x))})
+    return out
+
+
+# Data files that hold the text of a JavaScript-drawn page, by page folder.
+DATA_SOURCES = {"/lessons/nppe/": ("nppe-guide.json", nppe_entries)}
+
+
 def main():
     pages, entries = [], []
     files = []
     for dirpath, dirnames, filenames in os.walk(ROOT):
-        dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS and not d.startswith("."))
+        dirnames[:] = sorted(d for d in dirnames
+                             if d not in SKIP_DIRS and not d.startswith(".") and SLUG.fullmatch(d))
         if "index.html" in filenames:
             files.append(os.path.relpath(os.path.join(dirpath, "index.html"), ROOT))
     for rel in sorted(files):
@@ -161,6 +222,11 @@ def main():
             if not x and not h:
                 continue
             entries.append({"p": pi, "a": seg["a"], "h": h, "x": x})
+        if url in DATA_SOURCES:
+            name, fn = DATA_SOURCES[url]
+            data_path = os.path.join(ROOT, os.path.dirname(rel), name)
+            if os.path.exists(data_path):
+                entries.extend(fn(data_path, pi))
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     data = {"built": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
             "pages": pages, "entries": entries}

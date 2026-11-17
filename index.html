@@ -56,28 +56,28 @@ sub,sup{line-height:0}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* Page frame and header */
-.page{max-width:1200px;margin:0 auto;padding:0 40px 40px}
+.page{max-width:var(--page-max,1440px);margin:0 auto;padding:0 40px 40px}
 .header{padding:40px 0 8px}
 .crumb{font-size:14px;color:var(--ink-subtle);margin:0 0 18px}
 .crumb a{color:var(--ink-subtle)}
 h1{font:300 56px/1.12 var(--f-display);letter-spacing:-0.01em;max-width:900px}
-.standfirst{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);max-width:680px;margin:18px 0 0}
-.byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;margin-top:22px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:984px}
+.standfirst{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);max-width:var(--measure,880px);margin:18px 0 0}
+.byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;margin-top:22px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:var(--wide,1224px)}
 .byline .author{color:var(--ink);font-weight:600;text-decoration:none}
 .byline .author:hover{text-decoration:underline}
 .marker{font:400 15px/1.3 var(--f-display);letter-spacing:0.02em;color:var(--secondary);margin:0 0 8px}
 
 /* Ruled list (section indexes, Latest) */
-.list{list-style:none;margin:56px 0 0;padding:0;border-top:1px solid var(--rule);max-width:984px}
+.list{list-style:none;margin:56px 0 0;padding:0;border-top:1px solid var(--rule);max-width:var(--wide,1224px)}
 .list li{display:grid;grid-template-columns:190px minmax(0,1fr) auto;gap:8px 32px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--border)}
 .meta{font-size:14px;color:var(--ink-subtle);font-variant-numeric:tabular-nums}
 .list h2,.list h3{font:400 26px/1.25 var(--f-display);margin:0 0 6px}
 .list h2 a,.list h3 a{text-decoration:none}
 .list h2 a:hover,.list h3 a:hover{text-decoration:underline}
-.list p{margin:0;color:var(--ink-muted);max-width:620px}
+.list p{margin:0;color:var(--ink-muted);max-width:var(--measure,880px)}
 .read{font-weight:600;white-space:nowrap;text-decoration:none}
 .read:hover{text-decoration:underline}
-.soon{margin:28px 0 0;font-size:14px;color:var(--ink-subtle);max-width:680px}
+.soon{margin:28px 0 0;font-size:14px;color:var(--ink-subtle);max-width:var(--measure,880px)}
 
 /* Buttons */
 .btn-pri{display:inline-flex;align-items:center;font:600 16px/1.4 var(--f-body);letter-spacing:0;color:var(--ink);background:var(--primary);border:0;border-radius:100px;min-height:44px;padding:10px 48px 10px 24px;position:relative;cursor:pointer;text-decoration:none;transition:background 200ms var(--ease),transform 200ms var(--ease)}
@@ -96,7 +96,7 @@ h1{font:300 56px/1.12 var(--f-display);letter-spacing:-0.01em;max-width:900px}
   *{transition-duration:120ms !important;animation:none !important}
 }
 /* Home */
-.home{max-width:1200px;margin:0 auto;padding:32px 40px 0}
+.home{max-width:var(--page-max,1440px);margin:0 auto;padding:32px 40px 0}
 .hero-art{height:420px;border-radius:8px;overflow:hidden;background:var(--surface)}
 .hero-art svg{display:block;width:100%;height:100%}
 .hero-card{position:relative;max-width:640px;margin:-150px 0 0 48px;background:var(--surface);padding:40px 44px 30px}
@@ -119,7 +119,7 @@ h1{font:300 56px/1.12 var(--f-display);letter-spacing:-0.01em;max-width:900px}
 .go{font-weight:600;text-decoration:none}
 .go:hover{text-decoration:underline}
 .band{background:var(--surface);margin-top:84px}
-.band-in{max-width:1200px;margin:0 auto;padding:64px 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,680px);gap:16px 64px;align-items:start}
+.band-in{max-width:var(--page-max,1440px);margin:0 auto;padding:64px 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,680px);gap:16px 64px;align-items:start}
 .band-in .body{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);margin:0 0 20px}
 .home .list{margin-top:0}
 @media (max-width:1000px){ .paths{grid-template-columns:repeat(2,minmax(0,1fr))} .band-in{grid-template-columns:minmax(0,1fr)} }

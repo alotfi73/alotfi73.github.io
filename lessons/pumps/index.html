@@ -58,22 +58,22 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .skip:focus{left:12px;top:12px;z-index:10}
 
 /* Page */
-.page{max-width:1200px;margin:0 auto;padding:0 40px 40px}
+.page{max-width:var(--page-max,1440px);margin:0 auto;padding:0 40px 40px}
 .crumb{font-size:14px;color:var(--ink-subtle);margin:40px 0 20px}
 .crumb a{color:var(--ink-subtle)}
-h1{font:300 44px/1.15 var(--f-display);letter-spacing:-0.005em;max-width:984px}
-.stand{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);max-width:680px;margin:20px 0 20px}
-.byline{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--ink-subtle);padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:984px}
+h1{font:300 44px/1.15 var(--f-display);letter-spacing:-0.005em;max-width:var(--wide,1224px)}
+.stand{font:300 19px/1.6 var(--f-body);color:var(--ink-muted);max-width:var(--measure,880px);margin:20px 0 20px}
+.byline{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--ink-subtle);padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:var(--wide,1224px)}
 
-.row{display:grid;grid-template-columns:minmax(0,680px) 240px;column-gap:64px;align-items:start}
+.row{display:grid;grid-template-columns:minmax(0,var(--measure,880px)) var(--sidenote,280px);column-gap:64px;align-items:start}
 .row > .main{min-width:0}
 .sn{grid-column:2;font-size:14px;line-height:1.55;color:var(--ink-muted);padding-top:4px}
 .sn p{margin:0 0 10px}
 .sn b{color:var(--ink);font-weight:600}
-.wide{max-width:984px}
+.wide{max-width:var(--wide,1224px)}
 
 .sec{margin-top:84px;scroll-margin-top:16px}
-.sec-head{border-top:1px solid var(--rule);padding-top:16px;margin-bottom:24px;max-width:984px}
+.sec-head{border-top:1px solid var(--rule);padding-top:16px;margin-bottom:24px;max-width:var(--wide,1224px)}
 .marker{font:400 15px/1.3 var(--f-display);letter-spacing:0.02em;color:var(--secondary);margin:0 0 8px}
 h2{font:400 30px/1.25 var(--f-display)}
 h3{font:600 19px/1.35 var(--f-body);margin:40px 0 12px;letter-spacing:0}
@@ -104,7 +104,7 @@ td code,.mono-inline{font-family:var(--f-mono);font-size:13px}
 .tbl caption{caption-side:bottom;text-align:left;font-size:13px;color:var(--ink-subtle);padding:10px 12px}
 
 /* Figures */
-figure{margin:40px 0;padding-top:14px;border-top:1px solid var(--rule);max-width:984px}
+figure{margin:40px 0;padding-top:14px;border-top:1px solid var(--rule);max-width:var(--wide,1224px)}
 .fig-title{font:600 17px/1.4 var(--f-body);margin:0 0 6px;letter-spacing:0}
 .fig-title .fn{font-weight:400;color:var(--ink-subtle)}
 figcaption,.cap{font-size:13px;line-height:1.5;color:var(--ink-subtle);margin-top:10px;max-width:760px}
@@ -199,7 +199,7 @@ input[type=range]{width:100%;accent-color:var(--interactive);height:24px;margin:
 .ok{color:var(--success)} .warn{color:var(--warning)} .err{color:var(--error)} .inf{color:var(--info)}
 
 /* Calculator */
-.calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin:24px 0 8px;max-width:984px}
+.calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin:24px 0 8px;max-width:var(--wide,1224px)}
 .card{background:var(--surface);border-radius:8px;padding:24px}
 .card-title{font:300 23px/1.25 var(--f-card);margin:0 0 18px;letter-spacing:0}
 .field-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
@@ -554,7 +554,7 @@ select{height:44px;border:1px solid var(--border-strong);border-radius:8px;backg
         <p><b>Typical line velocities</b> for clean liquids are about 1–2 m/s on suction and 1.5–3 m/s on discharge. Suction lines are usually one size larger than the pump nozzle. These are rules of thumb; use your company's line-sizing criteria.</p>
       </aside>
     </div>
-    <div class="tbl wide" style="max-width:680px">
+    <div class="tbl wide" style="max-width:var(--measure,880px)">
       <table>
         <thead><tr><th>Fitting</th><th class="num">K</th><th>Fitting</th><th class="num">K</th></tr></thead>
         <tbody>
@@ -1876,7 +1876,7 @@ d = √(4A/π) = 16.8 mm</span><p>Check the downstream pressure before accepting
     for (var v = Math.ceil(min / step) * step; v <= max + 1e-9; v += step) t.push(+v.toFixed(6));
     return t;
   }
-  function widthOf(c) { return Math.max(300, Math.min(984, Math.floor(c.clientWidth || 900))); }
+  function widthOf(c) { return Math.max(300, Math.min(1224, Math.floor(c.clientWidth || 900))); }
   function makeSVG(c, W, H) {
     c.innerHTML = '';
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, 'aria-hidden': 'true', focusable: 'false' });

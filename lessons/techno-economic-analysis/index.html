@@ -51,15 +51,15 @@ a:hover{text-decoration-thickness:2px}
 
 /* Site chrome (nav, search, footer, back-to-top) lives in /assets/css/site.css */
 
-.wrap{max-width:1200px;margin:0 auto;padding:0 40px 40px}
+.wrap{max-width:var(--page-max,1440px);margin:0 auto;padding:0 40px 40px}
 
 /* header */
 .crumbs{font-size:14px;color:var(--ink-subtle);margin:40px 0 18px}
 .crumbs a{color:var(--ink-subtle)}
 .crumbs span{margin:0 6px}
 h1.display{font:300 64px/1.2 var(--serif);letter-spacing:-.01em;margin:0 0 16px;max-width:900px}
-.standfirst{font:300 19px/1.6 var(--sans);color:var(--ink-muted);max-width:680px;margin:0 0 18px;letter-spacing:-.01em}
-.byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;margin:4px 0 40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:984px}
+.standfirst{font:300 19px/1.6 var(--sans);color:var(--ink-muted);max-width:var(--measure,880px);margin:0 0 18px;letter-spacing:-.01em}
+.byline{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-subtle);padding:14px 0;margin:4px 0 40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:var(--wide,1224px)}
 .byline .author{color:var(--ink);font-weight:600;text-decoration:none}
 .byline .author:hover{text-decoration:underline}
 
@@ -224,7 +224,7 @@ table.t tr.flash td{background:var(--primary);transition:none}
 /* sections and figures */
 .section{margin-top:84px}
 .section > h2{font:400 30px/1.25 var(--serif);margin:0 0 8px;padding-top:18px;border-top:1px solid var(--rule)}
-.section > .lede{max-width:680px;color:var(--ink-muted);margin:0 0 8px}
+.section > .lede{max-width:var(--measure,880px);color:var(--ink-muted);margin:0 0 8px}
 figure.fig{margin:48px 0 0;padding-top:14px;border-top:1px solid var(--rule)}
 figure.fig .ft{font:600 19px/1.35 var(--sans);margin:0 0 4px;letter-spacing:0;max-width:900px}
 figure.fig .ctl{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:10px 0 6px;font-size:14px}
@@ -246,11 +246,11 @@ svg .halo{paint-order:stroke;stroke:var(--canvas);stroke-width:5px;stroke-linejo
 .cf-wrap{overflow-x:auto;max-height:560px;overflow-y:auto;background:var(--surface);border-radius:8px;padding:8px 16px}
 .cf-wrap table.t th{position:sticky;top:0;background:var(--surface)}
 
-.read{max-width:680px}
+.read{max-width:var(--measure,880px)}
 .read p{margin:0 0 14px}
 .srcs{margin:0;padding-left:20px;font-size:15px}
 .srcs li{margin:0 0 8px}
-.oss{display:grid;grid-template-columns:minmax(0,680px) 240px;gap:40px;align-items:start}
+.oss{display:grid;grid-template-columns:minmax(0,var(--measure,880px)) var(--sidenote,280px);gap:40px;align-items:start}
 .oss .card code{font:400 15px var(--mono)}
 .mono{font-family:var(--mono);font-size:14px}
 
@@ -317,7 +317,7 @@ table.edit tr.empty td{color:var(--ink-subtle);font-size:14px;padding:12px 0}
 
 /* lesson layout, on top of the shared site styles */
 h1.lh{font:300 56px/1.12 var(--serif);letter-spacing:-.01em;margin:0 0 16px;max-width:900px}
-.lrow{display:grid;grid-template-columns:minmax(0,680px) 240px;gap:40px 64px;align-items:start}
+.lrow{display:grid;grid-template-columns:minmax(0,var(--measure,880px)) var(--sidenote,280px);gap:40px 64px;align-items:start}
 .lmain{min-width:0}
 .lmain p{margin:0 0 16px}
 .lmain ul,.lmain ol{margin:0 0 16px;padding-left:22px}
@@ -345,13 +345,13 @@ h1.lh{font:300 56px/1.12 var(--serif);letter-spacing:-.01em;margin:0 0 16px;max-
 .wide figure.fig{margin-top:12px}
 .slider-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:10px 0 4px;font-size:14px}
 .slider-row input[type=range]{width:260px;max-width:60vw}
-.readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 4px;max-width:680px}
+.readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 4px;max-width:var(--measure,880px)}
 .readout .tile .v{font-size:26px}
 .check{list-style:none;padding:0!important;counter-reset:c}
 .check li{counter-increment:c;padding:12px 0 12px 44px;border-bottom:1px solid var(--border);position:relative;margin:0!important}
 .check li::before{content:counter(c,decimal-leading-zero);position:absolute;left:0;top:12px;font:400 15px/1.6 var(--serif);color:var(--ink-subtle)}
 .try{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:8px}
-.toc{font-size:14px;margin:0 0 8px;padding:0;list-style:none;columns:2;column-gap:32px;max-width:680px}
+.toc{font-size:14px;margin:0 0 8px;padding:0;list-style:none;columns:2;column-gap:32px;max-width:var(--measure,880px)}
 .toc li{margin:0 0 6px;break-inside:avoid}
 .toc a{text-decoration:none}
 .toc a:hover{text-decoration:underline}
