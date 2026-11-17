@@ -415,7 +415,7 @@ A 44 px circle at the bottom right (24 px from the edges, 16 px on phones): whit
 Breadcrumb (body-sm, ink-subtle), headline, one-sentence standfirst in body-lg, then a byline row: author ("Alireza Lotfollahzade, EIT", linked to the author's entry at `/about/#authors`), "Updated" date, reading time or method note. The byline is what makes a page feel written by a person; never omit it.
 
 ## Footer
-A `brand-deep` band with white text: the site name "Chemical Process Engineering" in Newsreader 22 px, the line "Lessons, calculators and tools for chemical engineering students and engineers.", links to the five sections and GitHub, and a note: "Run by Alireza Lotfollahzade, EIT, in Metro Vancouver", followed by the statement that the content is educational and that codes, standards and company specifications govern real designs.
+A `brand-deep` band with white text: the site name "Chemical Process Engineering" in Newsreader 22 px, the line "Lessons, calculators and tools for chemical engineering students and engineers.", links to the five sections and GitHub, a contact line ("Found an error, or something on the site not working? Email support@chemprocesseng.com", the address as a `mailto:` link), and a note: "Run by Alireza Lotfollahzade, EIT, in Metro Vancouver", followed by the statement that the content is educational and that codes, standards and company specifications govern real designs.
 
 ## Calculator
 - Header: breadcrumb, display headline, one-sentence standfirst in body-lg.
