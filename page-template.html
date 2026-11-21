@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <!--
   chemprocesseng.com page template. Read website/SITE-GUIDE.md first.
-  EDIT in <head>: title, description, og:title, og:description, og:url, canonical.
+  EDIT in <head>: title (keep the " · ChemProcessEng" suffix, about 60 characters in all), description
+  (under 160 characters), og:title, og:description, og:url, canonical, and the JSON-LD block (headline,
+  description, url, dateModified; use "WebApplication" instead of "Article" for a tool). The deploy builds
+  sitemap.xml from the canonical link and dateModified. This template itself is not published.
   EDIT in the nav: move aria-current="page" to this page's section (none on the home page).
   Keep the nav, footer and icon links exactly as they are.
 -->
@@ -9,7 +12,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Page title · Chemical Process Engineering</title>
+<title>Page title · ChemProcessEng</title>
 <meta name="description" content="One sentence that says what this page gives the reader.">
 
 <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -28,6 +31,34 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://chemprocesseng.com/section/slug/">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Article",
+   "@id": "https://chemprocesseng.com/section/slug/#article",
+   "headline": "Page title",
+   "description": "One sentence that says what this page gives the reader.",
+   "image": "https://chemprocesseng.com/assets/brand/og-image.png",
+   "author": {"@type": "Person", "@id": "https://chemprocesseng.com/about/#alireza-lotfollahzade", "name": "Alireza Lotfollahzade", "url": "https://chemprocesseng.com/about/#authors"},
+   "publisher": {"@id": "https://chemprocesseng.com/#organization"},
+   "dateModified": "YYYY-MM-DD",
+   "mainEntityOfPage": "https://chemprocesseng.com/section/slug/",
+   "isPartOf": {"@id": "https://chemprocesseng.com/#website"},
+   "inLanguage": "en-CA"
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://chemprocesseng.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Section", "item": "https://chemprocesseng.com/section/"},
+    {"@type": "ListItem", "position": 3, "name": "Page title", "item": "https://chemprocesseng.com/section/slug/"}
+   ]
+  }
+ ]
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -217,6 +248,7 @@ figure svg{display:block;width:100%;height:auto}
       <li><a href="/analysis/">Analysis</a></li>
       <li><a href="/about/">About</a></li>
       <li><a href="https://github.com/alotfi73">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/alireza-lm/" rel="me">LinkedIn</a></li>
     </ul>
     <p class="foot-contact">Found an error, or something on the site not working? Email <a href="mailto:support@chemprocesseng.com">support@chemprocesseng.com</a>.</p>
     <p class="foot-note">Run by Alireza Lotfollahzade, EIT, in Metro Vancouver. Educational content: numbers are illustrative unless stated, and codes, standards and your company's specifications govern any real design.</p>

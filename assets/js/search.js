@@ -29,7 +29,7 @@
     if (input) input.focus();
     return;
   }
-  document.title = "Search: " + raw + " · Chemical Process Engineering";
+  document.title = "Search: " + raw + " · ChemProcessEng";
   status.textContent = "Searching…";
 
   function href(n) { return "/search/?q=" + encodeURIComponent(raw) + (n > 1 ? "&page=" + n : ""); }
