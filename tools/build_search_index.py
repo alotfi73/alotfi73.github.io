@@ -35,7 +35,7 @@ SKIP_DIRS = {".git", ".github", "assets", "tools", "search", "node_modules"}
 LISTING_PAGES = {"/", "/calculators/", "/lessons/", "/data/", "/analysis/"}
 KINDS = [("/lessons/", "Lesson"), ("/calculators/", "Calculator"), ("/data/", "Data tool"),
          ("/analysis/", "Analysis"), ("/about/", "About")]
-TITLE_SUFFIXES = [" · Chemical Process Engineering", " · Alireza Moghaddam"]
+TITLE_SUFFIXES = [" · ChemProcessEng", " · Chemical Process Engineering", " · Alireza Moghaddam"]
 
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param",
         "source", "track", "wbr"}
