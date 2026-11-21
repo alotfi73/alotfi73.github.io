@@ -31,13 +31,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Build search index
+        # Rebuilds assets/search/index.json from every page, so new pages are searchable automatically
+        run: python3 tools/build_search_index.py
+      - name: Build sitemap
+        # Rebuilds sitemap.xml from every indexable page (canonical URL, dateModified from its JSON-LD)
+        run: python3 tools/build_sitemap.py
+      - name: Copy public files to _site
+        # Publish only the website: leave out build tools, notes for editors and the page template
+        run: |
+          rsync -a ./ _site/ \
+            --exclude '.git' --exclude '.github' --exclude '_site' \
+            --exclude 'tools' --exclude 'graphify-out' --exclude '__pycache__' \
+            --exclude '*.md' --exclude 'page-template.html'
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
